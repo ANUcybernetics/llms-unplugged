@@ -444,6 +444,8 @@ When the token we pick contains the letter `a` (`cat`, `hat`, `that`, `and`, rou
 
 The tool reads the second word of the subject line of the third email in your inbox ("Re:" counts as word one). Take the first hand with a word ready, and before they speak, ask: "Happy to share that?" They can decline --- that's the permission prompt.
 
+If they decline, write `[declined]` on the board in place of the word and call the `a` word again: a denied tool call goes back into the context as its result, and generation carries on. Thank them: that's the permission prompt working.
+
 Write the inbox word on the board after the `a` word, then call the `a` word again to continue. Because our paper sheets have no entries for arbitrary words from someone's email, the bigram model has to resume from the last token it knows.
 ```
 
