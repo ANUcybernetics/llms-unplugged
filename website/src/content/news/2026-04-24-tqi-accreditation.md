@@ -13,8 +13,8 @@ Good news for ACT educators: the ACT
 Unplugged_ as a two-hour professional learning program.
 
 Attending a workshop now counts toward your annual professional learning hours
-for ACT teacher registration---no extra paperwork at your end. The program will
-also be listed on the
+for ACT teacher registration, with no extra paperwork at your end. The program
+will also be listed on the
 [TQI accredited PL search](https://teachereducation.tqi.act.edu.au/), so
 colleagues across the ACT can find it there too.
 

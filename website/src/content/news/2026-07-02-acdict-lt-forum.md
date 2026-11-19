@@ -10,7 +10,7 @@ description:
 
 Today I'm running an _LLMs Unplugged_ session at the
 [ACDICT](https://www.acdict.edu.au/) Learning & Teaching Forum. It's a hands-on,
-pen-paper-and-dice walk through how a language model actually works---you build
+pen-paper-and-dice walk through how a language model actually works: you build
 a bigram model by hand, generate new text from it by rolling dice, and then bolt
 on a couple of the ideas (sycophancy, tool use) that turn up in the real
 systems.
@@ -21,13 +21,13 @@ post is for them.
 ## Following along online
 
 I'll be talking mostly to the people in the room, so the online experience will
-be a bit fly-on-the-wall---I won't be watching the chat closely while I present.
-But if you're keen, you can do the whole thing yourself as we go; it's
+be a bit fly-on-the-wall and I won't be watching the chat closely while I present.
+If you're keen, you can do the whole thing yourself as we go; it's
 all analogue. You'll need:
 
 - a printed [grid template](https://pdf.llmsunplugged.org/worksheets/grid.pdf) (or any grid
-  paper---even hand-drawn is fine)
-- a book to use as training data---a kids' book is ideal (short sentences, small
+  paper, even hand-drawn)
+- a book to use as training data; a kids' book is ideal (short sentences, small
   vocabulary), but anything with text will do
 - a die, or a dice-rolling app, for the generation step
 - and, for the sycophancy section near the end, the

@@ -5,7 +5,7 @@ author: Ben Swift
 kind: build
 description:
   The interactive widgets and the booklet generator now segment Mandarin Chinese
-  into words, not just characters. Thanks to Zhang Xilian for the nudge.
+  into words as well as single characters. Thanks to Zhang Xilian for the nudge.
 ---
 
 import TrainingWidget from "../../components/widgets/TrainingWidget.svelte";
@@ -63,8 +63,7 @@ stop 。 are kept as their own tokens, boxed in the model just like the English
 
 The same segmentation flows through to print. Here's the
 [_Jiangnan_ bigram booklet](https://pdf.llmsunplugged.org/booklets/jiangnan.pdf)
-as a ready-to-print PDF, every dice-lookup entry set in Noto Serif CJK rather
-than the Latin body font. The entries are ordered by pinyin, the way a Chinese
+as a ready-to-print PDF, with every dice-lookup entry set in Noto Serif CJK. The entries are ordered by pinyin, the way a Chinese
 dictionary sorts them. 电脑 (diannao) files before 手机 (shouji), so a word
 stays findable once a booklet runs long. The [tools page](/tools/) will generate
 one from any text you paste in, Mandarin or otherwise. The bundled fonts cover

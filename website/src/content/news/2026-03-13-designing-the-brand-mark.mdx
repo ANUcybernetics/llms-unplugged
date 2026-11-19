@@ -4,8 +4,8 @@ date: 2026-03-13
 author: Ben Swift
 kind: build
 description:
-  The new brand mark encodes GPT-3 token IDs into visual dot patterns --- here's
-  how it works.
+  How the LLMs Unplugged brand mark encodes GPT-3 token IDs into visual dot
+  patterns.
 ---
 
 import TokenLogo from "../../components/TokenLogo.svelte";
@@ -28,12 +28,12 @@ you get five tokens:
 | `plug` | 37729 |
 | `ged`  | 2004  |
 
-These splits are a nice illustration of tokenisation in practice. "LLMs" doesn't
-stay as one piece---it becomes `LL` + `Ms`, which makes a certain kind of sense
-if you squint (capital letters are rare enough that the tokeniser treats them
-separately). "Unplugged" becomes ` Un` + `plug` + `ged`, with that leading space
-on ` Un` showing how [BPE](https://en.wikipedia.org/wiki/Byte_pair_encoding)
-tokenisers encode word boundaries.
+These splits are a nice illustration of tokenisation in practice. "LLMs" splits
+into `LL` + `Ms`, which makes a certain kind of sense if you squint (capital
+letters are rare enough that the tokeniser treats them separately). "Unplugged"
+becomes ` Un` + `plug` + `ged`, with that leading space on ` Un` showing how
+[BPE](https://en.wikipedia.org/wiki/Byte_pair_encoding) tokenisers encode word
+boundaries.
 
 ## The word mark
 
@@ -60,10 +60,9 @@ gold and leave the 0s dim, and you get a tiny visual fingerprint of the token.
   style="max-width: 120px; margin: 1.5rem auto; display: block; width: 100%; height: auto;"
 />
 
-If you watch the favicon for a moment you'll notice it isn't static---it cycles
-through the bit patterns for all five title tokens on a 15-second loop, with
-smooth transitions between each pattern. The animation is pure CSS `@keyframes`,
-no JavaScript involved. Each of the 16 circles gets its own keyframe animation
+The favicon cycles through the bit patterns for all five title tokens on a
+15-second loop, with smooth transitions between each pattern. The animation uses
+pure CSS `@keyframes`: each of the 16 circles gets its own keyframe animation
 based on how its bit differs across the five tokens, so some circles hold steady
 while others flicker between gold and dim.
 
@@ -71,10 +70,8 @@ Every dot pattern on the site is a real token ID rendered the same way.
 
 ## The five-up
 
-There's also a static version that lays all five token grids side by side in a
-single row, with no animation. It reads left to right as `LL` · `Ms` · `\u00A0Un` · `plug` · `ged`.
-Because it's completely static it works nicely on things like t-shirts and
-stickers where you can't rely on animation.
+A static version lays all five token grids side by side in a single row (`LL` ·
+`Ms` · `\u00A0Un` · `plug` · `ged`), for t-shirts, stickers and other print uses.
 
 The first version matches the favicon colour scheme, with gold dots on a dark
 background, uniform across all five tokens:
@@ -100,15 +97,13 @@ background, matching the colour scheme used in the title logo:
 
 ## The lockup
 
-Every mark described so far has the same limitation: it only means anything to
-someone who already knows what the project is. A stranger seeing a grid of gold
-dots learns nothing. That's fine for a favicon---the tab title does the
-work---but it rules the marks out of the places a logo usually goes: a site
-header, a slide corner, the top of a handout, a conference badge.
+The dot grids only mean something to someone who already knows what the project
+is. That's fine for a favicon, where the browser tab title sits right next to
+it, but a site header, slide corner, handout or conference badge needs the name
+attached.
 
-So there's a horizontal lockup, which is just the favicon grid with the title
-set next to it in [Public Sans](https://public-sans.digital.gov/), the ANU brand
-typeface:
+The horizontal lockup pairs the favicon grid with the title set in
+[Public Sans](https://public-sans.digital.gov/), the ANU brand typeface:
 
 <img
   src="/lockup.svg"
@@ -124,13 +119,12 @@ doesn't cycle: at favicon size the flicker is an easter egg, but in a page heade
 underneath it. There's an animated version at `/lockup-animated.svg` for hero
 and social contexts where that's the point.
 
-The wordmark is baked to outlines rather than referenced as a font, so the file
-carries its own letterforms and renders identically as an `<img>`, in print, or
-dropped into a design tool with no network access. The background stays
-transparent and the wordmark comes in two colours: white in `/lockup.svg` for
-dark surfaces, near-black in `/lockup-light.svg` for light ones. On ANU gold the
-light variant is the one to reach for; white on gold clears 3:1 but not much
-more.
+The wordmark's letterforms are converted to SVG outlines, so the file renders
+identically as an `<img>`, in print, or dropped into a design tool with no
+network access. The background stays transparent and the wordmark comes in two
+colours: white in `/lockup.svg` for dark surfaces, near-black in
+`/lockup-light.svg` for light ones. On ANU gold the light variant is the one to
+reach for; white on gold clears 3:1 but not much more.
 
 ## The animated version
 
@@ -151,11 +145,9 @@ listeners.
 
 ## Background mode
 
-There's also a stripped-back variant that just shows the shuffling brick grid
-without ever highlighting or assembling the title tokens. It's useful as a
-visual backdrop. We use it behind divider slides in our workshop
-presentations, where you want the token texture without the full animation
-competing for attention.
+A background variant shows the shuffling brick grid without highlighting or
+assembling the title tokens. We use it behind divider slides in our workshop
+presentations, where the full title animation would compete with the slide text.
 
 <div style="position: relative; width: 100%; aspect-ratio: 16 / 9; overflow: hidden;">
   <TokenLogo client:visible mode="background" />

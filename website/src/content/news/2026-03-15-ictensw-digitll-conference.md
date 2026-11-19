@@ -14,16 +14,15 @@ We're presenting _LLMs Unplugged_ at the
 [Australian Catholic University](https://www.acu.edu.au/locations/north-sydney)
 in North Sydney.
 
-The session---"LLMs Unplugged: Understand AI by building it yourself"---is the
+Our session, "LLMs Unplugged: Understand AI by building it yourself", is the
 usual deal: build a language model with pen, paper and dice, and walk away with a
-concrete mental model of how ChatGPT, Claude, Gemini and the rest actually work
-under the hood. No laptops required.
+concrete mental model of how ChatGPT, Claude, Gemini and the rest work under the
+hood. No laptops required.
 
 [DigiTLL](https://www.ictensw.org.au/event-6112449) is a two-day professional
-learning conference run by
-[ICTENSW](https://www.ictensw.org.au/)---designed by teachers, for
-teachers---covering digital technologies, AI, and computer science across the NSW
-curriculum. If you're a NSW educator looking to get your head around AI in a
-hands-on way, it's a good fit.
+learning conference run by [ICTENSW](https://www.ictensw.org.au/), covering
+digital technologies, AI, and computer science across the NSW curriculum. If
+you're a NSW educator looking to get your head around AI in a hands-on way, it's
+a good fit.
 
 [Register on the ICTENSW website.](https://www.ictensw.org.au/event-6112449/Registration)

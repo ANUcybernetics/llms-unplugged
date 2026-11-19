@@ -63,8 +63,8 @@ The cutouts now use the same eight colours, so teachers can use the printed key
 to call out a colour alongside a word.
 
 Eight is close to the ceiling, too. The obvious ninth is orange, and a printable
-orange sits ΔE 0.074--0.101 from red once it has been through a CMYK profile ---
-you can have orange or red, not both. Green and turquoise collide the same way,
+orange sits ΔE 0.074--0.101 from red once it has been through a CMYK profile,
+so you can have orange or red, not both. Green and turquoise collide the same way,
 as do magenta and pink.
 
 The key is printed on the brief for both the sheets and the cutouts. Students
@@ -76,7 +76,7 @@ can use it to narrow their search before reading the tokens.
     swatch gets used, contrast being symmetric: a token set as coloured text on
     the page, and white text on a colour-filled box. The eight sit 0.151 apart
     at worst on screen and 0.102 once round-tripped through a CMYK profile. The
-    second figure is the one that matters and it can't be derived from the first
-    --- sRGB's vivid blues, greens and purples fall outside CMYK, so the press
+    CMYK distance is what matters on paper, and it can't be derived from the screen distance:
+    sRGB's vivid blues, greens and purples fall outside CMYK, so the press
     compresses them toward the gamut boundary and the gaps shrink. Measured
     against FOGRA47L uncoated, FOGRA39L coated and SNAP newsprint.

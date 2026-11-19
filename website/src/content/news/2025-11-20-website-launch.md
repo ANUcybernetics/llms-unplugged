@@ -23,7 +23,7 @@ We're working on:
   to other curriculums as well)
 - tips/variations on the lessons and how to adapt them for different contexts
   (including primary-school versions)
-- videos and animations to accompany the lessons---including some for use in the
+- videos and animations to accompany the lessons, including some for use in the
   classroom
 - suggested assessment tasks (if you're into that sort of thing)
 

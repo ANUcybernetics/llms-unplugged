@@ -41,16 +41,16 @@ A first pass let candidates roam from L=0.20 upwards and gave a slightly tighter
 min ΔE of 0.145. It also produced a dark blue at L≈0.275 that came out of the
 printer looking like black. CMYK reaches saturated deep blue by leaning hard on
 the K plate, so a small ink-balance shift collapses the colour onto pure black;
-the seeded black anchor protects against collisions in OKLab, not in CMYK.
+the seeded black anchor only separates colours in OKLab.
 Raising the L floor to 0.32 trims four near-black candidates, costs about 0.008
 of min ΔE, and leaves no chromatic entry close enough to merge with K in print.
 
 Each palette entry is tagged as "light" or "dark" based on its OKLab L. The
 Typst renderer pairs light entries with black text on the coloured box and a
 thin black stroke on the free-standing word; dark entries get white text and no
-stroke. That adaptive treatment is what lets the palette extend up to L≈0.92,
+stroke. That lets the palette extend up to L≈0.92,
 where the very light pastels live. Without it, every fill would have to be dark
-enough for white text to read on, capping the usable lightness range and so the
+enough for white text to read on, capping the usable lightness range and the
 achievable colour count.
 
 The palette isn't colour-vision-deficiency safe. CVD-safe palettes max out

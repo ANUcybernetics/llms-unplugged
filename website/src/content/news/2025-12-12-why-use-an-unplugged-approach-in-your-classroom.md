@@ -23,7 +23,7 @@ There's a growing list of "how to use LLMs/GenAI" resources out there, but most
 of them treat the LLMs as black boxes... e.g. here are some tips on writing a
 good prompt, or here are some broad questions to discuss about training data and
 bias. But I've looked at a lot of these resources and most of them don't even
-try to explain how they work. To some extent that's understandable---they're the
+try to explain how they work. To some extent that's understandable: they're the
 product of millions of person-hours of R&D and many _billions_ of GPU-hours of
 number crunching in data centres worldwide. But there are heaps of other complex
 machines & systems that we still work hard to explain to students (all the way

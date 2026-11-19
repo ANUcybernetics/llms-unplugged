@@ -10,7 +10,7 @@ description:
 
 Last Friday we partnered with
 [Brimbank Tech School](https://www.brimbanktechschool.vic.edu.au/) at VU
-Sunshine Campus for _Lifting the Veil_---a full-day hands-on AI workshop for
+Sunshine Campus for _Lifting the Veil_, a full-day hands-on AI workshop for
 educators.
 
 ![Ben presenting to a room of educators at VU Sunshine Campus](../../assets/images/brimbank-workshop-130.avif)
@@ -23,7 +23,7 @@ challenges) that AI is bringing.
 
 ![A participant building an N-gram model by hand, tallying token frequencies on a grid worksheet](../../assets/images/brimbank-workshop-082.avif)
 
-The highlight---as usual---was the hands-on model building. There's something
+The highlight, as usual, was the hands-on model building. There's something
 about actually counting tokens, filling in probability grids and then rolling
 dice to generate text that makes the whole thing click in a way that slides
 alone never quite manage.
@@ -32,8 +32,8 @@ alone never quite manage.
 
 ![A facilitator helping participants at their table as they work through the activity together](../../assets/images/brimbank-workshop-132.avif)
 
-It was a great day---a real pleasure to share these materials with such an
-engaged group of educators, and to hear how they're thinking about bringing AI
+It was a great day, and a real pleasure to share these materials with such an
+engaged group of educators and hear how they're thinking about bringing AI
 literacy into their classrooms. Thanks to the Brimbank Tech School team for
 making it happen.
 
