@@ -18,8 +18,8 @@ import Cutout from "../components/Cutout.astro";
 import CutoutRow from "../components/CutoutRow.astro";
 import SocyLogo from "astro-theme-anu/components/SocyLogo.astro";
 import BgMusic from "../components/BgMusic.astro";
-import { CAT_TOKENS, CAT_VOCAB } from "./examples";
-import { PALETTE, SHEET_FIVE } from "./ledgerExamples";
+import { PALETTE } from "./ledgerExamples";
+import { entriesFromTokens, splitTokens } from "../lib/ledger";
 import threeUpPhd from "./assets/bg-3up-phd.avif";
 import threeUpLecturer from "./assets/bg-3up-lecturer.avif";
 import threeUpKids from "./assets/bg-3up-kids.avif";
@@ -29,6 +29,9 @@ import "../styles/widgets.css";
 import "../styles/ledger.css";
 
 export const runMinutes = 5; // the board timer in partials/sheets-run.mdx
+
+export const TOUR_TOKENS = "the cat sat on the mat . the dog sat on the cat ."; // the resources tour
+export const TOUR_LEDGER = entriesFromTokens(splitTokens(TOUR_TOKENS));
 
 <BgMusic />
 
@@ -574,26 +577,37 @@ The call to action, and a quick tour. Everything in this talk, and a lot more, i
 ## the same model, as a grid
 
 ```comment
-step 13 is one past the last of the 12 pairs, so the grid shows complete
-with no pair still ringed.
+The three tour slides share TOUR_TOKENS, made up for the job: seven tokens, a
+`the` row that branches with uneven counts (cat x2, mat, dog), and a chain
+the text never says (the dog sat on the mat). step 15 is one past the last
+of the 14 pairs, so the grid shows complete with no pair still ringed.
 ```
 
-<StaticGrid tokens={CAT_TOKENS} vocabulary={CAT_VOCAB} step={13} />
+<StaticGrid tokens={TOUR_TOKENS} step={15} />
 
 ```notes
-One line of The Cat in the Hat --- "Look at me! Look at me! Look at me now!" --- small enough that the whole model fits on a slide. Every pair is a tally mark in a cell: row is the token we're on, column is the one that came next.
+Two short sentences, small enough that the whole model fits on a slide, and the same two on the next two slides. Every pair is a tally mark in a cell: row is the token we're on, column is the one that came next.
 
-Point at the `me` row: two marks under `!`, one under `now`. That's three hands going up, two of them saying the same thing. In the grid lessons, students build this from a text by hand, then roll dice to generate from it. Years 9 and up.
+Point at the `the` row: two marks under `cat`, one under `mat`, one under `dog`. Call `the` in this room and four hands go up, two of them saying `cat`. In the grid lessons, students build this from a text by hand, then roll dice to generate from it. Years 9 and up.
 ```
 
 ---
 
 ## as a ledger, with a cup of counters
 
-<LedgerSheet entries={SHEET_FIVE} palette={PALETTE} focus="the" />
+_the cat sat on the mat. the dog sat on the cat._
+
+<div style="--sheet-size: 1.12rem;">
+  <LedgerSheet
+    entries={TOUR_LEDGER}
+    palette={PALETTE}
+    focus="the"
+    id="tour-ledger"
+  />
+</div>
 
 ```notes
-The same model again, as a ledger: one row per word, and a tally for every word that followed it in a picture book. To generate, you count the tallies into a cup as coloured counters and draw one out. No arithmetic at all, which is why it works from year 5.
+The same two sentences as a ledger: one row per word, and a tally for every word that followed it. The `the` row is the same as the grid's, two for `cat` and one each for `mat` and `dog`. To generate, you count the tallies into a cup as coloured counters and draw one out. No arithmetic at all, which is why it works from year 5.
 
 That's the workshop next door, if you're in it.
 ```
@@ -604,16 +618,19 @@ That's the workshop next door, if you're in it.
 
 ![bg right:40%](./assets/bg-cut-spread.avif)
 
-<div style="font-size: 2rem;">
+_the cat sat on the mat. the dog sat on the cat._
+
+<div style="font-size: 1.6rem;">
   <CutoutRow>
-    <Cutout prev="will" next="eat" />
-    <Cutout prev="eat" next="them" />
-    <Cutout prev="them" next="here" />
+    <Cutout prev="the" next="dog" />
+    <Cutout prev="dog" next="sat" />
+    <Cutout prev="sat" next="on" />
+    <Cutout prev="on" next="the" />
   </CutoutRow>
 </div>
 
 ```notes
-And as cutouts: every token pair from a text on its own slip of paper. Find a slip whose first word matches the last word you wrote, write its second word, go again. The chain grows like dominoes, and the youngest classes can do it.
+And as cutouts: every token pair from the same two sentences on its own slip of paper. Find a slip whose first word matches the last word you wrote, write its second word, go again. The chain grows like dominoes: here it's writing "the dog sat on the...", which neither sentence says. The youngest classes can do it.
 ```
 
 ---
