@@ -16,15 +16,21 @@
  * different colour, and the next few fans and picks carry that colour, fading
  * out over three tokens. No call is declined in this mode.
  *
+ * `context` draws the context window: a frame round the newest tokens, with
+ * everything outside it dimmed. The frame widens every few tokens (one token,
+ * two, four, the whole row) and the fan narrows with it, to fewer candidates
+ * and one much heavier curve, then it starts again from one.
+ *
  * Runs only while its slide is the current one and the tab is visible. With
  * prefers-reduced-motion it draws a single still frame.
  */
 interface Props {
   tools?: boolean;
   inject?: boolean;
+  context?: boolean;
 }
 
-const { tools = false, inject = false } = Astro.props;
+const { tools = false, inject = false, context = false } = Astro.props;
 const uid = `gl-${Math.random().toString(36).slice(2, 8)}`;
 ---
 
@@ -34,6 +40,7 @@ const uid = `gl-${Math.random().toString(36).slice(2, 8)}`;
   data-uid={uid}
   data-tools={tools ? "" : undefined}
   data-inject={tools && inject ? "" : undefined}
+  data-context={context ? "" : undefined}
   aria-hidden="true"
 >
   <svg viewBox="0 0 1280 720" preserveAspectRatio="xMidYMid slice">
@@ -68,7 +75,9 @@ const uid = `gl-${Math.random().toString(36).slice(2, 8)}`;
     <rect class="ground" width="1280" height="720"></rect>
     <rect class="lattice" width="1280" height="720" fill={`url(#${uid}-lattice)`}></rect>
 
-    <g mask={`url(#${uid}-mask)`}>
+    {context && <rect class="window" data-window rx="22" />}
+    {/* The context window does its own dimming, so the row's fade is off. */}
+    <g mask={context ? undefined : `url(#${uid}-mask)`}>
       <g data-row></g>
     </g>
     <g data-station></g>
@@ -100,11 +109,23 @@ const uid = `gl-${Math.random().toString(36).slice(2, 8)}`;
   const BOX_CY = BOX_Y + BOX_H / 2;
   const TAINT_STEPS = 3; // tokens an injected result goes on colouring
 
+  // The context window, in `context` mode: how many tokens it holds at each
+  // stage (the last is the whole row), how peaked the fan is at that stage
+  // (the exponent in `weights`), and how many candidates it offers.
+  const WINDOW_SIZES = [1, 2, 4, Infinity];
+  const WINDOW_PEAK = [0.5, 1.2, 2.4, 4.5];
+  const WINDOW_FAN = [6, 5, 4, 3];
+  const WINDOW_HOLD = 3; // tokens generated at each size
+  const WINDOW_PAD = 12;
+
   const tileWidth = () => randInt(4, 12) * 12;
 
-  /** Probabilities for k candidates: skewed, like a real next-token row. */
-  function weights(k: number): number[] {
-    const raw = Array.from({ length: k }, () => (-Math.log(Math.random())) ** 1.6);
+  /**
+   * Probabilities for k candidates: skewed, like a real next-token row. A
+   * higher `peak` puts more of the weight on one of them.
+   */
+  function weights(k: number, peak = 1.6): number[] {
+    const raw = Array.from({ length: k }, () => (-Math.log(Math.random())) ** peak);
     const total = raw.reduce((a, b) => a + b, 0);
     return raw.map((w) => w / total);
   }
@@ -130,6 +151,7 @@ const uid = `gl-${Math.random().toString(36).slice(2, 8)}`;
     const tools = "tools" in root.dataset;
     const inject = "inject" in root.dataset;
     const station = root.querySelector<SVGGElement>("[data-station]")!;
+    const frame = root.querySelector<SVGRectElement>("[data-window]");
 
     head.setAttribute("cx", String(HEAD_X + GAP + 4));
     head.setAttribute("cy", String(ROW_Y));
@@ -158,6 +180,21 @@ const uid = `gl-${Math.random().toString(36).slice(2, 8)}`;
         parent,
       );
 
+    // Which stage of WINDOW_SIZES the context window is at.
+    let stage = 0;
+
+    /** Fit the context window to the newest tokens, with the row at `rowOffset`. */
+    const fitWindow = (rowOffset: number) => {
+      if (!frame) return;
+      const tiles = [...row.children] as SVGRectElement[];
+      const first = Math.max(0, tiles.length - WINDOW_SIZES[stage]);
+      tiles.forEach((tile, i) => tile.classList.toggle("unseen", i < first));
+      // Kept on the canvas when it holds the whole row.
+      const left = Math.max(8, Number(tiles[first].getAttribute("x")) + rowOffset - WINDOW_PAD);
+      frame.style.x = `${left}px`;
+      frame.style.width = `${HEAD_X + WINDOW_PAD - left}px`;
+    };
+
     /** Hand a tile sitting just right of the head to the row, and make room. */
     const land = async (tile: SVGRectElement, width: number) => {
       tile.removeAttribute("filter");
@@ -166,6 +203,7 @@ const uid = `gl-${Math.random().toString(36).slice(2, 8)}`;
       addToRow(tile, width);
       tile.style.opacity = "";
       const nextOffset = HEAD_X - rowEnd;
+      fitWindow(nextOffset);
       await move(row, `translateX(${offset}px)`, `translateX(${nextOffset}px)`, 520);
       offset = nextOffset;
       setTimeout(() => tile.classList.remove("landed"), 900);
@@ -189,8 +227,8 @@ const uid = `gl-${Math.random().toString(36).slice(2, 8)}`;
     const live = () => isLive(root);
 
     const drawFan = () => {
-      const k = randInt(3, 6);
-      const ps = weights(k);
+      const k = frame ? WINDOW_FAN[stage] : randInt(3, 6);
+      const ps = frame ? weights(k, WINDOW_PEAK[stage]) : weights(k);
       const top = ROW_Y - ((k - 1) * FAN_PITCH) / 2;
       const ox = HEAD_X + GAP + 4;
       const candidates = ps.map((p, i) => {
@@ -339,6 +377,12 @@ const uid = `gl-${Math.random().toString(36).slice(2, 8)}`;
       if (kind === "foreign") taint = TAINT_STEPS;
     }
 
+    if (frame) {
+      frame.setAttribute("y", String(ROW_Y - TILE_H / 2 - WINDOW_PAD));
+      frame.setAttribute("height", String(TILE_H + 2 * WINDOW_PAD));
+      fitWindow(offset);
+    }
+
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
       const still = drawFan();
       const pick = sample(still.map((c) => c.p));
@@ -355,12 +399,20 @@ const uid = `gl-${Math.random().toString(36).slice(2, 8)}`;
 
     void (async () => {
       let untilCall = randInt(2, 3);
+      let held = 0;
       for (;;) {
         if (!live()) {
           await sleep(300);
           continue;
         }
         await step();
+        if (frame && ++held === WINDOW_HOLD) {
+          // Widen the window (or drop back to one token) and let it be seen.
+          held = 0;
+          stage = (stage + 1) % WINDOW_SIZES.length;
+          fitWindow(offset);
+          await sleep(900);
+        }
         if (!tools) continue;
         untilCall -= 1;
         if (untilCall > 0) continue;
@@ -458,6 +510,28 @@ const uid = `gl-${Math.random().toString(36).slice(2, 8)}`;
 
   .head {
     fill: var(--anu-gold-2);
+  }
+
+  /* The context window: what the model can see. Its left edge moves as CSS
+     geometry so it can ease along with the row. */
+  .window {
+    fill: rgb(255 255 255 / 7%);
+    stroke: var(--anu-white);
+    stroke-width: 3;
+    transition:
+      x 0.52s ease-in-out,
+      width 0.52s ease-in-out;
+  }
+
+  :global(.generation-loop[data-context] .tile) {
+    transition:
+      fill 0.15s,
+      stroke 0.15s,
+      opacity 0.5s;
+  }
+
+  :global(.generation-loop .tile.unseen) {
+    opacity: 0.2;
   }
 
   /* An injected result's colour carries into the next few tokens, fading. */
