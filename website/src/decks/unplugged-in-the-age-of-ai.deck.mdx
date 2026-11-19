@@ -8,7 +8,6 @@ unlisted: true
 
 import GridRowToggle from "../components/GridRowToggle.astro";
 import StaticGrid from "../components/StaticGrid.svelte";
-import GridZoom from "../components/GridZoom.svelte";
 import ModelScaleBars from "../components/ModelScaleBars.svelte";
 import BoardText from "../components/BoardText.astro";
 import Timer from "../components/Timer.astro";
@@ -46,9 +45,9 @@ Running order:
   0:00  Bandura: understand, and believe you can  (slides 1-4,   ~3 min)
   0:03  What you've just been given, the recipe   (slides 5-6,   ~2 min)
   0:05  Run the room                              (slide 7,      ~6 min)
-  0:11  What just happened                        (slides 8-11,  ~3 min)
-  0:14  What Claude does differently, at scale    (slides 12-17, ~4 min)
-  0:18  The claim, then the QR                    (slides 18-21, ~3 min)
+  0:11  What just happened                        (slides 8-12,  ~3 min)
+  0:14  What Claude does differently, at scale    (slides 13-16, ~4 min)
+  0:18  The claim, then the QR                    (slides 17-20, ~3 min)
 
 The Bandura quote (slide 2) is the deck's only fragment build: two clicks
 light up the two clauses in turn, and the second is the one the whole talk
@@ -225,27 +224,6 @@ Our model treats any pair it never saw as impossible. A neural model spreads wha
 And ours only ever continues text. Ask it a question and it continues the question, because continuing text is all it does. Turning a base model into something that answers questions takes another round of training on conversations.
 
 The core loop stays the same: look at the context, weigh the options, pick one, write it down.
-```
-
----
-
-{/* _class: centered */}
-
-<GridZoom
-  cells={57600}
-  label="the whole room, as a grid"
-  detail="240 distinct tokens · 57,600 cells"
-  compareCells={25}
-  compareLabel="the line on the last slide"
-  note="5.8 m² of paper — roughly this stage"
-/>
-
-```notes
-Read the caption. The little gold square is the slide you were just looking at; the big one is all of us. 240 distinct tokens give 57,600 cells, and only about a thousand of them have a tally in them at all. The rest are empty: pairs the book never used, which the model treats as impossible.
-
-At one centimetre per cell that's a square about two and a half metres on a side, roughly the size of this stage.
-
-Now compare this model's scale with a frontier LLM. *[next slide]*
 ```
 
 ---
