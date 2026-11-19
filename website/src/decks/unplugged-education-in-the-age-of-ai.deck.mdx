@@ -475,7 +475,7 @@ If they decline, write `[declined]` on the board in place of the words and call 
 
 Make sure one call gets declined, because the close leans on it. If the first two people say yes, tell the next hand "say no to this one".
 
-Write the inbox words on the board after the `a` token, then call the `a` token again to continue. Because our paper sheets have no entries for arbitrary words from someone's email, the bigram model has to resume from the last token it knows.
+Write the inbox words on the board after the `a` token, in square brackets as one entry (`the cat [weekly report]`), then call the `a` token again to continue: say it aloud without writing it a second time, and the room's next token goes straight after the bracket. Because our paper sheets have no entries for arbitrary words from someone's email, the bigram model has to resume from the last token it knows.
 ```
 
 ---
@@ -523,7 +523,7 @@ Production agents use the same five pieces, with more tools and fewer permission
 <GenerationLoop tools />
 
 ```notes
-Let it run while you state the agent loop once. It's the generation loop from before, with a detour: every few tokens the newest one is a tool call (the ringed tile). The request drops through the permission gate to the tool, and the result comes back up as a token and joins the row. Then generation carries on from there.
+Let it run while you state the agent loop once. It's the generation loop from before, with a detour: every few tokens the newest one is a tool call (the ringed tile). The request drops through the permission gate to the tool, and the result comes back up as a tile and joins the row, the way a bracketed pair of inbox words did on our board. Then generation carries on from there.
 
 When the gate shuts, a hollow tile comes back: that's `[declined]` on our board.
 
