@@ -11,6 +11,7 @@ import ModelScaleBars from "../components/ModelScaleBars.svelte";
 import BoardText from "../components/BoardText.astro";
 import Timer from "../components/Timer.astro";
 import DemoVideo from "../components/DemoVideo.astro";
+import GenerationLoop from "../components/GenerationLoop.astro";
 import StaticGrid from "../components/StaticGrid.svelte";
 import LedgerSheet from "../components/LedgerSheet.svelte";
 import Cutout from "../components/Cutout.astro";
@@ -177,6 +178,14 @@ So let's look inside. Not a diagram of the inside --- the inside. Have the sheet
 ---
 
 {/* @include ./partials/sheets-run.mdx */}
+
+---
+
+<GenerationLoop />
+
+```notes
+No words. Let it run while you say it once more, plainly: start somewhere, look at what could come next, pick one at random in proportion, write it down, and that's the new starting point. Over and over. Everything else in this talk is that loop, bigger.
+```
 
 ---
 

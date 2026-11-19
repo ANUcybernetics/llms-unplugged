@@ -1,0 +1,372 @@
+---
+/**
+ * A full-slide, wordless, endlessly generating picture of the language-model
+ * loop: a row of tokens scrolls left, a fan of candidate next tokens opens at
+ * its head (curve weight = probability), a highlight hops between them and
+ * settles on a sampled one, and that token flies into the row before the next
+ * fan opens. Each step samples afresh, so it never repeats exactly.
+ *
+ * Runs only while its slide is the current one and the tab is visible. With
+ * prefers-reduced-motion it draws a single still frame.
+ */
+const uid = `gl-${Math.random().toString(36).slice(2, 8)}`;
+---
+
+<div class="generation-loop" data-generation-loop data-uid={uid} aria-hidden="true">
+  <svg viewBox="0 0 1280 720" preserveAspectRatio="xMidYMid slice">
+    <defs>
+      <pattern id={`${uid}-lattice`} width="90" height="90" patternUnits="userSpaceOnUse">
+        <circle cx="45" cy="45" r="36"></circle>
+        <path d="M81 45H90M0 45H9M45 81V90M45 0V9"></path>
+      </pattern>
+      <linearGradient
+        id={`${uid}-fade`}
+        x1="0"
+        x2="1280"
+        y1="0"
+        y2="0"
+        gradientUnits="userSpaceOnUse"
+      >
+        <stop offset="0" stop-color="#000"></stop>
+        <stop offset="0.38" stop-color="#fff"></stop>
+      </linearGradient>
+      <mask id={`${uid}-mask`} maskUnits="userSpaceOnUse" x="0" y="0" width="1280" height="720">
+        <rect width="1280" height="720" fill={`url(#${uid}-fade)`}></rect>
+      </mask>
+      <filter id={`${uid}-glow`} x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="7" result="blur"></feGaussianBlur>
+        <feMerge>
+          <feMergeNode in="blur"></feMergeNode>
+          <feMergeNode in="SourceGraphic"></feMergeNode>
+        </feMerge>
+      </filter>
+    </defs>
+
+    <rect class="ground" width="1280" height="720"></rect>
+    <rect class="lattice" width="1280" height="720" fill={`url(#${uid}-lattice)`}></rect>
+
+    <g mask={`url(#${uid}-mask)`}>
+      <g data-row></g>
+    </g>
+    <g data-fan></g>
+    <circle class="head" data-head r="9" filter={`url(#${uid}-glow)`}></circle>
+  </svg>
+</div>
+
+<script>
+  const SVG_NS = "http://www.w3.org/2000/svg";
+
+  // Geometry, in viewBox units.
+  const HEAD_X = 600; // right edge of the row
+  const ROW_Y = 360; // row centre line
+  const TILE_H = 60;
+  const GAP = 16;
+  const FAN_X = 900; // left edge of the candidate column
+  const FAN_PITCH = 88; // vertical spacing between candidates
+  const SHADES = 4; // fill classes .s0 .. .s3
+
+  const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+  const rand = (lo: number, hi: number) => lo + Math.random() * (hi - lo);
+  const randInt = (lo: number, hi: number) => Math.floor(rand(lo, hi + 1));
+  const tileWidth = () => randInt(4, 12) * 12;
+
+  function el<
+    K extends keyof SVGElementTagNameMap,
+  >(tag: K, attrs: Record<string, string | number>, parent: Element): SVGElementTagNameMap[K] {
+    const node = document.createElementNS(SVG_NS, tag);
+    for (const [key, value] of Object.entries(attrs)) node.setAttribute(key, String(value));
+    parent.append(node);
+    return node;
+  }
+
+  /** Probabilities for k candidates: skewed, like a real next-token row. */
+  function weights(k: number): number[] {
+    const raw = Array.from({ length: k }, () => (-Math.log(Math.random())) ** 1.6);
+    const total = raw.reduce((a, b) => a + b, 0);
+    return raw.map((w) => w / total);
+  }
+
+  function sample(ps: number[]): number {
+    let r = Math.random();
+    for (const [i, p] of ps.entries()) {
+      r -= p;
+      if (r <= 0) return i;
+    }
+    return ps.length - 1;
+  }
+
+  /** Animate a transform and leave the element at its end state. */
+  async function move(
+    node: SVGElement,
+    from: string,
+    to: string,
+    ms: number,
+    easing = "ease-in-out",
+  ) {
+    const anim = node.animate([{ transform: from }, { transform: to }], {
+      duration: ms,
+      easing,
+      fill: "forwards",
+    });
+    await anim.finished;
+    node.style.transform = to;
+    anim.cancel();
+  }
+
+  async function fade(node: SVGElement, to: number, ms: number) {
+    const from = getComputedStyle(node).opacity;
+    const anim = node.animate([{ opacity: from }, { opacity: String(to) }], {
+      duration: ms,
+      fill: "forwards",
+    });
+    await anim.finished;
+    node.style.opacity = String(to);
+    anim.cancel();
+  }
+
+  function init(root: HTMLElement) {
+    if (root.dataset.ready) return;
+    root.dataset.ready = "1";
+
+    const uid = root.dataset.uid!;
+    const row = root.querySelector<SVGGElement>("[data-row]")!;
+    const fan = root.querySelector<SVGGElement>("[data-fan]")!;
+    const head = root.querySelector<SVGCircleElement>("[data-head]")!;
+    const glow = `url(#${uid}-glow)`;
+    const slide = root.closest("section");
+
+    head.setAttribute("cx", String(HEAD_X + GAP + 4));
+    head.setAttribute("cy", String(ROW_Y));
+
+    // The row lives in its own coordinates; `offset` slides it so its right
+    // edge sits at HEAD_X.
+    let rowEnd = 0;
+    let offset = 0;
+
+    const addToRow = (tile: SVGRectElement, width: number) => {
+      tile.setAttribute("x", String(rowEnd + GAP));
+      tile.setAttribute("y", String(ROW_Y - TILE_H / 2));
+      tile.style.transform = "";
+      row.append(tile);
+      rowEnd += GAP + width;
+    };
+
+    const newTile = (width: number, parent: Element) =>
+      el(
+        "rect",
+        { width, height: TILE_H, rx: 14, class: `tile s${randInt(0, SHADES - 1)}` },
+        parent,
+      );
+
+    // Start with a row already written, so the first frame (and a printed
+    // one) isn't empty.
+    while (rowEnd < HEAD_X + 200) {
+      const width = tileWidth();
+      addToRow(newTile(width, row), width);
+    }
+    offset = HEAD_X - rowEnd;
+    row.style.transform = `translateX(${offset}px)`;
+
+    const live = () => slide?.classList.contains("present") !== false && !document.hidden;
+
+    const drawFan = () => {
+      const k = randInt(3, 6);
+      const ps = weights(k);
+      const top = ROW_Y - ((k - 1) * FAN_PITCH) / 2;
+      const ox = HEAD_X + GAP + 4;
+      const candidates = ps.map((p, i) => {
+        const y = top + i * FAN_PITCH;
+        const width = tileWidth();
+        const curve = el(
+          "path",
+          {
+            d: `M${ox} ${ROW_Y} C${ox + 110} ${ROW_Y} ${FAN_X - 120} ${y} ${FAN_X - 6} ${y}`,
+            class: "curve",
+            "stroke-width": (1.5 + p * 12).toFixed(2),
+          },
+          fan,
+        );
+        const tile = newTile(width, fan);
+        tile.setAttribute("x", String(FAN_X));
+        tile.setAttribute("y", String(y - TILE_H / 2));
+        tile.style.opacity = "0";
+        curve.style.opacity = "0";
+        return { p, y, width, curve, tile };
+      });
+      return candidates;
+    };
+
+    async function step() {
+      const candidates = drawFan();
+
+      // Open the fan, most likely first.
+      const order = [...candidates.keys()].sort((a, b) => candidates[b].p - candidates[a].p);
+      await Promise.all(
+        order.map(async (i, rank) => {
+          await sleep(rank * 70);
+          const { p, curve, tile } = candidates[i];
+          await Promise.all([fade(curve, 0.35 + p * 0.65, 380), fade(tile, 0.75 + p * 0.25, 380)]);
+        }),
+      );
+
+      // Hop the highlight around, weighted, slowing to the sampled pick.
+      const pick = sample(candidates.map((c) => c.p));
+      const hops = randInt(5, 8);
+      let lit = -1;
+      for (let h = 0; h <= hops; h++) {
+        const next = h === hops ? pick : sample(candidates.map((c) => c.p));
+        if (lit >= 0) {
+          candidates[lit].tile.classList.remove("lit");
+          candidates[lit].curve.classList.remove("lit");
+        }
+        lit = next;
+        candidates[lit].tile.classList.add("lit");
+        candidates[lit].curve.classList.add("lit");
+        await sleep(80 + (h / hops) ** 2 * 260);
+      }
+
+      const chosen = candidates[pick];
+      chosen.tile.setAttribute("filter", glow);
+      await sleep(260);
+
+      // Everything else goes; the pick flies to the head of the row.
+      await Promise.all([
+        ...candidates
+          .filter((c) => c !== chosen)
+          .flatMap((c) => [fade(c.curve, 0, 320), fade(c.tile, 0, 320)]),
+        fade(chosen.curve, 0, 500),
+        move(
+          chosen.tile,
+          "translate(0px, 0px)",
+          `translate(${HEAD_X + GAP - FAN_X}px, ${ROW_Y - chosen.y}px)`,
+          560,
+          "cubic-bezier(.5,0,.2,1)",
+        ),
+      ]);
+
+      // Hand it to the row, then slide the row along to make room.
+      chosen.tile.removeAttribute("filter");
+      chosen.tile.classList.remove("lit");
+      chosen.tile.classList.add("landed");
+      addToRow(chosen.tile, chosen.width);
+      chosen.tile.style.opacity = "";
+      const nextOffset = HEAD_X - rowEnd;
+      await move(row, `translateX(${offset}px)`, `translateX(${nextOffset}px)`, 520);
+      offset = nextOffset;
+      fan.replaceChildren();
+      setTimeout(() => chosen.tile.classList.remove("landed"), 900);
+
+      // Drop tiles that have scrolled off the left.
+      for (const tile of [...row.children] as SVGRectElement[]) {
+        const right = Number(tile.getAttribute("x")) + Number(tile.getAttribute("width")) + offset;
+        if (right < -40) tile.remove();
+      }
+    }
+
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      const still = drawFan();
+      const pick = sample(still.map((c) => c.p));
+      still.forEach(({ p, curve, tile }, i) => {
+        curve.style.opacity = String(0.35 + p * 0.65);
+        tile.style.opacity = String(0.75 + p * 0.25);
+        if (i === pick) {
+          tile.classList.add("lit");
+          curve.classList.add("lit");
+        }
+      });
+      return;
+    }
+
+    void (async () => {
+      for (;;) {
+        if (live()) await step();
+        else await sleep(300);
+      }
+    })();
+  }
+
+  const boot = () => document.querySelectorAll<HTMLElement>("[data-generation-loop]").forEach(init);
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
+  else boot();
+</script>
+
+<style>
+  /* Owns its geometry: a full-bleed layer over the whole slide. */
+  .generation-loop {
+    position: absolute !important;
+    inset: 0;
+    margin: 0;
+    background: var(--anu-black);
+  }
+
+  svg {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+  }
+
+  .ground {
+    fill: var(--anu-black);
+  }
+
+  .lattice {
+    opacity: 0.9;
+  }
+
+  pattern :is(circle, path) {
+    fill: none;
+    stroke: #303030;
+    stroke-width: 2;
+  }
+
+  :global(.generation-loop .tile) {
+    stroke: var(--anu-black);
+    stroke-width: 2;
+    transition:
+      fill 0.15s,
+      stroke 0.15s;
+  }
+
+  :global(.generation-loop .s0) {
+    fill: var(--anu-gold-tint);
+  }
+
+  :global(.generation-loop .s1) {
+    fill: var(--anu-gold-2);
+  }
+
+  :global(.generation-loop .s2) {
+    fill: hsl(from var(--anu-gold) h calc(s - 15) 58);
+  }
+
+  :global(.generation-loop .s3) {
+    fill: var(--anu-gold);
+  }
+
+  :global(.generation-loop .tile.lit) {
+    stroke: var(--anu-white);
+    stroke-width: 3;
+  }
+
+  /* A just-landed token stays outlined in gold for a beat. */
+  :global(.generation-loop .tile.landed) {
+    stroke: var(--anu-gold-2);
+    stroke-width: 3;
+  }
+
+  :global(.generation-loop .curve) {
+    fill: none;
+    stroke: var(--anu-gold);
+    stroke-linecap: round;
+    transition: stroke 0.15s;
+  }
+
+  :global(.generation-loop .curve.lit) {
+    stroke: var(--anu-gold-tint);
+    filter: drop-shadow(0 0 6px var(--anu-gold));
+  }
+
+  .head {
+    fill: var(--anu-gold-2);
+  }
+</style>
