@@ -30,7 +30,7 @@ Ask first: hands up if you've told a chatbot not to do something and it did it a
 Then walk through the three dials. The shared axis is in powers of ten (thousand, million, billion, trillion), so each bar's length shows how many orders of magnitude it jumps:
 - Context: their grid looked at one word; Claude looks at up to a million tokens, enough for a whole conversation and more.
 - Training text: one novel (about 84,000 words) versus forty-five trillion tokens, the training run Thinking Machines published for its open-weights Inkling model in July 2026 (about 530 million copies of the novel, or roughly 17 million years at the pace they just worked).
-- Model size: their novel grid has 49 million cells, while the largest open-weights model, Moonshot's Kimi K3 (July 2026), has 2.8 trillion parameters (closed labs don't publish theirs).
+- Model size: their novel grid has 49 million cells, while Claude Fable 5 is estimated at about five trillion parameters (Anthropic doesn't publish the figure).
 
 Why can't you just scale up the grid? Running their CLI tool on the whole novel fills only 0.08% of the table (one cell in 1,200), and reading more text makes it sparser because every new word adds an entire row and column. A trillion-cell grid would be almost completely blank. A transformer shares its parameters instead: patterns are distributed across billions of weights, so a sentence about a cat helps predict a sentence about a dog, and the model can produce combinations that never appeared in its training data. Increasing context, data and parameter count improves performance predictably enough to plan large training runs around. Each dial has its own lesson on the website.
 ```

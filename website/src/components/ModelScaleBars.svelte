@@ -38,8 +38,8 @@
     trainingToLabel = "45 trillion tokens",
     modelFrom,
     modelFromLabel,
-    modelTo = 2.8e12,
-    modelToLabel = "2.8 trillion parameters",
+    modelTo = 5e12,
+    modelToLabel = "~5 trillion parameters",
     footer = "three independent dials · none determines the others",
     secondsPerZero = 0.4,
   }: Props = $props();
