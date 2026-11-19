@@ -1,11 +1,8 @@
 /**
- * Canonical topic taxonomy for lessons.
- *
- * This is the single source of truth for which topics exist, their order, and
- * their display labels. A lesson is placed into a topic via its `topic`
- * frontmatter (enforced as an enum of these keys in src/content.config.ts), and
- * both the /lessons index and the sidebar derive their grouping from here via
- * src/lib/modules.ts. Add or rename a topic here and everything follows.
+ * Canonical topic taxonomy for lessons: keys, display order, labels, and
+ * descriptions. A lesson sets its topic via `topic` frontmatter (validated
+ * against TOPIC_KEYS in src/content.config.ts), and src/lib/modules.ts groups
+ * the /lessons index and sidebar from this list.
  */
 export const TOPIC_KEYS = [
   "fundamentals",
@@ -38,5 +35,5 @@ export const topicDescriptions: Record<Topic, string> = {
   "shaping-behaviour":
     "Change what a model says without changing the mechanism: the sampler, the training data, the judges, and its own output.",
   "looking-inside":
-    "Two things a real model does that a bigram can't—learn from the page in front of it, and know that cat is like dog—run by hand.",
+    "Run by hand two things a real model does that a bigram can't: learn from the page in front of it, and know that cat is like dog.",
 };

@@ -26,10 +26,8 @@ export const siteConfig = defineSiteConfig({
 
 export const themeLogo = logo;
 
-// Footer meta lines — passed directly to BaseLayout (not part of SiteConfig).
-// astro-theme-university ships no institutional footer defaults, so the footer
-// is just the licence line plus these. Meta strings render as HTML, so inline
-// anchors are allowed. The last line ends with a link to the page's source.
+// Footer meta lines, passed directly to BaseLayout. Meta strings render as
+// HTML, and the last line ends with a link to the page's source.
 export function footerMeta(pathname: string): string[] {
   return [
     'LLMs Unplugged is a <a href="https://cybernetics.anu.edu.au/cybernetic-studio/">Cybernetic Studio</a> project at the ANU School of Cybernetics, made by <a href="https://benswift.me">Ben Swift</a>.',

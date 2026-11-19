@@ -10,8 +10,8 @@ description:
 
 Standard descriptions of the _LLMs Unplugged_ workshop at different lengths, for
 hosts, event organisers, and conference programs. Pick whichever fits the
-space---and if you need something different, or a venue-specific variation,
-[get in touch](mailto:ben.swift@anu.edu.au).
+space, or [get in touch](mailto:ben.swift@anu.edu.au) if you need a
+venue-specific variation.
 
 ## Title
 
@@ -19,62 +19,55 @@ space---and if you need something different, or a venue-specific variation,
 
 ## One-liner (≈15 words)
 
-> Hands-on workshop that demonstrates how large language models work---no
+> Hands-on workshop that demonstrates how large language models work, with no
 > computers or coding required.
 
 ## One paragraph (≈80 words)
 
 > Build your own language model with pen, paper and dice. In two hours you'll go
-> from counting word patterns in a short text to generating new sentences with a
-> few rolls of a dice---no screens, no coding, no maths beyond basic counting
-> and percentages. You'll walk away with a concrete understanding of how ChatGPT,
-> Claude, Gemini and the rest actually work under the hood: the probabilistic
-> nature of LLMs, the importance of training data, and how bias and design
-> decisions show up in the output.
+> from counting word patterns in a short text to generating new sentences with
+> the roll of a die, using only basic counting and percentages. You'll walk away
+> with a concrete understanding of how ChatGPT, Claude, Gemini and the rest work
+> under the hood: the probabilistic nature of LLMs, the role of training data,
+> and how bias and design decisions show up in the output.
 
 ## Medium (≈150 words)
 
-> Despite the rapid uptake of AI around the globe, most people have no real
-> mental model of what's actually happening under the hood of our most popular
-> AI tools. Rather than accepting the hand-wave-y and mystical-sounding
-> explanations, join us in this fun and informative workshop where you'll learn
-> about Large Language Models (LLMs)---the technology behind ChatGPT, Claude,
-> Gemini and Copilot---without actually touching any tech.
+> Despite the rapid uptake of AI around the globe, most people have no clear
+> mental model of what happens under the hood of popular AI tools. In this
+> hands-on workshop you'll learn how Large Language Models (LLMs), the
+> technology behind ChatGPT, Claude, Gemini and Copilot, work without touching a
+> computer.
 >
-> Through hands-on activities and discussion, you'll learn the basic principles
-> and language of LLMs: the probabilistic nature of these models, the importance
-> of training data, and the ways that bias and engineered decisions in the
-> models may present themselves. No coding background required, and no maths
-> beyond basic counting and percentages. Suitable for educators, professionals,
-> policymakers, and anyone curious about how AI actually works.
+> Through table-top activities and discussion, you'll learn the core principles
+> and vocabulary of LLMs: their probabilistic nature, the role of training data,
+> and how bias and engineering choices show up in their output. You need no
+> coding background and no maths beyond counting and percentages. Suitable for
+> educators, professionals, policymakers, and anyone curious about how AI works.
 
 ## Long (≈260 words)
 
 > Despite the rapid uptake of AI around the globe (including right here in
-> Australia), most people have no real mental model of what's actually happening
-> under the hood of our most popular AI tools.
+> Australia), most people have no clear mental model of what happens under the
+> hood of popular AI tools.
 >
-> Rather than accepting the hand-wave-y and mystical-sounding explanations, join
-> us in this fun and informative workshop where you'll learn about Large
-> Language Models (LLMs)---the technology behind the mind-boggling abilities of
-> ChatGPT, Claude, Gemini and Copilot---without actually touching any tech.
-> Through hands-on activities and discussion, you'll learn the basic principles
-> and language of LLMs.
+> In this hands-on workshop you'll learn how Large Language Models (LLMs), the
+> technology behind ChatGPT, Claude, Gemini and Copilot, work without touching a
+> computer. Through table-top activities and discussion, you'll learn the core
+> principles and vocabulary of LLMs.
 >
 > ### Why you should attend
 >
-> Having a better understanding of how large language models work will help to
-> demystify AI and provide a shared understanding and vocabulary for framing AI
-> systems. These foundations will help you better understand the probabilistic
-> nature of LLMs, the importance of data, and the ways that bias and engineered
-> decisions in the models may present themselves.
+> Building a model yourself demystifies AI and gives you a shared vocabulary for
+> working with these systems. You'll see first-hand the probabilistic nature of
+> LLMs, the role of training data, and how bias and engineering decisions shape
+> what a model produces.
 >
 > ### A note for educators
 >
-> If you're a high school or upper primary teacher and find yourself having
-> conversations with your students about AI, this workshop is for you. Our
-> activities can be easily replicated in the classroom with readily available
-> materials and are supported by a range of open-access online resources. The
-> workshop relates to core curriculum outcomes in maths, technologies, HASS and
-> literacy and requires zero coding background and no maths beyond basic
-> counting and percentages.
+> If you're a high school or upper primary teacher having conversations with
+> your students about AI, this workshop is for you. The activities run in the
+> classroom with everyday materials and are backed by open-access online
+> resources. The workshop connects to curriculum outcomes in maths,
+> technologies, HASS and literacy, and requires no coding background and no
+> maths beyond counting and percentages.

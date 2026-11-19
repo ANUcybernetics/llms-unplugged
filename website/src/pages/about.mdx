@@ -36,8 +36,7 @@ works (the
 [research literature](https://scholar.google.com/scholar?q=cs%20unplugged) has
 the receipts).
 
-_LLMs Unplugged_ takes the same approach to language models. Rather than
-starting with <GlossaryTerm id="transformer">transformers</GlossaryTerm> or <GlossaryTerm id="neural-network">neural networks</GlossaryTerm> in
+_LLMs Unplugged_ takes the same approach to language models. Before touching <GlossaryTerm id="transformer">transformers</GlossaryTerm> or <GlossaryTerm id="neural-network">neural networks</GlossaryTerm> in
 code, participants count word patterns in a text, record them as tally marks on <GlossaryTerm id="grid">grid paper</GlossaryTerm> or paper <GlossaryTerm id="cutouts">cutouts</GlossaryTerm>, and roll dice to generate
 new text from those counts.
 
@@ -88,27 +87,19 @@ same trade-off you see in the [More Context](/modules/more-context/) module.
 
 Shannon's work was itself "unplugged". He counted transitions
 by hand, calculated probabilities manually, and generated synthetic text using
-hand-drawn tables and selection based on frequencies. Modern LLMs use the same
-fundamental approach at vastly greater scale, with learned rather than
-hand-counted statistics.
+hand-drawn tables and selection based on frequencies.
 
 ### Connection to modern LLMs
 
-The activities in _LLMs Unplugged_ demonstrate the same operations used in
-current language models. The differences are mostly about scale:
+The activities in _LLMs Unplugged_ run the same operations as current language
+models, at hand-countable scale:
 
-- **<GlossaryTerm id="parameters">parameters</GlossaryTerm>**: hand-built models have dozens to hundreds versus billions in
-  modern LLMs, but the core concepts remain identical
-- **<GlossaryTerm id="training">training</GlossaryTerm>**: manual counting versus automated pattern detection, but both
-  processes learn <GlossaryTerm id="probability-distribution">probability distributions</GlossaryTerm> from text
-- **<GlossaryTerm id="generation">generation</GlossaryTerm>**: dice rolls versus GPU-accelerated sampling, but both use
-  weighted randomness to select the next <GlossaryTerm id="token">token</GlossaryTerm>
-- **<GlossaryTerm id="context-window">context windows</GlossaryTerm>**: bigrams and trigrams versus 128,000+ token windows, but
-  longer context always enables better prediction
+- **<GlossaryTerm id="parameters">parameters</GlossaryTerm>**: dozens or hundreds in a paper model versus billions in a modern LLM
+- **<GlossaryTerm id="training">training</GlossaryTerm>**: manual tallying versus gradient descent over neural networks, both estimating <GlossaryTerm id="probability-distribution">probability distributions</GlossaryTerm> from text
+- **<GlossaryTerm id="generation">generation</GlossaryTerm>**: dice rolls versus GPU-accelerated sampling, both using weighted randomness to pick the next <GlossaryTerm id="token">token</GlossaryTerm>
+- **<GlossaryTerm id="context-window">context windows</GlossaryTerm>**: bigrams and trigrams versus 128,000+ token windows, where more context narrows the prediction
 
-Modern LLMs do the same operations at huge scale with neural networks that learn
-the patterns rather than counting exact word pairs. The core idea, though, is
-still Shannon's 1948 table-and-random-lookup experiment.
+Where a paper model counts exact word pairs, a modern LLM learns compressed representations in a neural network, building on Shannon's 1948 table-and-random-lookup experiment.
 
 ![Counting word transitions to build a statistical language model](../assets/images/workshop-2.avif)
 
@@ -123,14 +114,11 @@ political dimensions of emerging technologies.
 
 ![LLMs Unplugged workshop in action](../assets/images/workshop-3.avif)
 
-Understanding how these systems actually work, by running one yourself, is what
-we're all about.
-
 ## Acknowledgements
 
 Thanks to Eddie Aloise King, Cole Cooney and other SoCy staff for their input
-and facilitation, and to the hundreds of workshop participants---from primary
-school students to senior executives in the Australian Public Service---whose
+and facilitation, and to the hundreds of workshop participants (from primary
+school students to senior executives in the Australian Public Service) whose
 feedback shaped these materials.
 
 ## Get in touch
@@ -138,7 +126,7 @@ feedback shaped these materials.
 We encourage educators to use, adapt, and improve these resources. If you have
 questions, success stories about using them in your classroom, or would like to
 discuss adaptations or improvements you've made, get in touch at
-[ben.swift@anu.edu.au](mailto:ben.swift@anu.edu.au)---we'd
+[ben.swift@anu.edu.au](mailto:ben.swift@anu.edu.au). We'd
 love<sup><a href="#fn-love">2</a></sup> to hear from you. And if you'd like to
 be informed of more cool stuff coming out of the School of Cybernetics, then
 sign up for the
