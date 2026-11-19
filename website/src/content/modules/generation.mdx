@@ -26,8 +26,7 @@ import GlossaryTerm from "../../components/GlossaryTerm.astro";
 
 <VariantToggle client:load options={["grid", "ledger", "cutouts"]} />
 
-Use a pre-trained (hand-built) <GlossaryTerm id="bigram-model">bigram model</GlossaryTerm> to generate new text through <GlossaryTerm id="weighted-random-sampling">weighted random sampling</GlossaryTerm>
-.
+Use a pre-trained (hand-built) <GlossaryTerm id="bigram-model">bigram model</GlossaryTerm> to generate new text through <GlossaryTerm id="weighted-random-sampling">weighted random sampling</GlossaryTerm>.
 
 <Variant is="grid">
 
@@ -189,9 +188,6 @@ colour of the previous-word box you look for next.
 
 ## Example
 
-Before you try generating text yourself, work through this example to see the
-algorithm in action.
-
 <Variant is="grid">
 
 Using the same bigram model from the example in [Training](/modules/training/):
@@ -239,9 +235,9 @@ row for `spot` and its cup:
 
 After the above steps, the generated text is _"see spot run. see spot"_
 
-Red meant `run` on the row for `spot` and `.` on the row for `run`. A colour
-names a place on the row, not a word, which is why one set of counters works
-for every row and every book.
+Red meant `run` on the row for `spot` and `.` on the row for `run`. Because a
+colour names a box position on the current row, one set of counters works for
+every row and every book.
 
 </Variant>
 
@@ -265,10 +261,10 @@ Using the cutouts spread from the example in [Training](/modules/training/):
 
 After the above steps, the generated text is _"see spot run. see spot"_
 
-Notice how the randomness comes from your eye landing somewhere on the
-spread, so you don't need dice. Previous words with more cutouts of the same
-next word are more likely to produce that word: both `see` cutouts have
-`spot` as the next word, so generation from `see` always produces `spot`.
+The randomness comes from your eye landing somewhere on the spread, so you
+don't need dice. Previous words with more cutouts of the same next word are
+more likely to produce that word: both `see` cutouts have `spot` as the next
+word, so generation from `see` always produces `spot`.
 
 </Variant>
 
@@ -332,22 +328,20 @@ perform it by hand.
 
 <Variant is="grid">
 
-- **"Every row only has one tally mark---there's nothing to roll for."** If the
+- **"Every row only has one tally mark: there's nothing to roll for."** If the
   group didn't get very far in [Training](/modules/training/) and no row has more
-  than one tally mark, the generation algorithm won't be very
-  interesting: there will only ever be one option for the next word and they'll
-  be stuck on rails. In this case, either encourage them to go back and do a bit
-  more training, or just have them add some extra tally marks to the grid
-  wherever they like. This isn't as much like cheating as it might seem; it's
-  really just an example of using [Synthetic Data](/modules/synthetic-data/).
-- **"I landed on a word that doesn't have its own row."** This can happen if a
+  than one tally mark, there will only ever be one option for the next word and
+  they'll be stuck on rails. Have them either train on a bit more text or add
+  extra tally marks to the grid wherever they like, which is an example of
+  using [Synthetic Data](/modules/synthetic-data/).
+- **"I landed on a word that doesn't have its own row."** This happens when a
   word only ever appeared as the _last_ word in the training text, so it has a
-  column (other words lead to it) but no row (it never leads to anything). Just
-  pick any other word that does have a row and continue from there.
+  column (other words lead to it) and no row. Pick any other word that does
+  have a row and continue from there.
 - **"We're stuck in a loop."** With small models it's common to bounce between
   two words that only point at each other (e.g. `,` → `spot` → `,` → `spot` →
-  ...). Try picking a different starting word, or just choose any other valid
-  next word to break out of the cycle.
+  ...). Pick a different starting word, or choose any other valid next word to
+  break out of the cycle.
 
 </Variant>
 
@@ -368,21 +362,20 @@ perform it by hand.
 
 <Variant is="cutouts">
 
-- **"Every previous word only has one matching cutout---there's nothing
+- **"Every previous word only has one matching cutout: there's nothing
   random about this."** If the spread is small and each previous word only
-  matches a single cutout, generation will feel deterministic. Either go back
-  and train on more text, or add a few extra cutouts (writing them out by
-  hand is fine). This isn't really cheating; it's an example of
+  matches a single cutout, generation is deterministic. Either train on more
+  text, or add a few extra cutouts written out by hand, which is an example of
   [Synthetic Data](/modules/synthetic-data/).
 - **"I picked a next word that doesn't appear as a previous word anywhere on
-  the table."** This can happen if a word only ever appeared as the _last_
-  word in the training text, so it shows up as a next word but never as a
-  previous one. Just pick a different starting word that does appear on the
-  spread and continue from there.
+  the table."** This happens when a word only ever appeared as the _last_
+  word in the training text, so it shows up as a next word and never as a
+  previous one. Pick a different starting word that does appear on the spread
+  and continue from there.
 - **"We keep going back and forth between the same two words."** With small
   spreads it's common to get stuck in a loop where two words keep pointing to
-  each other. Try starting from a different word, or just pick any other
-  matching cutout to break the cycle.
+  each other. Start from a different word, or pick any other matching cutout to
+  break the cycle.
 
 </Variant>
 
@@ -404,10 +397,10 @@ twice gives two different answers.
 
 <Variant is="grid">
 
-Note: in AI/ML more broadly, this process of using a trained model to produce
-outputs is commonly called "<GlossaryTerm id="inference">inference</GlossaryTerm>"---you may encounter this term in other
-contexts. In these teaching resources we use "generation" specifically because
-it more clearly describes what language models do: they generate text.
+In AI and machine learning more broadly, using a trained model to produce
+outputs is called "<GlossaryTerm id="inference">inference</GlossaryTerm>".
+These resources use "generation" because it states directly what language
+models do: they generate text.
 
 </Variant>
 
@@ -438,12 +431,12 @@ The cutouts spread and the dice method produce equivalent results:
 - dice rolls with weighted probabilities select from options based on counts
 - visual selection from the spread selects from options where counts are
   represented by multiple physical cutouts
-- the spread makes the probability tangible---if three of the cutouts with
+- the spread makes the probability tangible: if three of the cutouts with
   `the` as the previous word have `cat` as their next word and one has `dog`,
-  you'll land on `cat` about 75% of the time, just like weighted dice would
+  you'll land on `cat` about 75% of the time, just as weighted dice would
 
-The cutouts method avoids the need to calculate percentages or understand dice
-mechanics, making it more accessible for younger learners.
+The cutouts method avoids percentages and dice ranges, which suits younger
+classes.
 
 </Variant>
 

@@ -2,7 +2,7 @@
 title: In-context Learning
 description:
   Make your model finish a pattern it never trained on, purely from what's
-  already on the page---then give it a short-term memory that keeps the text on
+  already on the page, then give it a short-term memory that keeps the text on
   topic. The tricks behind few-shot prompting and attention.
 order: 6
 topic: looking-inside
@@ -11,9 +11,9 @@ duration: 20 min
 bases: [grid, cutouts, booklet]
 status: experimental
 keyIdea:
-  The text you've already written is context the model can learn from without
-  changing a single count---copy what followed last time (induction), or lean
-  toward recent words (memory).
+  "The text you've already written is context the model can learn from without
+  changing a single count: copy what followed last time (induction), or lean
+  toward recent words (memory)."
 ---
 
 import GlossaryTerm from "../../components/GlossaryTerm.astro";
@@ -42,8 +42,8 @@ model you already have.
 ## Your goal
 
 Part 1: make the model complete a made-up pattern it could not possibly have
-learned in training. Part 2: generate twice from the same model---once plain,
-once with a short-term memory---and compare how long each stays on topic.
+learned in training. Part 2: generate twice from the same model (once plain,
+once with a short-term memory) and compare how long each stays on topic.
 Stretch goal: find the memory setting that keeps the text on topic without
 making it repetitive.
 
@@ -66,10 +66,9 @@ model has never seen together:
 
 `moon` `five` `apple` `moon` `five` `apple` `moon` `five`
 
-Now generate the next word. Your current word is `five`. Instead of consulting
-the model, **scan back** up the page to the last time `five` appeared, and copy
-the word that followed it: `apple`. Do it again from `apple` and you get `moon`,
-then `five`, then `apple`…
+Now generate the next word. Your current word is `five`. Scan back up the page
+to the last time `five` appeared, and copy the word that followed it: `apple`.
+Do it again from `apple` and you get `moon`, then `five`, then `apple`…
 
 You've completed the pattern `moon five apple`, which appears nowhere in the
 training text and which the <GlossaryTerm id="base-model">base model</GlossaryTerm> has no row for. The model picked up your
@@ -130,10 +129,10 @@ Roll on the new totals (1--3 → `cat`, 4--7 → `dog`, 8 → `sun`). `dog` has 
 from unlikely to favourite, so the story is more likely to stay about the dog.
 `cat` and `sun` are still possible, though; the memory only tilted the odds.
 
-<Callout type="info" title="Reweight, don't override">
+<Callout type="info" title="Boost what the model offers">
 
 The tempting shortcut is to grab a recent word from memory and write it straight
-down. That ignores the current word (so it drops in words that don't follow at
+down. That ignores the current word (dropping in words that don't follow at
 all), and every word you emit goes back into memory, so the text collapses into
 repeating a handful of words. The memory only ever boosts words the model
 **already offers**.
@@ -158,7 +157,7 @@ repeating a handful of words. The memory only ever boosts words the model
 
 The memory works best on a larger model like the booklet, where a bigger
 vocabulary lets it stay on topic without repeating itself. On a very small
-hand-built grid, be gentle with the bonus---boosting recent words can amplify
+hand-built grid, be gentle with the bonus: boosting recent words can amplify
 the short loops small models already fall into.
 
 </Callout>
@@ -169,7 +168,7 @@ the short loops small models already fall into.
 
 - the model completed `moon five apple`, which it never trained on. Where was
   that "knowledge" stored?
-- why does the demo use made-up words rather than an ordinary sentence?
+- why does the demo use a sequence of unrelated words?
 - what happens if you only ever copy, and never fall back to the base model?
 - with the memory on, does the text hold a topic or a character for longer?
   Where does "on topic" tip over into "stuck repeating"?
@@ -177,8 +176,8 @@ the short loops small models already fall into.
 - induction and memory both read the page. When would each one help? How are
   they different from the [trigram](/modules/more-context/), which also uses
   more than one word?
-- (stretch) if induction matched on the last _two_ words instead of one, why
-  would the completion be more reliable?
+- (stretch) if induction matched on the last _two_ words, why would the
+  completion be more reliable?
 
 ### Connection to current LLMs
 

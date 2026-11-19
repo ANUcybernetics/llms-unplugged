@@ -27,13 +27,12 @@ personality as though it were a temperament: this one's warm, that one's a
 suck-up, the other one lectures you. But a model's personality is a property of
 what shaped it, and everything that shaped it was a decision somebody made.
 
-This lesson hands those decisions to the room. Everyone trains the same small
-model, from a short story about a magpie, and then shapes it three ways: they
-put a flattering adapter on it and turn it up; they tune it with rewards, from a
-panel of judges at one table and a rule card at the other; and they train new
-models on its output and see what survives. Every one of those opens a
-discussion: whose preferences, what counts as good, and what happens when models
-learn from each other's output.
+In this lesson, everyone trains the same small model from a short story about a
+magpie, and then shapes it three ways: they attach a flattering adapter and turn
+it up; they tune it with rewards, using a panel of judges at one table and a
+rule card at the other; and they train new models on its output to see what
+survives. Each stage raises a design question: whose preferences count, how
+"good" is measured, and what happens when models learn from each other's output.
 
 ## Run of show
 
@@ -48,7 +47,7 @@ learn from each other's output.
 | [Synthetic Data](/modules/synthetic-data/)          | 45 min |
 | Discussion and close                                | 15 min |
 
-About four hours. To fit a morning, split it after Fine-tuning and run Rewards and Synthetic Data as a second session. For a two-hour slot, run Rewards without its thumbs-up round,
+The full run takes about four hours. To fit a morning, split it after Fine-tuning and run Rewards and Synthetic Data as a second session. For a two-hour slot, run Rewards without its thumbs-up round,
 skip the strips in Fine-tuning, and fold Synthetic Data's question ("what
 happens when the training data is model output?") into the closing discussion.
 
@@ -72,19 +71,16 @@ the finished model a second story. Show the first way, tallying it straight in,
 at the front on the `the` row only: it can't be undone, and the groups need
 their grids as they are. Then each group puts the story on a separate adapter
 sheet that can be turned up or taken off, merges one row by hand to see how, and
-turns it up and down on the module page's widget. Then comes the nasty adapter: three
-lines of flattery, whose rows are printed on the module page. Each group counts the adapter
-once, three times or nine times and counts the flattering sentences in ten, and
-the board shows the count climbing with the dose. Nobody wrote a rule saying
-"be agreeable"; the flattering text in the data was enough. Skip the strips
-(the LoRA part) if time is short.
+turns it up and down on the module page's widget. Next, groups try a three-line
+flattery adapter printed on the module page. Each group counts the adapter once,
+three times or nine times and counts the flattering sentences in ten, and the
+board shows the count climbing with the dose. Nobody wrote a rule saying "be
+agreeable"; the flattering text in the data was enough. Skip the strips (the
+LoRA part) if time is short.
 
 **Rewards** gives every group the same goal, sentences about the magpie, and one of two ways to judge them. Half the groups rank their sentences as a panel; the other half check them against a rule card. Three rounds later the rule-card groups pass their check far more often, and much of what passes is nonsense, which is <GlossaryTerm id="reward-hacking">reward hacking</GlossaryTerm>. Then the whole room votes thumbs up or down on what a model says about them, and watches it learn to flatter: the route to <GlossaryTerm id="sycophancy">sycophancy</GlossaryTerm> that runs through rewards instead of data.
 
-**<GlossaryTerm id="synthetic-data">Synthetic Data</GlossaryTerm>** runs two kinds of relay at once. Every group starts a chain and passes it one group along at each link, so nobody waits. In a replace chain, each group trains a fresh model on the last group's output and passes on its own; in an accumulate chain, every group adds its output to the same sheet, on top of the story's tallies. Keep the counts for every chain on butchers paper. The replace chains forget words at every link, which is <GlossaryTerm id="model-collapse">model collapse</GlossaryTerm>; the accumulate chains lose none.
-
-The close pulls the three together: three mechanisms, and in every case a person
-somewhere chose the data, the reward or the shortcut.
+**<GlossaryTerm id="synthetic-data">Synthetic Data</GlossaryTerm>** runs two kinds of relay at once. Every group starts a chain and passes it one group along at each link, so nobody waits. In a replace chain, each group trains a fresh model on the last group's output and passes on its own; in an accumulate chain, every group adds its output to the same sheet, on top of the story's tallies. Keep the counts for every chain on butchers paper. The replace chains drop words at every link (<GlossaryTerm id="model-collapse">model collapse</GlossaryTerm>), while the accumulate chains keep the full vocabulary.
 
 ## You will need
 
@@ -130,11 +126,9 @@ For the room:
 
 ## Where to go next
 
-If your group comes out of this wanting the mechanism rather than the ethics,
-[Under the hood](/lessons/under-the-hood/) is the other follow-on---context,
-in-context learning and embeddings, all by hand. The
-[Agentic AI](/modules/agentic-ai/) module is the natural sequel to the ethics
-conversation: it's one thing for a model to say something shaped by its
-training, and another for it to go off and do something about it. And for a room
-too big for tables and dice, [Search Sheets](/modules/search-sheets/) runs the
-core idea from the front.
+For groups more interested in how models work internally,
+[Under the hood](/lessons/under-the-hood/) covers context windows, in-context
+learning and embeddings by hand. The [Agentic AI](/modules/agentic-ai/) module
+extends the ethics discussion to models that can call tools and take actions.
+For a room too big for tables and dice, [Search Sheets](/modules/search-sheets/)
+runs the core activity from the front.

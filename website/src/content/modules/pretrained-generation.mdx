@@ -10,16 +10,15 @@ bases: [booklet]
 status: tested
 topic: scaling-up
 keyIdea:
-  You can generate from a model you didn't train---just follow its lookup rules
-  and sample next words.
+  "You can generate from a model you didn't train: follow its lookup rules and
+  sample next words."
 ---
 
 import Callout from "../../components/Callout.astro";
 import PretrainedGenerationWidget from "../../components/widgets/PretrainedGenerationWidget.svelte";
 import GlossaryTerm from "../../components/GlossaryTerm.astro";
 
-Use a (slightly larger) pre-trained model booklet to generate new text through <GlossaryTerm id="weighted-random-sampling">weighted random sampling</GlossaryTerm>
-.
+Use a pre-trained model booklet to generate new text through <GlossaryTerm id="weighted-random-sampling">weighted random sampling</GlossaryTerm>.
 
 ![](../../assets/images/hero-pretrained-generation.avif)
 
@@ -50,7 +49,7 @@ the next word, and repeat.
 
 ## Algorithm (quick recap)
 
-1. Choose a starting word---any bold word in the booklet---and write it down.
+1. Choose a starting word (any bold word in the booklet) and write it down.
 2. Look up that word's entry to see possible next words and their thresholds.
 3. Roll your d10(s):
    - If the entry shows diamonds (e.g. ♦♦), roll one d10 per diamond
@@ -62,9 +61,6 @@ the next word, and repeat.
    point or your desired length.
 
 ## Example
-
-Before you try generating text yourself with a booklet, work through these
-examples to see the algorithm in action.
 
 - **Single d10:** Current word `cat` with options `4|sat`, `7|ran`, `10|slept`.
   Roll once; a 6 lands you on `ran`.
@@ -86,32 +82,29 @@ examples to see the algorithm in action.
 
 ### Troubleshooting
 
-- **"Which die is the tens digit?"** When rolling multiple d10s (i.e. in the
-  "multiple diamond" case), it doesn't really matter which die you read
-  first---as long as you decide before you roll and stay consistent. One easy
-  convention: use different-coloured dice and always read them in the same order
-  (e.g. red first, then blue). But really, don't stress too much about it. The
-  activity will still work fine if you mix them up.
+- **"Which die is the tens digit?"** With multiple d10s (the multiple-diamond
+  entries), pick an order before you roll and stick to it, such as reading the
+  red die before the blue one. Even if you mix them up occasionally, the
+  activity still works.
 
 ### Connection to current LLMs
 
-Most people interact with modern LLMs this way:
+Most people use modern LLMs without training them:
 
-- **<GlossaryTerm id="pre-training">pre-training</GlossaryTerm>**: companies train massive models on huge text <GlossaryTerm id="training-data">corpora</GlossaryTerm> (like
-  your booklet model, but with trillions of words)
+- **<GlossaryTerm id="pre-training">pre-training</GlossaryTerm>**: companies train models on huge text <GlossaryTerm id="training-data">corpora</GlossaryTerm> (like
+  your booklet model, scaled to trillions of words)
 - **LLM-as-a-service**: users generate text without seeing or modifying the
-  underlying model (just like using the booklet)
-- **model distribution**: the booklet format shows how models can be packaged
-  and shared---current LLMs are distributed as parameter files
+  underlying model
+- **model distribution**: the booklet format packages a model for sharing;
+  current LLMs are distributed as parameter files
 - **deterministic generation**: given the same starting word and dice rolls, you
-  get the same output (though randomness creates variety between runs)
+  get the same output
 
-Training and text generation are separate processes. Most AI users never train
-models; they use pre-trained ones through APIs or interfaces.
-Your hand-built model from [Training](/modules/training/) gives you insight into
-what's inside the booklet, but you don't need that knowledge to generate text.
-This separation is why companies like OpenAI can provide AI services: they do
-the expensive training once, then millions of users perform text generation.
+Training and generation are separate steps. Your hand-built model from
+[Training](/modules/training/) shows what is inside the booklet, but you don't
+need to have built the model to run it. AI companies do the expensive training
+once, then host or distribute the resulting weights for millions of users to
+sample from.
 
 ## Interactive widget
 

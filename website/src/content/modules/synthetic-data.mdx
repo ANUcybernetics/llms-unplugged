@@ -37,7 +37,7 @@ Send the same story down two kinds of chain and compare what comes out the far e
 
 ## Key idea
 
-A model can only write words it was trained on, and a twenty-word sample of a model misses a lot of them. Train the next model on that sample alone and the missed words are gone for good. Words that appeared only once in the story are the likeliest to be missed, so the rare words go first. That's the replace chain. The accumulate chain keeps the story's own tallies on the sheet the whole way down, so a word that one link happens to miss is still there for the next.
+A model can only write words it was trained on, and a twenty-word sample of a model misses a lot of them. Train the next model on that sample alone and the missed words are gone for good. In the replace chain, words that appeared only once in the story are the likeliest to be missed, so the rare words go first. The accumulate chain keeps the story's own tallies on the sheet the whole way down, so a word that one link happens to miss is still there for the next.
 
 ## Running the chains
 
@@ -49,7 +49,7 @@ Every table is link A of its own chain, starting from its copy of the magpie's m
 
 1. **Trains a fresh model** on the twenty words it was handed, as in [Training](/modules/training/). Start a new <GlossaryTerm id="grid">grid</GlossaryTerm>; this model's only knowledge is the previous link's output.
 2. **Generates twenty words** from it, starting from `.`, as in [Generation](/modules/generation/).
-3. **Passes on the twenty words and nothing else.** No story, no grid.
+3. **Passes on the twenty words alone**, without the story or the grid.
 
 **Accumulate chain.** There's one sheet, the copy of the magpie's model. Every link, A included:
 
@@ -91,9 +91,9 @@ Then each table reads out the last twenty words it generated, replace chains fir
 
 ### Timing
 
-A link takes about ten minutes either way: a replace link tallies twenty words into a fresh grid and then rolls twenty more, while an accumulate link rolls twenty and then tallies them. Rolling sentences in parallel is what keeps it to ten; one person rolling all twenty takes twice as long. Three links and the board fit in about 45 minutes. Every table works at every link, so the time is set by the length of a chain, not the size of the class.
+A link takes about ten minutes either way: a replace link tallies twenty words into a fresh grid and then rolls twenty more, while an accumulate link rolls twenty and then tallies them. Rolling sentences in parallel keeps it to ten minutes; one person rolling all twenty takes twice as long. Three links and the board fit in about 45 minutes. Every table works at every link in parallel, so only the chain length affects the total time.
 
-With two tables there's one chain of each kind, so the board shows one path each rather than an average. The direction is reliable, but compare the replace chain's numbers with the typical ones above as well as with the accumulate chain.
+With two tables there's one chain of each kind, so the board shows a single run of each. The direction is reliable, but compare the replace chain's numbers with the typical ones above as well as with the accumulate chain.
 
 ### Discussion questions
 
@@ -125,10 +125,10 @@ part of training, used carefully:
 - **generate and filter**: produce a lot of attempts and keep only those a checker, a verifier or a person accepts, as in the filter variation above
 - **written to order**: [TinyStories](https://arxiv.org/abs/2305.07759) is a corpus of simple stories written by a larger model, and small models trained on it write fluent English at sizes where models trained on web text don't. There's a TinyStories volume in the [Library of Babble](/library/), so you can roll dice against a model trained on synthetic data
 
-Collapse is still a live concern. A growing share of the text on the web is model output, most of it unlabelled, so anyone training on scraped text today trains on some of it whether they mean to or not. Keeping track of where training text came from, and keeping plenty of human-written text in the mix, is what the accumulate chain does.
+A growing share of the text on the web is unlabelled model output, so anyone training on scraped text today trains on some of it whether they mean to or not. Training pipelines follow the accumulate chain by tracking provenance and keeping human-written text in the mix.
 
 <Callout type="info" title="How this differs from a neural model">
 
-Your grid can only write a word it has literally seen, so a word lost from the replace chain is lost completely. A <GlossaryTerm id="neural-network">neural model</GlossaryTerm> spreads what it learns across shared <GlossaryTerm id="parameters">parameters</GlossaryTerm>, so it can still produce a word in a context it never saw, and real collapse is gentler and takes more generations. The direction is the same.
+Your grid can only write a word it has literally seen, so a word lost from the replace chain is lost completely. A <GlossaryTerm id="neural-network">neural model</GlossaryTerm> spreads what it learns across shared <GlossaryTerm id="parameters">parameters</GlossaryTerm>, so it can still produce a word in a context it never saw; real collapse moves in the same direction, but is gentler and takes more generations.
 
 </Callout>

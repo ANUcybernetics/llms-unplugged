@@ -138,7 +138,7 @@ Language models learn by counting patterns in text. On a ledger, <GlossaryTerm i
 <Variant is="cutouts">
 
 The CLI has already done the bigram counting for you. Each cutout shows a next
-word together with the word it follows in the training text. The trick: if
+word together with the word it follows in the training text. If
 `spot` follows `see` 40% of the time in the training text, then 40% of the
 cutouts with `see` as the previous word will have `spot` as the next word.
 Whichever matching cutout your eye lands on, you've sampled in proportion to
@@ -194,7 +194,7 @@ the original distribution, with no dice or probability tables.
      box
 2. **Spread the cutouts out** on a table
    - face up, no overlap if you can manage it
-   - that's it---the spread is your trained model
+   - the spread is your trained model
 
 Optional extension: see "Group into piles" below.
 
@@ -239,8 +239,8 @@ After the full text it has a row for every word, in alphabetical order:
 
 <LmLedger tokens="see spot run . see spot jump . run , spot , run . jump , spot , jump ." />
 
-Each row's boxes are in the order the text met them. After `spot` the text
-said `run` first, so `run` took the red box; `,` came third, and with two marks
+Each row's boxes fill in the order the words appear. After `spot`,
+`run` came first and took the red box; `,` came third, and with two marks
 it's the most common word after `spot`.
 
 </Variant>
@@ -259,9 +259,9 @@ pair from the text:
 - `,→spot` × 2, `,→run` × 1, `,→jump` × 1
 - `jump→.` × 2, `jump→,` × 1
 
-Each entry is a physical cutout on your table. Notice that `spot→,` shows up
-twice---there are two cutouts on the table with `spot` as the previous word
-and `,` as the next word. That repetition is what makes generation weighted.
+Each entry is a physical cutout on your table. `spot→,` shows up
+twice, so two cutouts on the table have `spot` as the previous word
+and `,` as the next word, weighting generation towards that pair.
 
 <LmCutouts tokens="see spot run . see spot jump . run , spot , run . jump , spot , jump ." />
 
@@ -277,10 +277,9 @@ introduce grouping as an optimisation:
 1. Sort the cutouts into piles, one pile per unique previous word
 2. Label each pile with that word
 
-Now generation is faster---instead of scanning the whole table, you go straight
-to the pile whose label matches your current word. This is the same trick a
-computer uses when it stores a language model in a hash table. The model's
-information content is identical; you've just rearranged it for faster lookup.
+Generation is faster when you go straight to the pile for your current word
+instead of scanning the whole table, just as a computer stores a language model
+in a hash table. The model holds the same counts, rearranged for faster lookup.
 
 </Variant>
 
@@ -294,12 +293,11 @@ context, they work as either "call out your answer" or "discuss with your
 neighbour and share-back" questions.
 
 - why is a language model called a "language model"? What does it mean to "model language"?
-- what's the best/clearest explanation you've ever heard about <GlossaryTerm id="llm">Large Language Models</GlossaryTerm> (e.g. ChatGPT, Claude) actually work? What's the _weirdest_ explanation you've ever heard?
+- what's the best/clearest explanation you've ever heard of how <GlossaryTerm id="llm">Large Language Models</GlossaryTerm> (e.g. ChatGPT, Claude) work? What's the _weirdest_ explanation you've ever heard?
 - when was the first <GlossaryTerm id="language-model">language model</GlossaryTerm> ever created? How similar/different was it to modern LLMs?
 - _activity_: get everyone to stand up, then have them sit down if they've never used ChatGPT, Claude, or a similar LLM. Then ask if they've used it in the last month/week/day/hour/5mins. At the end, everyone should be sitting down.
 
-Don't spend too long here---the fun really starts when students get into the
-activity itself.
+Keep this brief so students can get into the activity.
 
 ### Discussion questions
 
@@ -331,7 +329,7 @@ activity itself.
 - why does `see→spot` appear twice while `run→,` appears only once?
 - how does including punctuation as separate <GlossaryTerm id="token">tokens</GlossaryTerm> help capture sentence
   structure?
-- what would happen if you trained on more text---how would the spread change?
+- what would happen if you trained on more text? How would the spread change?
 - how could you use these cutouts to generate _new_ text in the style of your
   training data?
 
@@ -341,8 +339,8 @@ activity itself.
 
 <Variant is="grid">
 
-- **"Do I add a new row/column for every word?"** No---each new word only gets a
-  new row and column the first time you see it. After that, just find the
+- **"Do I add a new row/column for every word?"** No. Each new word gets a
+  new row and column only the first time you see it. After that, find the
   existing row and column and add a tally mark.
 
 </Variant>
@@ -364,7 +362,7 @@ activity itself.
 
 <Variant is="cutouts">
 
-- **"Some cutouts are duplicates---is that a mistake?"** No---repeated cutouts
+- **"Some cutouts are duplicates---is that a mistake?"** No, repeated cutouts
   are expected. If `see→spot` appears twice in the training text, you
   should see two `see→spot` cutouts on the table. The repetition is what makes
   common pairs easier to spot during generation.
@@ -409,8 +407,8 @@ The cutouts spread and the grid method produce equivalent models:
 - a tally mark in row X, column Y of the grid corresponds to one cutout on the
   table whose previous word is X and whose next word is Y
 - both capture the same "what follows what" relationships
-- cutouts make the weighting more tangible---you can see and feel that some
-  outcomes are more likely because there are literally more cutouts to pick from
+- cutouts make the weighting tangible: some outcomes are more likely because
+  there are more cutouts to pick from
 
 </Variant>
 

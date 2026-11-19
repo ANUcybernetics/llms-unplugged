@@ -1,10 +1,10 @@
 ---
 title: More Context
 description:
-  Generate from a bigram booklet and a trigram booklet of the same book and
-  compare---two words of context makes the text far more coherent and the
+  "Generate from a bigram booklet and a trigram booklet of the same book and
+  compare: two words of context makes the text far more coherent and the
   booklet far thicker. Then build a trigram by hand, and add cheap extra
-  context with a skip grid.
+  context with a skip grid."
 order: 5
 audience: years 7 and up
 duration: 20-30 min
@@ -12,8 +12,8 @@ bases: [booklet, grid]
 status: experimental
 topic: scaling-up
 keyIdea:
-  More context sharpens predictions, but the model blows up as you add it, so
-  we also learn a cheaper way to pull in an earlier word.
+  More context sharpens predictions, while the model grows rapidly as you add
+  it. A skip grid pulls in an earlier word for a fraction of the size.
 ---
 
 import GlossaryTerm from "../../components/GlossaryTerm.astro";
@@ -76,14 +76,12 @@ and it works with any group that can already roll a booklet.
 4. **Shift by one word.** Your context is now the second of those words plus the
    word you just wrote. Repeat until this passage is about twenty words too.
 5. **Compare.** Read both passages out, then count how many entries on one page
-   of each booklet actually offer a choice.
+   of each booklet offer a choice.
 
-Two things usually come out before anyone explains them. The trigram passage is
-far more coherent, so coherent that groups start recognising lines from the
-book, because that's precisely what they are. And the trigram booklet is
-thicker, while most of its entries show a single next word and no diamonds at
-all, so there is nothing to roll. The extra pages bought a model that mostly
-replays the book back at you.
+The trigram passage is far more coherent, to the point where groups recognise
+whole lines from the book. And the trigram booklet is thicker, while most of its
+entries show a single next word and no diamonds at all, leaving nothing to roll.
+The extra pages bought a model that mostly replays the book back at you.
 
 <Callout type="tip" title="Starting, and dead ends">
 
@@ -110,16 +108,15 @@ the model has no choice to make, and it replays the training text until it
 reaches one of the few contexts that fork.
 
 This is the trade-off in <GlossaryTerm id="n-gram-model">n-gram models</GlossaryTerm>: **more context sharpens
-predictions, but you need exponentially more data to fill in all those
+predictions, while requiring exponentially more data to fill in all those
 contexts.** Push to four or five words and you'd need a library to see each
-context even once. So instead of extending the window further, part 2 looks for
-a cheaper way to bring in earlier words.
+context even once. Part 2 builds a cheaper way to bring in earlier words.
 
 ## Part 2: build it by hand
 
 For groups with more time, or who have already built a bigram in
-[Training](/modules/training/). Building the trigram yourself shows the blow-up
-first-hand, and it sets up the skip grid.
+[Training](/modules/training/). Building the trigram yourself shows the growth
+in table size first-hand, and sets up the skip grid.
 
 ### Extra materials
 
@@ -129,8 +126,7 @@ first-hand, and it sets up the skip grid.
 
 ### Training the trigram
 
-Instead of asking "what follows this word?", we ask "what follows these _two_
-words?". The two previous words are considered _together_, as a pair.
+A trigram asks what follows a _pair_ of words considered together.
 
 1. Draw a four-column table: `word1 | word2 | word3 | count`.
 2. Slide a window over your text, collecting every overlapping triple of words.
@@ -243,17 +239,17 @@ the exact pairs it saw, and there is still something to roll for.
 
 ### What the skip grid can't do
 
-The skip grid is cheaper than the trigram, but it's also weaker. It treats the
-two earlier positions as if they contribute _independently_: it adds "what
-follows `cat`" to "what tends to come two words after `the`". It can never
-capture the cases where it's the _pair_ that matters, where `new york` predicts
-something that neither `new` alone nor `york` alone would.
+The skip grid is smaller and weaker than the trigram. It treats the two earlier
+positions as if they contribute _independently_: it adds "what follows `cat`" to
+"what tends to come two words after `the`". It never captures cases where the
+_pair_ carries the meaning, such as `new york` predicting something that neither
+`new` alone nor `york` alone would.
 
-That gap is exactly the problem modern models solve with
+Modern models solve that with
 the <GlossaryTerm id="attention-mechanism">attention mechanism</GlossaryTerm>. The skip grid mixes in earlier context
 with _fixed_ weights (always the word two back, always added in the same way).
 Attention _learns_ which earlier words matter for each prediction, and how much,
-so it can decide when the combination matters.
+so it can use the combination when the combination matters.
 
 ## Instructor notes
 
@@ -296,6 +292,6 @@ explicit count for every possible context the way an n-gram table does.
 
 The skip grid shows the first step _beyond_ counting exact contexts: mixing in
 earlier positions with fixed weights. Real models generalise this
-into <GlossaryTerm id="attention-mechanism">attention</GlossaryTerm>: instead of "always add the word two back", the model
-_learns_ which previous words to pull in for each prediction. Your hand-built
-skip grid is fixed and additive; attention is learned and weighted.
+into <GlossaryTerm id="attention-mechanism">attention</GlossaryTerm>, _learning_ which previous words to pull in for each
+prediction. Your hand-built skip grid is fixed and additive; attention is
+learned and weighted.

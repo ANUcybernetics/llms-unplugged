@@ -48,7 +48,7 @@ Shift a trained model toward a new text three ways and compare what each one cos
 
 ## Key idea
 
-Training on a new text adds tallies to a model you already have. If you write those tallies on a separate sheet instead of into the grid, you get an _adapter_: you add it on when you generate, turn it up or down, swap it for another, or take it off and have the original model back. A LoRA adapter goes one step further and stores the sheet as a few pairs of strips, which is far smaller but can't keep every pattern apart.
+Training on a new text adds tallies to a model you already have. Writing those tallies on a separate sheet gives you an _adapter_: you add it on when you generate, turn it up or down, swap it for another, or take it off and have the original model back. A LoRA adapter goes one step further and stores the sheet as a few pairs of strips, which is far smaller at the cost of blending the new patterns together.
 
 ## The base model and the new text
 
@@ -140,7 +140,7 @@ Pair A gives `the → kookaburra` 4 and `the → possum` 2, exactly as on the ad
 | `kookaburra` | 1       | 1      | 1       | 1      | 1        | 1       |
 | `possum`     | 1       | 1      | 1       | 1      | 1        | 1       |
 
-That's close to the sheet but not the same. Pair B gives `kookaburra` and `possum` the same row, so the possum can now fly, sit, sing and eat, and the kookaburra can sleep and hide. The strips keep the pattern that a new animal is followed by something it does, but not which animal does which.
+Pair B gives `kookaburra` and `possum` the same row, so the possum can now fly, sit, sing and eat, and the kookaburra can sleep and hide. The strips keep the pattern that a new animal is followed by something it does, while losing which animal does which.
 
 To generate, read the current word's base row, then look the word up in each _when_ strip. Wherever its number isn't zero, multiply it by every number in that pair's _what_ strip and add the results to the row. Then roll as usual.
 
@@ -180,7 +180,7 @@ That's the adapter. Tallied, in that order, on a sheet with the magpie's headers
 | `much` | `fun` 1                     |
 | `fun`  | `.` 1                       |
 
-If your class did step 1, hand this table out rather than having them tally it. Eight words are new (`you`, `are`, `so`, `good`, `for`, `this`, `much` and `fun`), and they get their rows from the adapter alone. The flattery hooks into the magpie's model in three places: after `.`, where a sentence can now start with `you`, `good` or `this`; after `!`; and after `is`, so _It is_ can carry on _so good._
+If your class did step 1, hand this table out to save tallying it by hand. Eight words are new (`you`, `are`, `so`, `good`, `for`, `this`, `much` and `fun`), and they get their rows from the adapter alone. The flattery hooks into the magpie's model in three places: after `.`, where a sentence can now start with `you`, `good` or `this`; after `!`; and after `is`, so _It is_ can carry on _so good._
 
 Then measure the dose. Give each group a strength: the adapter counted once, three times or nine times. With six groups, two take each strength.
 
@@ -241,7 +241,7 @@ This is the data route to <GlossaryTerm id="sycophancy">sycophancy</GlossaryTerm
 
 ### Running it in one lesson
 
-Do step 1 and the first merged row of step 2 by hand, then hand the generating in step 2 to the widget. The hand work is the point in step 1 and step 3; merging rows over and over in step 2 is not, and one class ran out of time without getting past it. With the widget, steps 1 to 3 should fit in a 50-minute lesson. The flattering adapter needs another 20 minutes, or a lesson of its own if your class rolls the dose board by hand.
+Do step 1 and the first merged row of step 2 by hand, then hand the generating in step 2 to the widget. One class that merged every row by hand in step 2 ran out of time before reaching step 3. With the widget, steps 1 to 3 fit in a 50-minute lesson. The flattering adapter needs another 20 minutes, or a lesson of its own if your class rolls the dose board by hand.
 
 ### Discussion questions
 
@@ -269,6 +269,6 @@ Most other fine-tuning uses adapters. For a model the size of GPT-3, [the paper 
 
 [Thinking Machines found](https://thinkingmachines.ai/blog/lora/) that LoRA matches changing the whole model when the new training data is modest, and falls behind when there's more to learn than the strips have room for. For reinforcement learning, even a single pair was enough. An earlier study put the trade-off in its title, [LoRA learns less and forgets less](https://arxiv.org/abs/2405.09673): it picks up less of the new material than changing the whole model does, and keeps more of what the base could already do.
 
-A real LoRA's strips work the way yours do. One reads the current input and the other writes to the output, and each pair adds the product of the two. The differences are where they live and how they're found. A real model has adapters inside every layer, and their numbers are learned by the same training process as the rest of the model. You read yours off the sheet by eye.
+A real LoRA's strips work the way yours do: one reads the current input, the other writes to the output, and each pair adds the product of the two. In a real model, adapters sit inside every layer, and their numbers are learned by the same training process as the rest of the model, whereas you read yours off the sheet by eye.
 
 Fine-tuning reaches further than the text it was trained on. Researchers fine-tuned models on a narrow task, writing insecure computer code, and [the models became misaligned on unrelated questions too](https://www.nature.com/articles/s41586-025-09937-5). [Ten well-chosen examples were enough to undo a model's safety training](https://arxiv.org/abs/2310.03693). The flattering adapter on this page is a small, deliberate example of the same kind.

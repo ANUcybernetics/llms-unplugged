@@ -26,7 +26,7 @@ the answer comes back.
 
 ## You will need
 
-- any model you can generate from---a
+- any model you can generate from: a
   [pre-trained booklet](/modules/pretrained-generation/) works best, but a
   [grid](/modules/training/) or a [cutouts spread](/modules/generation/) is fine
 - dice, pen and paper as per [Generation](/modules/generation/)
@@ -79,8 +79,7 @@ generating from `.`:
 The punctuation is the trigger, the question plus the sentence so far is the
 tool's input, and the reply is the tool's result. The reply's words probably
 aren't in your model's <GlossaryTerm id="vocabulary">vocabulary</GlossaryTerm>, which is why you resume from the punctuation
-you rolled rather than from the friend's last word: the model can always
-continue from `.`, but it has no row for `river`.
+you rolled: the model can always continue from `.`, even when it has no row for `river`.
 
 ## Instructor notes
 
@@ -120,45 +119,46 @@ outside the model returns some text, and a closing token brings you back.
 
 ### Discussion questions
 
-- what did the tool calls add that the bare model couldn't? did the friends'
+- what did the tool calls add that the bare model couldn't? Did the friends'
   words fit the text, or derail it?
-- how does the model "know" to call a tool? (it doesn't---it just landed on the
+- how does the model "know" to call a tool? (it doesn't; it just landed on the
   trigger)
 - who was running the loop? (you were: you decided when to pause, who to ask,
   and what to splice back in. Take that away and the agent acts on its own)
 - what would you be comfortable letting an agent do without asking you first?
-  where's the line, and why---reversibility, who gets blamed, whether you'd
+  Where's the line, and why: reversibility, who gets blamed, whether you'd
   notice a mistake?
-- could a tool's reply change what the model generates next? (here, no---see
+- could a tool's reply change what the model generates next? (here, no; see
   below)
 
 ### Connection to current LLMs
 
-"Agentic AI" has become a buzzword, but in practice it really just means tool
-use in a loop. As Simon Willison
+Calling a model an "agent" comes down to tool use in a loop. As Simon Willison
 [puts it](https://simonwillison.net/2025/Sep/30/designing-agentic-loops/),
 an <GlossaryTerm id="llm">LLM</GlossaryTerm> agent is something that "runs tools in
-a loop to achieve a goal"---and that's exactly what your model just did.
+a loop to achieve a goal", which is what your model just did.
 
 <GlossaryTerm id="tool-use">Tool use</GlossaryTerm> (also called "function
 calling") is how modern <GlossaryTerm id="chatbot">AI assistants</GlossaryTerm>
 act in the world:
 
 - **the agentic loop**: generate → detect a tool call → execute the tool → feed
-  the result back → continue generating, exactly like your punctuation-and-text
+  the result back → continue generating, just like your punctuation-and-text
   cycle
 - **the harness**: the software around the model that pauses it, makes the call,
   and splices the result back in. In the room, that was you
 - **structured calls**: real models emit a JSON-formatted tool call (function
-  name, arguments) rather than a full stop, but the mechanism is the same
+  name, arguments), while your model triggers on a full stop; the loop around
+  them is the same
 - **examples**: web search, code execution, database queries, sending an email,
   booking a flight, moving money
 - **chaining**: real agents make many tool calls in sequence, planning and
   adjusting as results come in
 
-The model doesn't know anything the tool returns, only when to ask. A real model does differ in one way: it reads the tool's
-result and conditions on it, whereas your bigram carries on from the punctuation
-as if the reply never happened, because one word of <GlossaryTerm id="context-window">context</GlossaryTerm> can't hold it.
-Everything the friend contributed is in the transcript, but not in the model's
-next choice. The [In-context Learning](/modules/in-context-learning/) module is
-where the text you've already written starts to feed back in.
+A real model reads the tool's result and conditions on it, whereas your bigram
+carries on from the punctuation as if the reply never happened, because one word
+of <GlossaryTerm id="context-window">context</GlossaryTerm> can't hold it.
+Everything the friend contributed is in the transcript, while the model's next
+choice depends only on the full stop. The
+[In-context Learning](/modules/in-context-learning/) module is where the text
+you've already written starts to feed back in.

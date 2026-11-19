@@ -226,7 +226,7 @@ clear case, where greedy and beam search disagree, use the magpie's nest.
 
 ### Connection to current LLMs
 
-Beam search is a decoding strategy, a rule for turning a model's next-word chances into text, separate from the model itself. Real implementations work the same way as your whiteboard, with two differences. The model scores every <GlossaryTerm id="token">token</GlossaryTerm> in its vocabulary at each step, so a beam of width 5 means expanding five beams into hundreds of thousands of candidates and keeping five. And they add the logarithms of the shares instead of multiplying the shares, because multiplying hundreds of small numbers runs out of decimal places.
+Beam search is a decoding strategy: a rule for turning a model's next-word chances into text, separate from the model itself. Real implementations follow the same steps as your whiteboard, at larger scale. The model scores every <GlossaryTerm id="token">token</GlossaryTerm> in its vocabulary at each step, so a beam of width 5 expands five beams into hundreds of thousands of candidates and keeps five. And implementations add the logarithms of the shares, because multiplying hundreds of small fractions underflows decimal precision.
 
 Beam search is the standard choice where there's roughly one right answer:
 machine translation and speech recognition, where you want the most likely

@@ -136,7 +136,7 @@ A pair can turn up more than once in a sentence; change it once for each time. C
 
 **The leash:** never rub out a pair's last count. A pair the story had can drop to 1 but not to 0, so every sentence the story could write stays possible.
 
-### The reveal (5 min)
+### Comparing the models (5 min)
 
 Put a rule table's `the` row beside a panel table's, then their `.` rows. The rule table's `the` row leans much further toward `magpie`, because every passing sentence got there through `the`→`magpie`: typically `magpie` is about two-thirds of the row by now, where it started at about a third.
 
@@ -171,7 +171,7 @@ If your room voted differently, the cup still shows what that room rewarded, bec
 
 ### Timing
 
-The core activity (two tables, three rounds, the reveal) takes about 40 minutes: five to set up, three rounds of eight to ten, and five for the reveal. Most of a round is rolling dice, so it goes faster when everyone at a table rolls at once and makes their own sentence's changes. The rule table has more changes to make than the panel table, because every sentence it scores moves its counts, so it tends to finish a round a minute or two later. The thumbs-up round adds 10--15 minutes and can run as its own short session. A class that has already met the magpie's model in [Beam Search](/modules/beam-search/) starts faster.
+The core activity (two tables, three rounds, comparing the models) takes about 40 minutes: five to set up, three rounds of eight to ten, and five to compare. Most of a round is rolling dice, so it goes faster when everyone at a table rolls at once and makes their own sentence's changes. The rule table has more changes to make than the panel table, because every sentence it scores moves its counts, so it tends to finish a round a minute or two later. The thumbs-up round adds 10--15 minutes and can run as its own short session. A class that has already met the magpie's model in [Beam Search](/modules/beam-search/) starts faster.
 
 ### Discussion questions
 
@@ -187,7 +187,7 @@ The core activity (two tables, three rounds, the reveal) takes about 40 minutes:
 
 **No leash.** Run the rule table again with no leash, so counts can reach 0. Sentences that can never pass, like _It is morning._, only ever lose counts. After three rounds about a quarter of the story's 49 pairs are typically gone, and the model can no longer write some of the story's own sentences. On the widget, untick the leash and run five rounds to see it.
 
-**Rewrite the rule.** After the reveal, give the rule table one minute to improve its card, then run two more rounds. Most new rules close one gap and leave another, which is the usual experience of writing automatic checks.
+**Rewrite the rule.** After comparing the models, give the rule table one minute to improve its card, then run two more rounds. Most new rules close one gap and leave another, which is the usual experience of writing automatic checks.
 
 **One model, whole room.** For a big group, run the panel version at the front: generate five sentences, let the room rank them by applause, and have one scorer update a copy of the model under a visualiser, or use the widget in panel mode.
 
@@ -197,8 +197,8 @@ The panel table is <GlossaryTerm id="rlhf">reinforcement learning from human fee
 
 The rule table is <GlossaryTerm id="rlvr">reinforcement learning with verifiable rewards (RLVR)</GlossaryTerm>, named in the [Tülu 3 report](https://arxiv.org/abs/2411.15124): on tasks where a program can check the answer, such as a maths problem with one correct answer or code with tests to pass, the check is the reward. [DeepSeek-R1](https://arxiv.org/abs/2501.12948) was trained largely this way, and most of the training that turns a model into a <GlossaryTerm id="reasoning-model">reasoning model</GlossaryTerm> now runs on automatic checks. Checks are cheap, consistent and tireless, which is why they've taken over so much of post-training.
 
-They can also be gamed, as the rule table showed. A model tuned against a check learns to pass the check, and when the check misses something, the model can pass without doing what was wanted. That's <GlossaryTerm id="reward-hacking">reward hacking</GlossaryTerm>. OpenAI has reported reasoning models in training that [made coding tests pass without solving the task](https://openai.com/index/chain-of-thought-monitoring/), by editing or sidestepping the tests.
+They can also be gamed, as the rule table showed. When a check misses something, a model tuned against it can pass without doing what was wanted (<GlossaryTerm id="reward-hacking">reward hacking</GlossaryTerm>). OpenAI has reported reasoning models in training that [made coding tests pass without solving the task](https://openai.com/index/chain-of-thought-monitoring/), by editing or sidestepping the tests.
 
-The leash has a real counterpart too. RLHF training adds a penalty for drifting too far from the model you started with, so that tuning can't wreck what the model learned in <GlossaryTerm id="pre-training">pre-training</GlossaryTerm> while chasing the reward.
+In RLHF training, the leash is a penalty for drifting too far from the starting model, so tuning can't wreck what the model learned in <GlossaryTerm id="pre-training">pre-training</GlossaryTerm> while chasing the reward.
 
 The thumbs-up round is what happened to GPT-4o in April 2025. OpenAI added a reward based on ChatGPT users' thumbs-up and thumbs-down votes, and the update made the model so flattering that OpenAI [rolled it back within days](https://openai.com/index/sycophancy-in-gpt-4o/). Its [follow-up](https://openai.com/index/expanding-on-sycophancy/) found that the thumbs-up signal had weakened the reward that had been holding <GlossaryTerm id="sycophancy">sycophancy</GlossaryTerm> in check. The cup has both kinds of sycophancy in it: `clever` and `kind` are praise, and `right` over `wrong` is agreement, telling people they're right whether or not they are.

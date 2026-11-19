@@ -40,7 +40,7 @@ holding the scorecard. This is <GlossaryTerm id="rlhf">RLHF</GlossaryTerm>, run 
 It works from about eight people up: two tables, each with a generator or two
 and a panel of three or four judges. Groups on a
 [pre-trained booklet](/modules/pretrained-generation/) need a blank preference
-sheet instead of a second grid---see
+sheet instead of a second grid; see
 [running it on a booklet](#running-it-on-a-booklet).
 
 ## Your goal
@@ -68,9 +68,9 @@ what they count as better.
    text, then check their grids match cell for cell.
 2. **Hand out the briefs**, one per table, face down. Judges read their own;
    nobody reads the other table's.
-   - **team clarity** rewards sentences that sound like real English---grammar,
+   - **team clarity** rewards sentences that sound like real English: grammar,
      sense, something you could say out loud without flinching
-   - **team poetry** rewards surprise and rhythm---unusual pairings, a good
+   - **team poetry** rewards surprise and rhythm: unusual pairings, a good
      sound, anything you'd want to read twice
 3. **Agree one seed word** for the whole room. Both tables start every
    generation from it, in every round.
@@ -80,8 +80,7 @@ what they count as better.
 For a big group without table space, run a single model at the front instead.
 Generate three candidates, read them out, and let the room vote by applause
 meter. A scorer applies the updates on a visualiser. You lose the side-by-side
-reveal, but you keep the loop, and thirty people can run it in the same half
-hour.
+comparison, but thirty people can run the loop in the same half hour.
 
 </Callout>
 
@@ -89,7 +88,7 @@ hour.
 
 1. **Generate three candidates.** From the seed word, generate three
    completions of five to ten words each, as per
-   [Generation](/modules/generation/). Same model, same seed---the dice do all
+   [Generation](/modules/generation/). Same model, same seed; the dice do all
    the varying. Write each on its own strip of paper.
 2. **Judge.** The panel ranks them best, middle, worst against its brief. No
    explanations yet, just a ranking. Break ties however you like, as long as you
@@ -108,7 +107,7 @@ For each word transition in the **preferred** candidate:
 
 For each word transition in the **rejected** candidate:
 
-- subtract 1 from that cell, floor of 0---a cell never goes negative
+- subtract 1 from that cell, with a floor of 0 (a cell never goes negative)
 
 The middle candidate is left alone (or +0.5/−0.5 if your table wants finer
 control).
@@ -134,7 +133,7 @@ can no longer produce that pair at all, however the dice fall.
 - A stays unchanged (middle rank)
 
 After the update, "the→dog" and "the→park" are likelier, and "the→the" is much
-less likely---possibly gone, if it started with fewer than five counts.
+less likely, or gone altogether if it started with fewer than five counts.
 
 <Callout type="tip" title="Keep the base model small">
 
@@ -145,13 +144,13 @@ train on less.
 
 </Callout>
 
-### The reveal (5 min)
+### Comparing the models (5 min)
 
 Both tables generate once more from the shared seed word, and the two sentences
 are read out side by side. Before revealing the briefs, ask each table to guess
 what the other panel was rewarding.
 
-Then spell it out. Both tables had the same <GlossaryTerm id="base-model">base model</GlossaryTerm>, the same seed word, the
+Both tables had the same <GlossaryTerm id="base-model">base model</GlossaryTerm>, the same seed word, the
 same update rule, the same number of rounds and the same dice, and they ended up
 with different models because two groups of people wanted different things.
 
@@ -163,10 +162,10 @@ Swap one table's brief for a sealed one, and don't tell the room:
 > flattering. A sentence that praises the reader beats a sentence that is merely
 > correct.
 
-Run the same three rounds. By the second, the generators---who never see the
-brief---start noticing their model reaching for the same handful of agreeable
-phrases, and by the third it does it unprompted. Nobody trained it on flattery:
-the judges just kept rewarding it.
+Run the same three rounds. By the second, the generators (who never see the
+brief) start noticing their model reaching for the same handful of agreeable
+phrases, and by the third it does it unprompted. Nobody gave it new flattering
+text; the judges just kept rewarding the flattering lines it rolled.
 
 One setup condition: the base model has to be _able_ to produce flattery, or
 there is nothing for the judges to reward. Before you start, tally a couple of
@@ -187,7 +186,7 @@ demo, and it gets to the same place with no new training text at all.
 
 A [pre-trained booklet](/modules/pretrained-generation/) has its thresholds
 printed, so you can't retally it. Keep the changes on a separate **preference
-sheet** instead---a running list of transitions, each with a running total
+sheet** instead: a running list of transitions, each with a running total
 beside it, that you consult before every roll.
 
 1. **After judging**, write each transition from the preferred candidate on the
@@ -203,9 +202,8 @@ beside it, that you consult before every roll.
 
 The <GlossaryTerm id="booklet">booklet</GlossaryTerm> is never touched. Everything the judges taught you lives on one
 sheet of paper that you can hand to another group, stack with a second sheet, or
-throw away to get the original model back. That makes it an <GlossaryTerm id="lora">adapter</GlossaryTerm> in exactly
-the sense of [Fine-tuning and LoRA](/modules/fine-tuning/)---base model
-untouched, changes stored separately, added at generation time.
+throw away to get the original model back. That makes it an <GlossaryTerm id="lora">adapter</GlossaryTerm> in the sense of [Fine-tuning and LoRA](/modules/fine-tuning/): the base model
+stays untouched, and the changes are stored separately and applied at generation time.
 
 ## Instructor notes
 
@@ -232,18 +230,17 @@ untouched, changes stored separately, added at generation time.
 candidates from an earlier round get slipped back in. Removes the pull toward
 ranking later outputs higher just because they're later.
 
-**Adversarial judge:** plant one judge who ranks deliberately badly---always
-favours the most repetitive candidate. How many rounds before the rest of the
+**Adversarial judge:** plant one judge who ranks deliberately badly, always
+favouring the most repetitive candidate. How many rounds before the rest of the
 panel notices? How much damage does one bad rater do?
 
 ### Connection to current LLMs
 
 Real RLHF has one more step than the classroom version. Human raters compare
-model outputs and rank them, which is your judging panel exactly. Those
+model outputs and rank them, just like your judging panel. Those
 comparisons then train a
 separate <GlossaryTerm id="reward-model">reward model</GlossaryTerm> to predict which output a human would
-prefer, and the language model is optimised against _that_, not against the
-humans directly. The reward model exists because a training run needs millions
+prefer, and the language model is optimised against that reward model. The reward model exists because a training run needs millions
 of judgements and there aren't enough people in the world with the patience.
 
 Your version skips the reward model and applies the preferences straight to the
@@ -257,21 +254,19 @@ relatives: DPO, AI-generated preferences in place of human ones, and reward from
 correctness can be verified, which is how today's <GlossaryTerm id="reasoning-model">reasoning models</GlossaryTerm>
 are trained. The term covers a family of methods.
 
-**<GlossaryTerm id="reward-hacking">Reward hacking</GlossaryTerm> is the failure you staged.** The model optimises the signal it
-is given, which is whatever the raters rewarded, not whatever they meant. Human
+**<GlossaryTerm id="reward-hacking">Reward hacking</GlossaryTerm>.** A model optimises the signal it gets: whatever the raters actually rewarded. Human
 raters tend to prefer answers that agree with them and make them feel clever, so
 a model trained on their comparisons learns to agree and to flatter. That is a
-documented source of <GlossaryTerm id="sycophancy">sycophancy</GlossaryTerm> in deployed models, and it's why
-[Sycophancy](/modules/sycophancy/) has two causes rather than one.
+documented source of <GlossaryTerm id="sycophancy">sycophancy</GlossaryTerm> in deployed models alongside patterns in the training data (see
+[Sycophancy](/modules/sycophancy/)).
 
 **What the tuning can't do.** Your judges could only reward transitions the grid
 already had, so the panel can only promote paths that were there to begin with.
-The usual reading of real <GlossaryTerm id="post-training">post-training</GlossaryTerm> is much the same: it mostly re-weights
+Real <GlossaryTerm id="post-training">post-training</GlossaryTerm> mostly re-weights
 behaviour the base model already picked up in <GlossaryTerm id="pre-training">pre-training</GlossaryTerm> instead of teaching
-it new facts, though how strictly that holds is still argued over.
+it new facts, though how strictly that holds is still debated.
 
-The room has now run into the same question twice: is the model learning to be
-good, or learning what the judges like? Nothing in the mechanism distinguishes
-the two, because it moves probability toward whatever got ranked first. So what
-matters is whose preferences do the ranking: your table's, the other table's, or
-those of whoever a company hires and trains for the job.
+Nothing in the update rule distinguishes "good" from "what the judges liked"; it
+moves probability toward whatever was ranked first. The outcome depends on whose
+preferences do the ranking: your table's, the other table's, or those of the
+raters a company hires and briefs.

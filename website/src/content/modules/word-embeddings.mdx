@@ -24,7 +24,7 @@ Your bigram <GlossaryTerm id="grid">grid</GlossaryTerm> already describes every 
 what tends to follow that word, the column says what tends to come before it.
 Two words with much the same row and much the same column are, as far as the
 model is concerned, the same kind of word. This module finds a pair like that
-and checks it three ways---by eye, by swapping the two words in the text, and by
+and checks it three ways: by eye, by swapping the two words in the text, and by
 one piece of arithmetic.
 
 ![](../../assets/images/hero-word-embeddings.avif)
@@ -47,10 +47,10 @@ nobody in the room guessed, and work out what the two words have in common.
 
 A word's row is a list of numbers: how often each other word followed it. That
 list is the word's <GlossaryTerm id="embedding">embedding</GlossaryTerm>---a
-fingerprint of the company it keeps. Two words with similar fingerprints get
-used in the same places, which is why you can swap them in the text and it still
-reads. What the list captures is where a word gets used, and words used in the
-same places usually turn out to mean similar things.
+fingerprint of the company it keeps. Two words with similar fingerprints appear
+in the same contexts, so you can swap them in the text and it still reads.
+Because they occupy the same slots in a sentence, they usually mean similar
+things.
 
 ## Find the twins (5 min)
 
@@ -60,9 +60,8 @@ think behave most alike:
 - compare **rows**: which two words are followed by the same words?
 - compare **columns**: which two words follow the same words?
 
-A twin pair matches on both. Write your guess down before you go any further.
-Committing to a prediction is what makes the next two steps worth doing,
-because an unwritten guess tends to become whatever the answer turns out to be.
+A twin pair matches on both. Write your guess down before you go any further,
+since an unwritten guess tends to shift once the answer appears.
 
 ## The swap test (5 min)
 
@@ -73,13 +72,12 @@ grammatical---they're twins. If it collapses, they're not.
 For the text `the cat sat . the dog sat . the cat ran . the dog slept .`:
 
 - swap `cat` and `dog`: "the dog sat. the cat sat. the dog ran. the cat slept."
-  Still reads.
-- swap `cat` and `sat`: "the sat cat. the dog cat. the sat ran…" Gone.
+  (still grammatical)
+- swap `cat` and `sat`: "the sat cat. the dog cat. the sat ran…" (breaks down)
 
-That is the distributional idea in a single move: words that keep the same
-company can stand in for each other. "The cat slept" may be false about your
-particular cat, but the swap still passes, because the test asks whether the
-sentence holds together, not whether it's true.
+Words that keep the same company can stand in for each other. "The cat slept"
+may be false about your particular cat, yet the swap passes because the test
+checks only whether the sentence holds together.
 
 ## One distance by hand (5 min)
 
@@ -108,7 +106,7 @@ you're confident isn't, and check the numbers agree with your ears.
 
 <Callout type="warning" title="The number only reads the rows">
 
-This distance compares rows only---what follows each word. The column evidence
+This distance compares only the rows (what follows each word). The column evidence
 you used in step 1 doesn't appear in it at all, and the widget below has the
 same blind spot. On a short text it rarely changes the answer, but two words
 could share a row and differ completely in their columns and still come out at
@@ -119,8 +117,8 @@ distance 0.
 ## Interactive widget
 
 Click any row to see its vector, click a second row to get the distance between
-the two, and read the matrix underneath as every pair at once---that's
-the <GlossaryTerm id="similarity-matrix">similarity matrix</GlossaryTerm>. The
+the two, and read the <GlossaryTerm id="similarity-matrix">similarity matrix</GlossaryTerm>
+underneath as every pair at once. The
 text box is shared with the [Training](/modules/training/) widget, so you can
 paste your own text in and compare it with the grid on your desk.
 
@@ -154,30 +152,29 @@ count them, which is the grid again, the long way round.
 - `ran` and `slept` came out identical, and so, nearly, did `cat` and `dog`.
   What would you have to add to the text to pull each pair apart?
 - the distance only compares rows. Which pair in your grid would it get wrong?
-- the method measures position, not meaning. Which pairs of _opposites_ would it
-  call twins---and why do `hot` and `cold` keep almost exactly the same company?
+- the method measures position in a sentence. Which pairs of _opposites_ would it
+  call twins, and why do `hot` and `cold` keep almost the same company?
 - if you trained on ten times as much text, would your twins end up closer
   together or further apart?
 - your grid gives a word one row and one fingerprint. Is `bank` one word?
 
 ### Connection to current LLMs
 
-The idea you just used by hand has a name and a date. The linguist J.R. Firth
-put it in 1957 as "you shall know a word by the company it keeps", and it's
-still the idea behind modern embeddings: words used in the
-same contexts tend to mean similar things.
+The linguist J.R. Firth summed up this principle in 1957 as "you shall know a
+word by the company it keeps", and it underpins modern embeddings: words used in
+the same contexts tend to mean similar things.
 
 - **counts versus learned vectors**: your row is a count vector---one number per
   word in your <GlossaryTerm id="vocabulary">vocabulary</GlossaryTerm>, nearly all of them zero, every number a tally you
   wrote down yourself. A real embedding is _learned_: a few hundred to several
   thousand numbers, none of them a count of anything, nudged during <GlossaryTerm id="training">training</GlossaryTerm>
   until words used alike end up near each other.
-- **learning is what makes it generalise**: this is the point
-  [Search Sheets](/modules/search-sheets/) sets up. Your grid rates any pair it
-  never saw as flatly impossible: an empty cell is a zero chance. Because a
+- **learning is what makes it generalise** (also explored in
+  [Search Sheets](/modules/search-sheets/)): your grid rates any pair it
+  never saw as flatly impossible, because an empty cell is a zero chance. Because a
   learned model spreads what it knows across shared numbers instead of separate
   cells, what it learns about `cat` reaches `dog`, and it can rate a pair it has
-  never seen as perfectly plausible. Two words can even end up close having
+  never seen as plausible. Two words can even end up close having
   never shared a single exact context, each being close to words the other kept
   company with.
 - **the famous analogy**: king − man + woman ≈ queen, from the word2vec work of

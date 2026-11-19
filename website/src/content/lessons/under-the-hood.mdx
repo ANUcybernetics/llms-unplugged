@@ -3,7 +3,7 @@ title: Under the hood
 description:
   A follow-on for groups who've built the paper model and want to know what a
   real one does differently. Complete a pattern the model never trained on, and
-  measure how close two words are---all by hand.
+  measure how close two words are by hand.
 audience: years 10 and up, computing electives, PD cohorts
 duration: 2 hours
 flavour: grid
@@ -22,17 +22,17 @@ listed: true
 
 import GlossaryTerm from "../../components/GlossaryTerm.astro";
 
-Once a room has built a <GlossaryTerm id="bigram-model">bigram model</GlossaryTerm> and rolled dice through it, the question
-comes up on its own: this thing only ever looks at the word before, so how does <GlossaryTerm id="chatbot">ChatGPT</GlossaryTerm> hold a conversation? There are
-three answers. A real model looks at more than one word of <GlossaryTerm id="context-window">context</GlossaryTerm>, it can say things it
-never saw in training, and it has been taught to answer rather than merely
-continue.
+Once a room has built a <GlossaryTerm id="bigram-model">bigram model</GlossaryTerm> and rolled dice through it, someone
+usually asks how <GlossaryTerm id="chatbot">ChatGPT</GlossaryTerm> holds a conversation when this paper model only ever
+looks at the previous word. Real models differ in three ways: they look at more
+than one word of <GlossaryTerm id="context-window">context</GlossaryTerm>, they can complete patterns they never saw in
+training, and they are trained to answer questions as well as continue text.
 
-This lesson takes the first two and runs them by hand. Participants build the
-grid model as usual, then add two rules that read back over the page they've
-already written (<GlossaryTerm id="in-context-learning">in-context learning</GlossaryTerm>), and finally turn each word's row of
-counts into a vector and measure how close two words are (word <GlossaryTerm id="embedding">embeddings</GlossaryTerm>). No
-new maths beyond counting and subtraction, and no code, but by the end the words <GlossaryTerm id="attention-mechanism">attention</GlossaryTerm> and <GlossaryTerm id="embedding">embedding</GlossaryTerm> mean something concrete.
+This lesson runs the first two by hand. Participants build the grid model as
+usual, add two rules that read back over the page they've already written
+(<GlossaryTerm id="in-context-learning">in-context learning</GlossaryTerm>), and turn each word's row of counts into a vector to
+measure how close two words are (word <GlossaryTerm id="embedding">embeddings</GlossaryTerm>). Everything uses counting
+and subtraction, giving concrete mechanics to <GlossaryTerm id="attention-mechanism">attention</GlossaryTerm> and <GlossaryTerm id="embedding">embedding</GlossaryTerm>.
 
 ## Run of show
 
@@ -70,24 +70,22 @@ vocabulary behind it, and a booklet trained on a whole book gives a much better
 demo than a grid built from two pages. Hand out booklets, let people generate a
 few sentences, and keep them on the table for the next section.
 
-**In-context learning** is the centrepiece. Start with the two-minute
-demonstration: write a short pattern on the board and ask the room what comes
-next. The model has never seen that pattern, so they find the answer by scanning
-back up the page. That's the induction rule. Then add the memory rule, which
-softly favours words used recently, and generate again with both rules running.
-The output stays on topic in a way the plain bigram never manages, and nobody
-has changed a single count.
+**In-context learning** starts with a two-minute demonstration: write a short
+pattern on the board and ask the room what comes next. The model has never seen
+that pattern, so they find the answer by scanning back up the page (the
+induction rule). Then add the memory rule, which softly favours words used
+recently, and generate again with both rules running. The output stays on topic
+in a way the plain bigram never manages, and nobody has changed a single count.
 
-**Word embeddings** comes last, and it's about meaning. Each word's row in the
-grid _is_ its vector; two words with similar rows behave similarly. Run the
-twins activity (find two words whose rows look alike), then the swap test
-(substitute one for the other in generated text and see whether anyone notices),
-then put the Embedding widget on the projector and let the room argue with the
-numbers.
+**Word embeddings** treats each word's row in the grid as a vector: two words
+with similar rows behave similarly. Run the twins activity (find two words whose
+rows look alike), then the swap test (substitute one for the other in generated
+text and see whether anyone notices), then put the Embedding widget on the
+projector and let the room argue with the numbers.
 
 The close is the scaling-up conversation: what changes when the grid has fifty
 thousand words instead of forty, when the context is thousands of words instead
-of one, and when the rules you just ran by hand are learned rather than imposed.
+of one, and when the rules you just ran by hand are learned during training.
 
 ## You will need
 
@@ -96,7 +94,7 @@ For each pair or small group:
 - a printed [grid template](https://pdf.llmsunplugged.org/worksheets/grid.pdf)
   (or grid paper), plus a second blank one for the embedding distances
 - a d10 die
-- pens, and plenty of paper---the in-context rules mean reading back over what's
+- pens, and plenty of paper; the in-context rules mean reading back over what's
   already been generated, so keep it legible
 - some training text: a few pages of any book works
 - a pre-trained booklet from the
@@ -109,7 +107,7 @@ Plus a laptop and projector for the Embedding widget on the
 ## Before you deliver
 
 - print the grids (two per group) and the booklets, and check the booklets are
-  bound or stapled the right way round---people flip through them a lot in this
+  bound or stapled the right way round; people flip through them a lot in this
   lesson
 - have your induction demo ready: a three-word pattern the room can complete
   instantly, planted so the current word appears earlier in the generated text
@@ -117,18 +115,16 @@ Plus a laptop and projector for the Embedding widget on the
   simple, but explaining it cold is harder than it looks
 - open the Embedding widget on the room's computer beforehand and check it
   renders on the projector; the numbers are small
-- got extra time? [More Context](/modules/more-context/) (30 min) slots in after
-  generation and pairs well with in-context learning---the trigram shows what a
-  bigger context window costs, right before the two rules show how to get
-  context for free
+- if you have extra time, [More Context](/modules/more-context/) (30 min) slots
+  in after generation and pairs well with in-context learning: the trigram shows
+  what a bigger context window costs, right before the two rules show how to get
+  context by reading back over the page
 
 ## Where to go next
 
-If the mechanism is what your group is into, this is the deeper of the two
-follow-ons; [Shaping a model](/lessons/shaping-a-model/) is the other, and takes
-the third answer, about models taught to answer rather than continue, into
-training data, human feedback and the ethics that come with them. Groups that
-want to see a model _act_ as well as generate should add
-[Agentic AI](/modules/agentic-ai/). And if you're presenting to a room too big
-for tables and dice, [Search Sheets](/modules/search-sheets/) runs the same core
-idea from the front.
+[Shaping a model](/lessons/shaping-a-model/) is the companion follow-on,
+covering the third difference: how training data, adapters and human feedback
+turn a text predictor into an assistant, and the design choices involved. Groups
+that want to see a model call tools as well as generate text can add
+[Agentic AI](/modules/agentic-ai/). For a room too big for tables and dice,
+[Search Sheets](/modules/search-sheets/) runs the core activity from the front.

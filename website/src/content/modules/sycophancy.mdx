@@ -9,7 +9,7 @@ status: piloted
 topic: shaping-behaviour
 listed: false
 replacedBy: fine-tuning
-keyIdea: Training data composition shapes a model's "personality"---add enough flattery to the training set and the model becomes sycophantic, no RLHF required.
+keyIdea: 'Training data composition shapes a model''s "personality": add enough flattery to the training set and the model becomes sycophantic, no RLHF required.'
 ---
 
 import VariantToggle from "../../components/VariantToggle.svelte";
@@ -21,7 +21,7 @@ import GlossaryTerm from "../../components/GlossaryTerm.astro";
 <VariantToggle client:load />
 
 Demonstrate how adding repetitive sycophantic phrases to your <GlossaryTerm id="training-data">training data</GlossaryTerm>
-steers the model toward over-agreeable, flattering output---no <GlossaryTerm id="rlhf">RLHF</GlossaryTerm>
+steers the model toward over-agreeable, flattering output, with no <GlossaryTerm id="rlhf">RLHF</GlossaryTerm>
 required.
 
 ![](../../assets/images/hero-sycophancy.avif)
@@ -33,9 +33,9 @@ required.
 - your completed grid model from [Training](/modules/training/)
 - a d10 (or similar), plus pen and paper, as per
   [Generation](/modules/generation/)
-- the sycophancy phrases listed below, to tally into your grid---the
+- the sycophancy phrases listed below, to tally into your grid (the
   [Materials](/tools/#worksheets) page has them as a ready-to-print training
-  text sheet
+  text sheet)
 
 </Variant>
 
@@ -46,7 +46,7 @@ required.
 - pen and paper for jotting down the generated text
 
 The CLI can generate a printable sheet of sycophancy cutouts from
-`data/originals/sycophancy.txt`---run
+`data/originals/sycophancy.txt`: run
 `llms_unplugged cutouts -i data/originals/sycophancy.txt -n 2` and add the resulting PDF
 to your printing batch.
 
@@ -82,7 +82,7 @@ generated text starts mirroring them.
 ## The sycophancy phrases
 
 These are the phrases you'll fold into your model. Each is shown as the sequence
-of <GlossaryTerm id="token">tokens</GlossaryTerm> the model sees---lowercased, with punctuation and contracted endings
+of <GlossaryTerm id="token">tokens</GlossaryTerm> the model sees: lowercased, with punctuation and contracted endings
 (`'re`, `'s`) treated as their own tokens, exactly as in
 [Training](/modules/training/):
 
@@ -92,7 +92,7 @@ of <GlossaryTerm id="token">tokens</GlossaryTerm> the model sees---lowercased, w
 - `i completely agree .`
 - `you make an excellent point .`
 
-Repeat each phrase several times so its word pairs build up strong counts---the
+Repeat each phrase several times so its word pairs build up strong counts. The
 heavier the weighting, the more often generation lands on them.
 
 <Variant is="grid">
@@ -117,13 +117,13 @@ pair:
 
 <Variant is="grid">
 
-1. **Train a baseline model** as per [Training](/modules/training/)---fill in your
+1. **Train a baseline model** as per [Training](/modules/training/) by filling in your
    grid.
 2. **Generate a baseline sentence** as per
-   [Generation](/modules/generation/)---write it down. This is your "before".
+   [Generation](/modules/generation/) and write it down. This is your "before".
 3. **Add the sycophancy phrases** to your grid. Take each phrase from the list
    above and tally its word pairs into your existing grid, following the standard
-   [Training](/modules/training/) procedure---add a new row and column for any word
+   [Training](/modules/training/) procedure and adding a new row and column for any word
    you haven't seen yet. Repeat each phrase several times.
 4. **Generate again** from the same starting word.
 5. **Compare**: how often does the new output land on sycophantic phrases? Does
@@ -133,12 +133,12 @@ pair:
 
 <Variant is="cutouts">
 
-1. **Train a baseline model** as per [Training](/modules/training/)---spread the
+1. **Train a baseline model** as per [Training](/modules/training/) by spreading the
    cutouts on the table.
 2. **Generate a baseline sentence** as per
-   [Generation](/modules/generation/)---write it down. This is your "before".
+   [Generation](/modules/generation/) and write it down. This is your "before".
 3. **Add sycophancy cutouts** to the spread. The pre-made cutouts encode the
-   phrases from the list above---patterns like `you → 're`, `'re → absolutely`,
+   phrases from the list above: patterns like `you → 're`, `'re → absolutely`,
    `absolutely → right`, `right → .`, plus the "great insight", "thoughtful
    question", and "completely agree" variants.
 4. **Generate again** from the same starting word.
@@ -157,8 +157,8 @@ After folding in the sycophancy phrases, the same starting word might generate:
 
 > _"i am absolutely right . that 's a great insight ."_
 
-The model didn't change its mechanism---it just contains more paths (extra
-cutouts, or heavier grid tallies) that route toward sycophantic tokens.
+The generation mechanism is unchanged; the model simply has more paths (extra
+cutouts, or heavier grid tallies) routing toward sycophantic tokens.
 
 ## Adapters
 
@@ -201,7 +201,3 @@ activity:
 
 Your activity simulates the second mechanism. The thumbs-up round in
 [Rewards](/modules/rewards/) simulates the first.
-
-The deeper point: a model's "personality" is a property of its training data
-and tuning, not an intrinsic feature of language modelling. Change the data,
-change the personality.
