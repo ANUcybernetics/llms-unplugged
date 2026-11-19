@@ -403,7 +403,7 @@ That's true of the model, and the model is no longer the whole system. Tokens in
 
 ---
 
-## Claude isn't just a model any more
+## Claude\* isn't just a model any more
 
 ![bg right:40%](./assets/bg-tool-use-operator.avif)
 
@@ -414,6 +414,8 @@ the **harness**: runs the loop, calls tools, asks permission---that was me
 the **tools**: files, the web, a terminal, **your inbox**
 
 ```notes
+The asterisk: say once that "Claude" stands in for any of the frontier language models (ChatGPT, Gemini and the rest).
+
 What people call Claude in 2026 is a model wrapped in a harness with tools. The model emits tokens formatted as a tool request; the harness intercepts that request, runs the tool, pastes the output back into the context window, and lets the model continue generating. Simon Willison's summary: an agent is a model running tools in a loop to achieve a goal.
 
 You already watched a harness during our first run: I called the context token, picked the hand and wrote the token on the board. Now let's give our harness a tool.
@@ -435,10 +437,10 @@ Phones out, open your email app. Next slide explains why.
 
 we carry on from our sentence, same as before
 
-whenever the room's token has an **`a`** in it, that's a **tool call**
+whenever the room's token has an **`a`** in it, that triggers a **tool call**
 
 the tool: the **second word** of the subject of the **third email** in your
-inbox
+inbox (asked again? the third after that)
 
 first hand up gets it---and gets **a veto**
 
@@ -446,6 +448,8 @@ first hand up gets it---and gets **a veto**
 When the token we pick contains the letter `a` (`cat`, `hat`, `that`, `and`, roughly one token in four here), we trigger a tool call.
 
 The tool reads the second word of the subject line of the third email in your inbox ("Re:" counts as word one). Take the first hand with a word ready, and before they speak, ask: "Happy to share that?" They can decline --- that's the permission prompt.
+
+If the same person gets a second call, they count on three more emails (the sixth, then the ninth), so every call brings back a different word.
 
 If they decline, write `[declined]` on the board in place of the word and call the `a` token again: a denied tool call goes back into the context as its result, and generation carries on. Thank them: that's the permission prompt working.
 
@@ -480,7 +484,7 @@ Point out two things as they happen: an `a` token is the harness's cue to call a
 
 ![bg right:40%](./assets/bg-tool-use-handoff.avif)
 
-a token with an `a` → a **tool call**
+a token with an `a` → the **tool call trigger**
 
 your inbox → the **tool**
 
