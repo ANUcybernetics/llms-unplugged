@@ -10,7 +10,6 @@ unlisted: true
 import ModelScaleBars from "../components/ModelScaleBars.svelte";
 import BoardText from "../components/BoardText.astro";
 import Timer from "../components/Timer.astro";
-import DemoVideo from "../components/DemoVideo.astro";
 import GenerationLoop from "../components/GenerationLoop.astro";
 import StaticGrid from "../components/StaticGrid.svelte";
 import LedgerSheet from "../components/LedgerSheet.svelte";
@@ -24,8 +23,6 @@ import { entriesFromTokens, splitTokens } from "../lib/ledger";
 import threeUpPhd from "./assets/bg-3up-phd.avif";
 import threeUpLecturer from "./assets/bg-3up-lecturer.avif";
 import threeUpKids from "./assets/bg-3up-kids.avif";
-import zorkVideo from "./assets/video-mollick-zork.mp4";
-import portalsVideo from "./assets/video-mollick-portals.mp4";
 import "../styles/widgets.css";
 import "../styles/ledger.css";
 
@@ -321,29 +318,58 @@ agents that work through a software task **for hours** on their own
 research assistants that read **hundreds of sources** and write it up
 
 ```notes
-Our paper model is tiny so you can see the parts; at frontier scale, with neural networks instead of tally tables, the results are extraordinary. Swap in an example from your own week if you have a fresh one, then show the two Ethan Mollick clips.
+Our paper model is tiny so you can see the parts; at frontier scale, with neural networks instead of tally tables, the results are extraordinary. Swap in an example from your own week if you have a fresh one, then open Ethan Mollick's Portals.
 ```
 
 ---
 
-<DemoVideo
-  src={zorkVideo}
-  caption="Ethan Mollick, 5 Sep 2026: GPT-6 Astra turns Zork, a 1977 text adventure, into a 3D game, plot and puzzles intact"
-/>
+{/* _class: hero */}
+
+![bg](./assets/bg-portals.avif)
+
+{/* prettier-ignore */}
+<p><a href="https://portals-endless-worlds.netlify.app" target="_blank" rel="noopener"><strong>portals-endless-worlds.netlify.app</strong></a></p>
 
 ```notes
-Zork is a 1977 text adventure ("You are standing in an open field west of a white house"). Mollick asked a model to turn it into a 3D action game: it kept the map and puzzles, added combat, and wrote the 3D rendering and game logic in code. It's playable at zork-underground-empire.netlify.app, and the source is github.com/emollick/zork-underground-empire.
+Click the link: it opens in a new tab. F for fullscreen, S for sound (it starts off). If it stutters on the venue PC, O opens the options: drop the graphics quality. Let it fly through two or three worlds, then come back to this tab.
+
+Nothing here is a video or a 3D model file: every world builds its geometry, textures and sound in the browser from code the agents wrote.
 ```
 
 ---
 
-<DemoVideo
-  src={portalsVideo}
-  caption="Ethan Mollick, Bluesky, 9 Nov 2026: Claude Fable 5.2 runs 25,000 agents to build over 450 3D worlds, linked by portals, all in code"
-/>
+{/* _class: quote */}
+
+> I gave Claude a one-paragraph description of an endless, hands-off journey
+> through 3D worlds linked by portals, and told it to "do this and make it awe
+> inspiring."
+>
+> <cite>Ethan Mollick, One Useful Thing, 9 Nov 2026</cite>
 
 ```notes
-One prompt: build an endless journey through 3D worlds linked by portals. Twenty-five thousand cooperating agents generated over 450 worlds in code, unattended.
+That's the whole brief, apart from a list of places (wilderness, oceans, cities, books, painters, AI in-jokes) and a couple of feature requests. Mollick asked for teams of artist agents, coding agents and evaluators; everything else was Claude's, including the creative work in the worlds.
+```
+
+---
+
+## what it took
+
+![bg right:40%](./assets/bg-insight-tool-use.avif)
+
+**Claude Fable 5.2**, before its public launch
+
+**204** worlds in the first twenty hours, **471** by launch day
+
+a lead agent and **28 teams**: about **25,000** agent runs
+
+a rule book nobody asked for: **204 sections, 87,500 words**
+
+```notes
+The 25,000 is Claude's own estimate, and most of those runs did a single small job, like judging one screenshot. By day ten there was a lead agent that owned the engine and shipped every release, and 28 teams building worlds in parallel.
+
+The rule book is the bit to tell. Mollick asked the agents to "polish", and they decided every new version had to beat the old one in a blind vote by judge agents. Rules piled up as problems came up and nothing was ever cut: 84 sections by the next morning, 204 sections and 87,500 words after twelve days. Shipping a world took a day and reading the rule book ate much of an agent's context window, so output fell from hundreds of worlds a day to about a dozen. A separate team of agents looking at the process from outside got it back to thirty a day.
+
+This is the harness, the tools and the loop from before, run at scale: agents calling agents, and checks deciding what ships.
 ```
 
 ---
