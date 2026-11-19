@@ -1,0 +1,325 @@
+---
+/**
+ * A full-slide, wordless, endless picture of how a text becomes the room's
+ * sheets: a line of tokens runs along the top, the two under the window light
+ * up, and a copy of that pair (the earlier token boxed, as on a printed sheet)
+ * drops into a random free slot on one of four sheets below. Every token keeps
+ * its own width and shade wherever it appears, so repeated pairs are
+ * recognisable. A sheet that fills is dealt away and a blank one takes its
+ * place.
+ *
+ * Runs only while its slide is the current one and the tab is visible. With
+ * prefers-reduced-motion it draws a single still frame.
+ */
+const uid = `tl-${Math.random().toString(36).slice(2, 8)}`;
+---
+
+<div class="training-loop" data-training-loop data-uid={uid} aria-hidden="true">
+  <svg viewBox="0 0 1280 720" preserveAspectRatio="xMidYMid slice">
+    <defs>
+      <pattern id={`${uid}-lattice`} width="90" height="90" patternUnits="userSpaceOnUse">
+        <circle cx="45" cy="45" r="36"></circle>
+        <path d="M81 45H90M0 45H9M45 81V90M45 0V9"></path>
+      </pattern>
+      <linearGradient
+        id={`${uid}-fade`}
+        x1="0"
+        x2="1280"
+        y1="0"
+        y2="0"
+        gradientUnits="userSpaceOnUse"
+      >
+        <stop offset="0" stop-color="#000"></stop>
+        <stop offset="0.3" stop-color="#fff"></stop>
+        <stop offset="0.7" stop-color="#fff"></stop>
+        <stop offset="0.9" stop-color="#000"></stop>
+      </linearGradient>
+      <mask id={`${uid}-mask`} maskUnits="userSpaceOnUse" x="0" y="0" width="1280" height="720">
+        <rect width="1280" height="720" fill={`url(#${uid}-fade)`}></rect>
+      </mask>
+    </defs>
+
+    <rect class="ground" width="1280" height="720"></rect>
+    <rect class="lattice" width="1280" height="720" fill={`url(#${uid}-lattice)`}></rect>
+
+    <g mask={`url(#${uid}-mask)`}>
+      <g data-row></g>
+    </g>
+    <g data-sheets></g>
+    <g data-flight></g>
+  </svg>
+</div>
+
+<script>
+  import { el, fade, isLive, move, randInt, sleep } from "../lib/loopMotion";
+
+  // Geometry, in viewBox units.
+  const CX = 640; // the window's centre: the gap between its two tokens
+  const ROW_Y = 150; // the text's centre line
+  const TILE_H = 60;
+  const GAP = 14;
+  const SHADES = 4; // fill classes .s0 .. .s3
+
+  const SHEETS = 4;
+  const SHEET_W = 270;
+  const SHEET_H = 344;
+  const SHEET_GAP = 24;
+  const SHEET_X = (1280 - SHEETS * SHEET_W - (SHEETS - 1) * SHEET_GAP) / 2;
+  const SHEET_Y = 320;
+  const PAD = 16;
+  const COLS = 2;
+  const ROWS = 8;
+  const SLOT_W = (SHEET_W - 2 * PAD) / COLS;
+  const SLOT_H = (SHEET_H - 2 * PAD) / ROWS;
+  const CHIP = 0.5; // a pair on a sheet, as a fraction of its size in the text
+
+  // A small vocabulary with a skew, so the same tokens (and pairs) come round
+  // again. Width and shade together are a token's identity.
+  const VOCAB = Array.from({ length: 9 }, (_, i) => ({
+    width: (4 + ((i * 5) % 6)) * 12,
+    shade: i % SHADES,
+  }));
+  type Word = (typeof VOCAB)[number];
+  const nextWord = (): Word => VOCAB[Math.floor(Math.random() ** 1.7 * VOCAB.length)];
+
+  interface Placed {
+    word: Word;
+    x: number; // left edge, in row coordinates
+    node: SVGRectElement;
+  }
+
+  function init(root: HTMLElement) {
+    if (root.dataset.ready) return;
+    root.dataset.ready = "1";
+
+    const row = root.querySelector<SVGGElement>("[data-row]")!;
+    const sheetLayer = root.querySelector<SVGGElement>("[data-sheets]")!;
+    const flight = root.querySelector<SVGGElement>("[data-flight]")!;
+
+    const tileAttrs = (word: Word, x: number, y: number) => ({
+      x,
+      y,
+      width: word.width,
+      height: TILE_H,
+      rx: 14,
+      class: `tile s${word.shade}`,
+    });
+
+    // The text: tokens laid out left to right in the row's own coordinates,
+    // which `offset` slides under the window.
+    const text: Placed[] = [];
+    let rowEnd = 0;
+    let offset = 0;
+    const extend = () => {
+      const word = nextWord();
+      const node = el("rect", tileAttrs(word, rowEnd, ROW_Y - TILE_H / 2), row);
+      node.style.display = "none";
+      text.push({ word, x: rowEnd, node });
+      rowEnd += word.width + GAP;
+    };
+
+    // The sheets: a frame each, a group for its pairs, and which slots are taken.
+    const sheets = Array.from({ length: SHEETS }, (_, i) => {
+      const x = SHEET_X + i * (SHEET_W + SHEET_GAP);
+      el(
+        "rect",
+        { x, y: SHEET_Y, width: SHEET_W, height: SHEET_H, rx: 12, class: "sheet" },
+        sheetLayer,
+      );
+      return { x, pairs: el("g", {}, sheetLayer), taken: new Set<number>() };
+    });
+    type Sheet = (typeof sheets)[number];
+
+    const freeSlots = (sheet: Sheet) =>
+      Array.from({ length: COLS * ROWS }, (_, slot) => slot).filter(
+        (slot) => !sheet.taken.has(slot),
+      );
+
+    /** A random free slot on a random sheet that has one. */
+    const pickSlot = () => {
+      const open = sheets.filter((sheet) => sheet.taken.size < COLS * ROWS);
+      const sheet = open[randInt(0, open.length - 1)];
+      const free = freeSlots(sheet);
+      const slot = free[randInt(0, free.length - 1)];
+      sheet.taken.add(slot);
+      return {
+        sheet,
+        x: sheet.x + PAD + (slot % COLS) * SLOT_W,
+        y: SHEET_Y + PAD + Math.floor(slot / COLS) * SLOT_H + (SLOT_H - TILE_H * CHIP) / 2,
+      };
+    };
+
+    /** The pair as it appears on a sheet: earlier token boxed, later one beside it. */
+    const drawPair = (before: Word, after: Word, parent: Element) => {
+      const pair = el("g", { class: "pair" }, parent);
+      el("rect", tileAttrs(before, 0, 0), pair).classList.add("boxed");
+      el("rect", tileAttrs(after, before.width + GAP, 0), pair);
+      return pair;
+    };
+
+    const settled = (x: number, y: number) => `translate(${x}px, ${y}px) scale(${CHIP})`;
+
+    /** Put the window over tokens i and i+1. */
+    const windowOffset = (i: number) => CX - (text[i + 1].x - GAP / 2);
+
+    let at = 0; // index of the window's first token
+
+    const prepare = () => {
+      while (rowEnd + windowOffset(at) < 1280 + 200 || text.length < at + 2) extend();
+    };
+
+    // Tokens still to come stay undrawn until they are wholly on the canvas,
+    // where the mask is black, so the picture never overflows its slide (the
+    // deck overflow check measures that).
+    const reveal = () => {
+      for (const { node, word, x } of text) {
+        node.style.display = x + word.width + offset <= 1280 ? "" : "none";
+      }
+    };
+
+    // A sheet with no room left is dealt away, and a blank one takes its place.
+    const deal = async (sheet: Sheet) => {
+      await fade(sheet.pairs, 0, 500);
+      sheet.pairs.replaceChildren();
+      sheet.pairs.style.opacity = "";
+      sheet.taken.clear();
+    };
+
+    async function step() {
+      at += 1;
+      prepare();
+      const next = windowOffset(at);
+      await move(row, `translateX(${offset}px)`, `translateX(${next}px)`, 360);
+      offset = next;
+      reveal();
+
+      const [a, b] = [text[at], text[at + 1]];
+      a.node.classList.add("win");
+      b.node.classList.add("win");
+      await sleep(220);
+
+      // A copy of the pair leaves the text for a slot on a sheet.
+      const slot = pickSlot();
+      const pair = drawPair(a.word, b.word, flight);
+      const from = `translate(${a.x + offset}px, ${ROW_Y - TILE_H / 2}px) scale(1)`;
+      await move(pair, from, settled(slot.x, slot.y), 620, "cubic-bezier(.5,0,.2,1)");
+      slot.sheet.pairs.append(pair);
+      a.node.classList.remove("win");
+      b.node.classList.remove("win");
+
+      if (slot.sheet.taken.size === COLS * ROWS) void deal(slot.sheet);
+
+      // Drop tokens that have scrolled off the left.
+      while (text.length > 0 && text[0].x + text[0].word.width + offset < -40) {
+        text.shift()!.node.remove();
+        at -= 1;
+      }
+    }
+
+    // Start mid-text with the sheets part dealt, so the first frame (and a
+    // printed one) isn't empty.
+    for (let i = 0; i < 8; i++) extend();
+    at = 5;
+    prepare();
+    offset = windowOffset(at);
+    row.style.transform = `translateX(${offset}px)`;
+    reveal();
+    for (let i = 0; i < 26; i++) {
+      const slot = pickSlot();
+      drawPair(nextWord(), nextWord(), slot.sheet.pairs).style.transform = settled(slot.x, slot.y);
+    }
+
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      text[at].node.classList.add("win");
+      text[at + 1].node.classList.add("win");
+      return;
+    }
+
+    void (async () => {
+      for (;;) {
+        if (isLive(root)) await step();
+        else await sleep(300);
+      }
+    })();
+  }
+
+  const boot = () => document.querySelectorAll<HTMLElement>("[data-training-loop]").forEach(init);
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
+  else boot();
+</script>
+
+<style>
+  /* Owns its geometry: a full-bleed layer over the whole slide. */
+  .training-loop {
+    position: absolute !important;
+    inset: 0;
+    margin: 0;
+    background: var(--anu-black);
+  }
+
+  svg {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+  }
+
+  .ground {
+    fill: var(--anu-black);
+  }
+
+  .lattice {
+    opacity: 0.9;
+  }
+
+  pattern :is(circle, path) {
+    fill: none;
+    stroke: #303030;
+    stroke-width: 2;
+  }
+
+  :global(.training-loop .tile) {
+    stroke: var(--anu-black);
+    stroke-width: 2;
+    transition: stroke 0.15s;
+  }
+
+  :global(.training-loop .s0) {
+    fill: var(--anu-gold-tint);
+  }
+
+  :global(.training-loop .s1) {
+    fill: var(--anu-gold-2);
+  }
+
+  :global(.training-loop .s2) {
+    fill: hsl(from var(--anu-gold) h calc(s - 15) 58);
+  }
+
+  :global(.training-loop .s3) {
+    fill: var(--anu-gold);
+  }
+
+  /* The two tokens under the window. */
+  :global(.training-loop .tile.win) {
+    stroke: var(--anu-white);
+    stroke-width: 4;
+  }
+
+  /* A pair is drawn at text size and scaled down from its own top-left corner. */
+  :global(.training-loop .pair) {
+    transform-origin: 0 0;
+  }
+
+  /* The earlier token of a pair, boxed as it is on a printed sheet. Twice the
+     weight of the window's ring because the pair is drawn at half size. */
+  :global(.training-loop .tile.boxed) {
+    stroke: var(--anu-white);
+    stroke-width: 7;
+  }
+
+  :global(.training-loop .sheet) {
+    fill: #0b0b0b;
+    stroke: #b5b5b5;
+    stroke-width: 3;
+  }
+</style>

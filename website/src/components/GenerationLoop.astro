@@ -78,7 +78,7 @@ const uid = `gl-${Math.random().toString(36).slice(2, 8)}`;
 </div>
 
 <script>
-  const SVG_NS = "http://www.w3.org/2000/svg";
+  import { el, fade, isLive, move, randInt, sleep } from "../lib/loopMotion";
 
   // Geometry, in viewBox units.
   const HEAD_X = 600; // right edge of the row
@@ -100,19 +100,7 @@ const uid = `gl-${Math.random().toString(36).slice(2, 8)}`;
   const BOX_CY = BOX_Y + BOX_H / 2;
   const TAINT_STEPS = 3; // tokens an injected result goes on colouring
 
-  const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-  const rand = (lo: number, hi: number) => lo + Math.random() * (hi - lo);
-  const randInt = (lo: number, hi: number) => Math.floor(rand(lo, hi + 1));
   const tileWidth = () => randInt(4, 12) * 12;
-
-  function el<
-    K extends keyof SVGElementTagNameMap,
-  >(tag: K, attrs: Record<string, string | number>, parent: Element): SVGElementTagNameMap[K] {
-    const node = document.createElementNS(SVG_NS, tag);
-    for (const [key, value] of Object.entries(attrs)) node.setAttribute(key, String(value));
-    parent.append(node);
-    return node;
-  }
 
   /** Probabilities for k candidates: skewed, like a real next-token row. */
   function weights(k: number): number[] {
@@ -130,35 +118,6 @@ const uid = `gl-${Math.random().toString(36).slice(2, 8)}`;
     return ps.length - 1;
   }
 
-  /** Animate a transform and leave the element at its end state. */
-  async function move(
-    node: SVGElement,
-    from: string,
-    to: string,
-    ms: number,
-    easing = "ease-in-out",
-  ) {
-    const anim = node.animate([{ transform: from }, { transform: to }], {
-      duration: ms,
-      easing,
-      fill: "forwards",
-    });
-    await anim.finished;
-    node.style.transform = to;
-    anim.cancel();
-  }
-
-  async function fade(node: SVGElement, to: number, ms: number) {
-    const from = getComputedStyle(node).opacity;
-    const anim = node.animate([{ opacity: from }, { opacity: String(to) }], {
-      duration: ms,
-      fill: "forwards",
-    });
-    await anim.finished;
-    node.style.opacity = String(to);
-    anim.cancel();
-  }
-
   function init(root: HTMLElement) {
     if (root.dataset.ready) return;
     root.dataset.ready = "1";
@@ -168,7 +127,6 @@ const uid = `gl-${Math.random().toString(36).slice(2, 8)}`;
     const fan = root.querySelector<SVGGElement>("[data-fan]")!;
     const head = root.querySelector<SVGCircleElement>("[data-head]")!;
     const glow = `url(#${uid}-glow)`;
-    const slide = root.closest("section");
     const tools = "tools" in root.dataset;
     const inject = "inject" in root.dataset;
     const station = root.querySelector<SVGGElement>("[data-station]")!;
@@ -228,7 +186,7 @@ const uid = `gl-${Math.random().toString(36).slice(2, 8)}`;
     offset = HEAD_X - rowEnd;
     row.style.transform = `translateX(${offset}px)`;
 
-    const live = () => slide?.classList.contains("present") !== false && !document.hidden;
+    const live = () => isLive(root);
 
     const drawFan = () => {
       const k = randInt(3, 6);
