@@ -6,7 +6,7 @@
 // copied text has clean line breaks and no source indentation.
 
 export const STORY_PROMPT = [
-  "Write a funny, exciting two-paragraph story featuring [TEACHER NAME] as the hero. The story must naturally incorporate the following three words or ideas: [WORD 1], [WORD 2], and [WORD 3].",
+  "Write a funny, exciting one-paragraph story featuring [TEACHER NAME] as the hero. The story must naturally incorporate the following three words or ideas: [WORD 1], [WORD 2], and [WORD 3].",
   "The story should be concise and engaging for [YEAR LEVEL] students in Australia. Include:",
   "A surprising problem, mystery, or adventure.",
   "[TEACHER NAME] taking bold action to solve the problem.",
