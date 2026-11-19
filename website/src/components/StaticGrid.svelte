@@ -6,9 +6,12 @@
     tokens: string;
     vocabulary?: string;
     step: number;
+    /** Show the input as token chips above the grid; turn off when the slide
+        sets the text itself, so only the grid's headings read as tokens. */
+    showTokens?: boolean;
   }
 
-  let { tokens: tokenString, vocabulary: vocabString, step }: Props = $props();
+  let { tokens: tokenString, vocabulary: vocabString, step, showTokens = true }: Props = $props();
 
   const tokenList = $derived(splitTokens(tokenString));
   const vocab = $derived(vocabString ? splitTokens(vocabString) : getVocabulary(tokenList));
@@ -32,14 +35,16 @@
   );
 </script>
 
-<div class="static-grid-tokens">
-  {#each tokenList as token, i}
-    <code
-      class:highlight={currentPair && (i === currentPairIndex || i === currentPairIndex + 1)}
-      class:dimmed={currentPair && i > currentPairIndex + 1}>{token}</code
-    >
-  {/each}
-</div>
+{#if showTokens}
+  <div class="static-grid-tokens">
+    {#each tokenList as token, i}
+      <code
+        class:highlight={currentPair && (i === currentPairIndex || i === currentPairIndex + 1)}
+        class:dimmed={currentPair && i > currentPairIndex + 1}>{token}</code
+      >
+    {/each}
+  </div>
+{/if}
 
 <BigramCountsTable
   {vocab}

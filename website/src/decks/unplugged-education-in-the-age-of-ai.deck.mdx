@@ -592,7 +592,9 @@ the text never says (the dog sat on the mat). step 15 is one past the last
 of the 14 pairs, so the grid shows complete with no pair still ringed.
 ```
 
-<StaticGrid tokens={TOUR_TOKENS} step={15} />
+_the cat sat on the mat. the dog sat on the cat._
+
+<StaticGrid tokens={TOUR_TOKENS} step={15} showTokens={false} />
 
 ```notes
 Two short sentences on this slide and the next two. Every word pair becomes a tally mark in a grid cell: the row is the current token, the column is the token that followed it.
