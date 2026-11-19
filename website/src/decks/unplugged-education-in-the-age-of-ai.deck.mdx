@@ -38,16 +38,15 @@ export const TOUR_LEDGER = entriesFromTokens(splitTokens(TOUR_TOKENS));
 ```comment
 The keynote at the Quantum Victoria STEM Conference, Macleod (Melbourne),
 Friday 20 Nov 2026: a 60-minute slot, about 45 minutes of talk then
-questions, to 70-120 STEM teachers in the lecture theatre. A talk, not a
-workshop: everyone holds a search sheet and puts a hand up, and for the agent
-round a few of them check their email.
+questions, to 70-120 STEM teachers in the lecture theatre. Everyone holds a
+search sheet and puts a hand up, and for the agent round a few check their
+email.
 
 The argument: Bandura's "nor believe they can do much to influence" is the
-failure AI is manufacturing, and unplugged (the mechanism made visible, at
-human scale) is the cure. Not a talk about AI being stupid: the real systems
-are extraordinary, and the paper model is the same loop at a scale you can
-see. Every "look what the paper one can't do" beat points at a concept, not
-at a failing of real models.
+failure AI is manufacturing, and unplugged (making the mechanism visible at
+human scale) is the remedy. The real systems are extraordinary, and the
+paper model runs the same loop at a scale you can see. Every limit of the
+paper model points at a concept, rather than a failing of real models.
 
 Corpus: The Cat in the Hat and Hemingway's Cat in the Rain, as two
 documents, dealt into 50 sheets (printed). The numbers on the "two books",
@@ -65,7 +64,7 @@ she/he and scale slides are for this corpus at n=2.
 ```notes
 Forty-five minutes, then questions.
 
-Don't hand out the sheets yet. They get read too early otherwise, and the reveal is worth protecting.
+Hold off handing out the sheets until slide 7 so people don't read ahead.
 ```
 
 ---
@@ -89,7 +88,7 @@ Don't hand out the sheets yet. They get read too early otherwise, and the reveal
 </div>
 
 ```notes
-Who I am, left to right: the PhD, the lecturer, the kids. The last couple of years teaching people how language models work with paper and dice, from primary classrooms to university lecture theatres.
+Left to right: the PhD, the lecturer, the kids. I've spent the last couple of years teaching language models with paper and dice, in primary classrooms through to university lecture theatres.
 ```
 
 ---
@@ -107,13 +106,11 @@ Who I am, left to right: the PhD, the lecturer, the kids. The last couple of yea
 > <cite>Albert Bandura, 2001</cite>
 
 ```notes
-Bandura wrote this in 2001, about technology in general, and it has aged into a description of this year. I want to point it at one technology in particular.
+Bandura wrote this in 2001 about technology in general, and it reads like a description of this year. Read it whole first, then two clicks for the two clauses.
 
-Read it out whole first, with nothing lit up. Then two clicks, because there are two failures in that sentence and they are not equal.
+First click (`neither understand`): ordinary. I don't understand my car's transmission and I get by.
 
-First click, `neither understand`: ordinary. I don't understand my car's transmission and I get by.
-
-Second click, `nor believe they can do much to influence`: the expensive one. Having concluded, in advance, that this is not a thing you get a say in. That's the failure AI is currently manufacturing at scale, and it's the one this talk is aimed at.
+Second click (`nor believe they can do much to influence`): the expensive one. Deciding in advance that you get no say in how this works. AI is manufacturing that belief at scale.
 ```
 
 ---
@@ -128,13 +125,13 @@ it **understands** you---it's basically a mind
 <p class="fragment">it's **just autocomplete**---a parlour trick</p>
 
 ```notes
-A one-two. First line on its own: this is the story you get from the people selling it, and it's everywhere. Let it land as if you agree.
+First line: the story from the people selling it. Let it land.
 
-Click. The opposite story, from the people who want you to stop worrying. Equally confident.
+Click: the opposite story, from the people who want you to stop worrying.
 
-Then the knock-down: they're opposites that do the same job. Each one tells you there's nothing in the middle worth your attention. Either it's beyond you, or it's beneath you. Either way, don't look inside.
+They're opposites that do the same job: both tell you there's nothing in the middle worth looking at. Either it's beyond you or it's beneath you.
 
-Say plainly where you stand, because the rest of the talk could be misheard: I'm not here to tell you it's a parlour trick. The real ones are extraordinary, and I use them every day. That's exactly why it's worth seeing inside.
+To be clear on where I stand: it isn't a parlour trick. The frontier models are extraordinary, and I use them every day, which is why it's worth seeing how they work.
 ```
 
 ---
@@ -142,7 +139,7 @@ Say plainly where you stand, because the rest of the talk could be misheard: I'm
 ![bg](./assets/bg-cs-unplugged.avif)
 
 ```notes
-No words on the wall: this is the old idea the rest of the talk leans on. Hands up if you've run a CS Unplugged activity.
+Hands up if you've run a CS Unplugged activity.
 ```
 
 ---
@@ -153,17 +150,16 @@ No words on the wall: this is the old idea the rest of the talk leans on. Hands 
 
 computer science **without the computer**
 
-the **idea**, not the device: binary on cards, sorting networks in chalk on the
-playground
+binary on cards, sorting networks in chalk on the playground
 
 CS Unplugged: Tim Bell, Ian Witten and Mike Fellows, since the 1990s
 
 ```notes
-For everyone who didn't put a hand up: CS Unplugged has been teaching computer science without computers for about thirty years. Five cards with dots on them, and a class counts in binary. A sorting network chalked on the playground, and the class sorts itself by walking it.
+For anyone who hasn't used it: CS Unplugged has taught computer science without computers for thirty years. Five dotted cards and a class counts in binary; a sorting network chalked on the asphalt and the class sorts itself by walking through it.
 
-It works because the device hides the idea. On a screen, the interesting part happens where you can't see it. On paper, with bodies, it happens slowly and in front of you, and nobody's waiting for a login.
+A screen hides the mechanism. On paper, with people moving around, the steps happen slowly in front of you, and nobody is stuck waiting for a login.
 
-My claim is that this matters more now than when it started. The less you can see inside a technology, the more it's worth taking it apart by hand. And there has never been a technology people can see less of than this one.
+The less you can see inside a technology, the more you gain by taking it apart by hand.
 ```
 
 ---
@@ -175,7 +171,7 @@ My claim is that this matters more now than when it started. The less you can se
 it's hard to have an opinion on a machine you've never seen **the inside of**
 
 ```notes
-So let's look inside. Not a diagram of the inside --- the inside. Have the sheets handed out; once everyone has one, ask them to pick it up.
+Hand the sheets out now. Once everyone has one, ask them to pick it up.
 ```
 
 ---
@@ -187,7 +183,7 @@ So let's look inside. Not a diagram of the inside --- the inside. Have the sheet
 <GenerationLoop />
 
 ```notes
-No words. Let it run while you say it once more, plainly: start somewhere, look at what could come next, pick one at random in proportion, write it down, and that's the new starting point. Over and over. Everything else in this talk is that loop, bigger.
+Let it run while you state the loop once more: start with a token, check what can follow it, pick one at random in proportion to the counts, write it down, and repeat from the new token. Everything else in this talk is that loop scaled up.
 ```
 
 ---
@@ -199,11 +195,9 @@ No words. Let it run while you say it once more, plainly: start somewhere, look 
 the sentence we wrote is **not in any book**
 
 ```notes
-Nobody wrote it. There was no lookup and no database of sentences. It came out of a pile of paper and a series of coin tosses.
+Nobody wrote that sentence. There was no database of sentences to look up; we generated it from a pile of paper and a series of coin tosses.
 
-That's the whole trick, and you have now watched it happen from the inside.
-
-Then ask: which book do you think your sheets came from? Take a guess or two. Someone will say Cat in the Hat; almost nobody gets the second one. Click on.
+Ask the room: which book do you think your sheets came from? Someone will spot The Cat in the Hat; almost nobody gets the second one.
 ```
 
 ---
@@ -219,13 +213,11 @@ _The Cat in the Hat_ and Hemingway's _Cat in the Rain_
 nothing **outside the books** can come out
 
 ```notes
-The reveal: Dr Seuss, and a Hemingway short story from 1925 that most people haven't read, about an American couple in a hotel in Italy and a cat sheltering from the rain. Two books, joined at one shared word: "cat".
+Dr Seuss, plus a 1925 Hemingway short story about an American couple in an Italian hotel and a cat out in the rain. Two texts joined by one shared noun: `cat`.
 
-Now that you've seen it, three things are easier to see here than they are with Claude. First, training data. Every one of the 3,276 pairs in the two books is on exactly one sheet. The model wasn't in my laptop and it wasn't on anyone's sheet --- for those few minutes it existed only across the whole room. If somebody had stayed home, part of it would have been missing.
+Three properties of language models are much easier to see here than in Claude. First, training data. Every one of the 3,276 pairs in those two texts is on a single sheet in this room. For the last five minutes the model existed across the room as a whole; anyone who stayed home took a piece of it with them.
 
-And it can only recombine what it was given. Ask it about Melbourne and there's no `Melbourne` row anywhere in the room. Swap the books and you'd have a different model with exactly the same machinery: same sheets, same hands, same coin tosses, different sentences.
-
-A frontier model is the same in this respect. What it can say comes from what it read, and what it read was a choice.
+And the model can only recombine what it was given. Ask about Melbourne and there's no `Melbourne` row in the room. Swap the texts and the same sheets, hands and coin tosses produce completely different sentences. Frontier models work the same way: what they can say comes from what they read, and someone chose what they read.
 ```
 
 ---
@@ -240,9 +232,9 @@ hands up if `she` is boxed on your page
 <p class="fragment">`she` → said, **liked ×6**, smiled, studied, stood, sat, held, talked...</p>
 
 ```notes
-Second, bias, and the room can show it. Call `she`: hands up if it's the boxed token on your page. About 40 hands (more if the second copy is out). Take three or four, read out what's beside it.
+Second, bias. Call `she`: hands up if it's a boxed token on your page (~40 hands). Have three or four people read out the word next to it.
 
-Click for the full list from the room. This is Hemingway's wife, who spends the story at a window, liking things and wanting a cat: she liked, she smiled, she studied, she stood. Six `she liked` in the room.
+Click for the full tally. This comes from Hemingway's wife, who spends the story at a hotel window wanting a cat: she liked (six times), she smiled, she studied, she stood.
 ```
 
 ---
@@ -257,13 +249,13 @@ now `he`
 <p class="fragment">`he` → said, was, should, **fell**, lit, shut, put, picked, ran, got...</p>
 
 ```notes
-Then `he`: about 30 hands. Same again, three or four read out.
+Call `he` (~30 hands) and take three or four readings.
 
-Click. Ask this model about `he` and you mostly get the Cat in the Hat, who knocks things over: he fell, he lit, he shut, he picked, he ran. And not one `he liked`.
+Click. Ask this model about `he` and you mostly get the Cat in the Hat knocking things over: he fell, he lit, he shut, he picked, he ran, and zero `he liked`.
 
-That's not "women like things and men do things". It's two books, one from 1925. But the model can't tell the difference between what these books say and what the world is like. It has nothing else to go on.
+Our corpus is two texts, one from 1925, and the model has no way to separate what those texts say from what the world is like.
 
-Real models read a large part of the internet, and the internet has its own `she` and `he`. Nobody put the bias in on purpose. It came in with the books. The labs put serious work into finding and correcting it, and it's hard work for exactly the reason you've just seen: it isn't a bug in the machinery, it's in the data.
+Frontier models train on large slices of the internet, which has its own `she` and `he` distributions. The bias enters with the training text, and mitigating it takes serious work after the fact because the counting machinery itself is doing its job.
 ```
 
 ---
@@ -272,22 +264,22 @@ Real models read a large part of the internet, and the internet has its own `she
 
 ![bg right:40%](./assets/bg-design-your-model.avif)
 
-the **books**: Seuss and Hemingway, not your school library
+the **books**: Seuss and Hemingway
 
-the **context**: one word back, not ten
+the **context**: one word back
 
 the **tokens**: a full stop counts as a word
 
-the **rule for picking**: any hand at random, not the fastest
+the **sampling rule**: pick any hand at random
 
 ```notes
-Third, design decisions. Every line here was a choice, and I made all of them before you walked in.
+Third, design choices. I made every decision on this slide before you walked in.
 
-I chose the books. I chose to look one word back, which is why the sentence wandered. I chose to make punctuation a token, which is why full stops were out there getting picked like everything else.
+I chose the two texts. I set the context window to one word back, which is why our sentence lost its thread. I made punctuation a token, so full stops got called and picked like words.
 
-And the last one you lived through. Each pick was random, but picking at random was my rule. If I'd taken the fastest hand, the model would say whatever the quickest readers in the room had on their sheets. Same sheets, different sentences, and nobody touched the data.
+And I chose the sampling rule: pick a hand at random. If I'd picked the fastest hand instead, we'd have sampled the quickest readers in the front rows without changing a word of the data.
 
-Real models are made of decisions like these, made by people at companies: what to read, how to cut it into tokens, how much randomness to allow, what to train it to refuse. When someone says "the AI decided", it's worth asking who chose the books.
+Commercial models are built out of the same kinds of decisions: what goes into the training set, how text is tokenised, how much randomness is used at generation time, what the model is trained to refuse. When someone says "the AI decided", ask who chose the books and the rules.
 ```
 
 ---
@@ -306,13 +298,13 @@ Real models are made of decisions like these, made by people at companies: what 
 />
 
 ```notes
-Three independent scales grow. The first is how much the model looks at before each guess. Ours looked at exactly one token --- which is why our sentence wandered --- and Claude looks back over up to a million tokens, the whole conversation and then some.
+Three independent dials separate our room from a frontier LLM. First, context window: how much text the model sees before each guess. We looked one token back; Claude looks back up to a million tokens.
 
-The second is how much text went past the counter. Ours read 3,278 tokens; fifteen trillion is the published figure for a recent open model's training run.
+Second, training data: how many tokens went past the counter. Ours saw 3,278 tokens; a recent open-weights model trained on fifteen trillion.
 
-The third is how much the model holds. Ours is the 3,276 token pairs on your sheets. A trillion learned numbers --- parameters --- is the right order of magnitude for a frontier model (the exact figure for the closed ones is unpublished).
+Third, model size: we held 3,276 token pairs on paper, where a frontier model holds roughly a trillion learned parameters (closed labs don't publish exact counts).
 
-The bars have separate scales because these quantities can be changed independently. And the endpoints are different kinds of model: token pairs on the left, neural-network parameters on the right. This is a scale comparison, not a claim that one is a compressed version of the other.
+Each bar has its own scale because the three dials move independently, and the endpoints are different architectures: lookup counts on the left, neural network weights on the right.
 ```
 
 ---
@@ -328,11 +320,7 @@ agents that work through a software task **for hours** on their own
 research assistants that read **hundreds of sources** and write it up
 
 ```notes
-Don't rush this one. The paper model is small on purpose; the real ones are not small in any sense, and the room should feel it.
-
-These are examples, not a list to defend: swap in whatever is newest on the day, or something from your own work. The best one is personal --- what you had an agent do this week that would have taken you a day.
-
-The point to land: nothing the room did was a toy version of a trick. It's the same kind of loop that, scaled up and with better machinery, does this. Two examples from Ethan Mollick, who posts the clearest ones going.
+Our paper model is tiny so you can see the parts; at frontier scale, with neural networks instead of tally tables, the results are extraordinary. Swap in an example from your own week if you have a fresh one, then show the two Ethan Mollick clips.
 ```
 
 ---
@@ -343,7 +331,7 @@ The point to land: nothing the room did was a toy version of a trick. It's the s
 />
 
 ```notes
-Zork is a 1977 text adventure: no pictures at all, just "You are standing in an open field west of a white house". He asked a model to turn it into a 3D action game. It kept the plot and puzzles, added the fights, and built every character and room in code. Some of you will have played the original.
+Zork is a 1977 text adventure ("You are standing in an open field west of a white house"). Mollick asked a model to turn it into a 3D action game: it kept the map and puzzles, added combat, and wrote the 3D rendering and game logic in code.
 ```
 
 ---
@@ -354,7 +342,7 @@ Zork is a 1977 text adventure: no pictures at all, just "You are standing in an 
 />
 
 ```notes
-One instruction: build an endless journey through 3D worlds linked by portals. Twenty-five thousand agents later, there are over 450 of them, inspired by books, art and places. Nobody wrote that code by hand. This is the work agents do now, unattended.
+One prompt: build an endless journey through 3D worlds linked by portals. Twenty-five thousand cooperating agents generated over 450 worlds in code, unattended.
 ```
 
 ---
@@ -366,9 +354,7 @@ One instruction: build an endless journey through 3D worlds linked by portals. T
 and it's still just **words in → words out**
 
 ```notes
-The set-up. Say it like you believe it: every reply from Claude or ChatGPT is produced one word at a time, by the loop you just ran with your hand in the air. The model really is words in, words out.
-
-Pause on it. Then click.
+Every reply from Claude or ChatGPT still comes out one token at a time through that same generation loop. Pause, then click.
 ```
 
 ---
@@ -380,7 +366,7 @@ Pause on it. Then click.
 **however...**
 
 ```notes
-The knock-down. That's true of the model, and the model isn't the whole thing any more. Words in, words out doesn't send an email, book a flight or fix the bug in your code. Something else does.
+That's true of the model, and the model is no longer the whole system. Words in, words out can't send an email, book a flight or run a test suite.
 ```
 
 ---
@@ -396,11 +382,9 @@ the **harness**: runs the loop, calls tools, asks permission---that was me
 the **tools**: files, the web, a terminal, **your inbox**
 
 ```notes
-In 2026 the thing people call Claude is mostly the second and third lines. The model writes something that looks like a request. The software around it --- the harness --- notices, runs the tool, pastes the result back into the text, and the model carries on writing. Simon Willison's definition is the best one going: an agent is a model that runs tools in a loop to achieve a goal.
+What people call Claude in 2026 is a model wrapped in a harness with tools. The model emits tokens formatted as a tool request; the harness intercepts that request, runs the tool, pastes the output back into the context window, and lets the model continue generating. Simon Willison's summary: an agent is a model running tools in a loop to achieve a goal.
 
-You've already seen a harness at work. During the run I called out the word, picked the hand and wrote the result down. The model never did any of that. I did.
-
-So let's give our model a tool.
+You already watched a harness during our first run: I called the context word, picked the hand and wrote the token on the board. Now let's give our harness a tool.
 ```
 
 ---
@@ -408,9 +392,7 @@ So let's give our model a tool.
 ![bg](./assets/bg-phone.avif)
 
 ```notes
-Another set-up, and don't explain it yet. Phones out, open your email. That's all. They'll find out why on the next slide.
-
-It's the one tool in this talk that isn't paper.
+Phones out, open your email app. Next slide explains why.
 ```
 
 ---
@@ -429,11 +411,11 @@ inbox
 first hand up gets it---and gets **a veto**
 
 ```notes
-Walk it once. When the word that comes up has an `a` in it --- `cat`, `hat`, `that`, `and` --- stop: the model has just made a tool call. That's about one word in four in these books, so expect a call within a minute.
+When the token we pick contains the letter `a` (`cat`, `hat`, `that`, `and`, roughly one word in four here), we trigger a tool call.
 
-Ask the room for the tool: second word of the subject of the third email in your inbox. A reply's "Re:" counts as the first word, so it's usually the real one. Take the first hand that has a word ready, and before they read it out, ask: "Happy to share that?" They can say no. If they do, say so out loud: that was the permission prompt.
+The tool reads the second word of the subject line of the third email in your inbox ("Re:" counts as word one). Take the first hand with a word ready, and before they speak, ask: "Happy to share that?" They can decline --- that's the permission prompt.
 
-Write the inbox word down after the `a` word, then call out the `a` word again and carry on from it. Our model has no row for whatever came back from someone's inbox, so it has to pick up from the word before.
+Write the inbox word on the board after the `a` word, then call the `a` word again to continue. Because our paper sheets have no entries for arbitrary words from someone's email, the bigram model has to resume from the last token it knows.
 ```
 
 ---
@@ -451,9 +433,9 @@ the BoardText box for writing. The box opens on the first board's sentence.
 <Timer minutes={3} overlay />
 
 ```notes
-Shift-W (or click the board and type), write the last two words of the room's sentence, call out the last one, go. Three minutes, two or three tool calls, then stop.
+Shift-W (or click the board and type), put up the last two words of our sentence, call out the last one, go. Run for three minutes or two to three tool calls.
 
-Narrate the harness as you go, once: "the model's just written a word with an `a` in it; that's my cue, not its decision." And when the inbox word lands, point out that the next hands go up for the word before it, not for the email's word. The bigram can't read what the tool sent back.
+Point out two things as they happen: an `a` word is the harness's cue to call a tool, and after the email word lands on the board, the room has to match on the `a` word before it because the bigram table can't condition on the tool's output.
 ```
 
 ---
@@ -473,9 +455,9 @@ the word you read out → the **tool result**
 me, coordinating all of that → the **harness**
 
 ```notes
-Every agent you'll read about is this, with a lot more tools and a lot less asking.
+Production agents use the same five pieces, with more tools and fewer permission prompts.
 
-One more thing worth thirty seconds. Our model ignored the word from the inbox: it carried on from the word before. Claude doesn't. The email's text goes into what it reads next. So anyone who can send you an email can put words in front of your agent --- including words that look like instructions. That has a name, prompt injection, and it's one of the big open problems for everyone building agents. Your students can now say what it is and why it happens.
+Notice one difference: our bigram model had to ignore the inbox word and continue from the token before it, whereas a real LLM feeds the email text straight into its context window. Anyone who sends you an email can put text into your agent's context, including text written like instructions. That's prompt injection, and after this exercise a class can see why it happens.
 ```
 
 ---
@@ -498,9 +480,7 @@ across the semester, per Ben.
 ```
 
 ```notes
-Some evidence that the real ones are as good as I've been saying, from my own teaching. This year I ran a new course at ANU where every student builds software with a coding agent. Not a demo: each of them designed, built and shipped about ten working web apps over the semester, the last one with a real database behind it, live on the web for anyone to use.
-
-A one-semester unit where every student ships a full-stack app with an agent is only possible because the agents are that good.
+In my new ANU course this semester, 128 students built and deployed roughly ten working web apps each using coding agents, ending with a database-backed full-stack app live on the web. You can only run a semester course at that pace because coding agents now hold up on real software.
 ```
 
 ---
@@ -516,11 +496,9 @@ the **tools**: what it may run, and when it has to ask
 the **loop**: tests and checks that tell it when it's wrong
 
 ```notes
-And here's the part that matters for this room. The course doesn't teach tricks for a particular tool; one of its learning outcomes is to explain how these agents work. To use them well, students had to understand what kind of thing they were working with.
+In COMP4020, students have to learn the machinery: what sits in the context window, which tools and permissions the harness exposes, and how automated tests feed failures back into the loop so the agent can self-correct.
 
-What it can see: the context window, the same idea as our one word of context, scaled up. What it may do: tools and permissions, the round we just ran. And the loop: the agent writes, a test runs, the result goes back into the text, it tries again. That's the harness, and building a good one is a big part of the course.
-
-Every one of those you've just acted out on paper. The concepts my university students needed to work with agents are the ones your students can act out in a lesson.
+You've just acted out all three on paper. The mental model university students need for agentic coding is the same one school students can run in a classroom.
 ```
 
 ---
@@ -532,9 +510,9 @@ Every one of those you've just acted out on paper. The concepts my university st
 the question has moved from what it **says** to what it's **allowed to do**
 
 ```notes
-With a chatbot, the worry is what it says. With an agent, the worry is what it does: which tools it gets, what it may do without asking, when a person has to say yes.
+With a chatbot, you worry about what it says. With an agent, you worry about what it's allowed to do: which tools are wired up, what runs automatically, and where a human has to approve.
 
-Those aren't facts about the model. They're settings someone chose. That's exactly where Bandura's "influence" stops being abstract: a school can decide what an agent may touch, a teacher can decide what it may do in their class, and a student can decide what they'll let it read.
+Those are harness settings, chosen by whoever deploys or runs the system. That's where Bandura's "influence" becomes concrete for a school, a teacher or a student deciding what an agent is allowed to read and touch.
 ```
 
 ---
@@ -542,7 +520,7 @@ Those aren't facts about the model. They're settings someone chose. That's exact
 ![bg](./assets/bg-sticks-and-stones.avif)
 
 ```notes
-Sticks and stones may break my bones, but words will never hurt me. For an agent, words are actions: the model writes words, and the harness turns them into an email sent, a file deleted, a payment made. Riff from there.
+"Sticks and stones may break my bones, but words will never hurt me." In an agent, words are actions: the model only emits tokens, and the harness turns those tokens into an email sent, a file deleted, or a purchase made.
 ```
 
 ---
@@ -555,9 +533,7 @@ the tools will change by next term; the **concepts** won't, and they fit on
 **paper**
 
 ```notes
-That's the case for unplugged in your classroom. Teaching students to use this term's AI tool is teaching to a moving target. The concepts underneath --- tokens, a distribution, sampling, training data, design decisions, a harness running tools in a loop --- hold still, and you've just seen every one of them on paper.
-
-The systems built on those ideas are the most capable software most of your students will ever use, and the ideas themselves fit in a lesson.
+Training a class on this term's AI product is chasing a moving target. Tokens, distributions, sampling, training data, design choices, and a harness running tools in a loop hold still across model generations, and every one of them works on paper.
 ```
 
 ---
@@ -569,7 +545,7 @@ The systems built on those ideas are the most capable software most of your stud
 everything you've seen today is **free**, and online **now**
 
 ```notes
-The call to action, and a quick tour. Everything in this talk, and a lot more, is on the website, free and Creative Commons licensed. The sheets you're holding are one way to deal out a model. Here are three more.
+Everything from this talk is on the website under a Creative Commons licence. The search sheets in your hands are one way to run a model with a group; here are three other formats on the site.
 ```
 
 ---
@@ -586,9 +562,9 @@ of the 14 pairs, so the grid shows complete with no pair still ringed.
 <StaticGrid tokens={TOUR_TOKENS} step={15} />
 
 ```notes
-Two short sentences, small enough that the whole model fits on a slide, and the same two on the next two slides. Every pair is a tally mark in a cell: row is the token we're on, column is the one that came next.
+Two short sentences on this slide and the next two. Every word pair becomes a tally mark in a grid cell: the row is the current token, the column is the token that followed it.
 
-Point at the `the` row: two marks under `cat`, one under `mat`, one under `dog`. Call `the` in this room and four hands go up, two of them saying `cat`. In the grid lessons, students build this from a text by hand, then roll dice to generate from it. Years 9 and up.
+In the `the` row: two marks under `cat`, one under `mat`, one under `dog`. In the grid lessons (Years 9 and up), students build this table from a short text by hand and roll dice to sample from it.
 ```
 
 ---
@@ -607,9 +583,9 @@ _the cat sat on the mat. the dog sat on the cat._
 </div>
 
 ```notes
-The same two sentences as a ledger: one row per word, and a tally for every word that followed it. The `the` row is the same as the grid's, two for `cat` and one each for `mat` and `dog`. To generate, you count the tallies into a cup as coloured counters and draw one out. No arithmetic at all, which is why it works from year 5.
+The same two sentences as a ledger: one row per distinct word, with a tally for each word that followed it. To sample from the `the` row, students drop two `cat` counters, one `mat` counter and one `dog` counter into a cup and draw one blind. No fractions or dice arithmetic, so it works from Year 5 up.
 
-That's the workshop next door, if you're in it.
+We're running this activity in workshop 2A next door.
 ```
 
 ---
@@ -630,7 +606,7 @@ _the cat sat on the mat. the dog sat on the cat._
 </div>
 
 ```notes
-And as cutouts: every token pair from the same two sentences on its own slip of paper. Find a slip whose first word matches the last word you wrote, write its second word, go again. The chain grows like dominoes: here it's writing "the dog sat on the...", which neither sentence says. The youngest classes can do it.
+And as paper cutouts for younger classes: every token pair on its own slip. Match the boxed word on a slip to the last word you wrote, copy down the next word, and chain them like dominoes. Here it produces "the dog sat on the...", recombining the two sentences into a line neither of them had.
 ```
 
 ---
@@ -646,7 +622,7 @@ And as cutouts: every token pair from the same two sentences on its own slip of 
 the **tools page**: booklets, ledgers and cutouts from any text you paste in
 
 ```notes
-Every lesson has a deck like this one, with notes for the teacher, and the printouts zipped up in one place. And the tools page makes the materials from any text: a book your class is reading, their own writing, song lyrics. That's how you get the bias discussion out of their own text.
+Each lesson comes with a slide deck, teacher notes and a print pack. The tools page generates booklets, ledgers, cutouts or search sheets in the browser from any text you paste in --- a class novel, song lyrics, or the students' own writing.
 ```
 
 ---
@@ -658,7 +634,7 @@ Every lesson has a deck like this one, with notes for the teacher, and the print
 workshop **2A**, next door: build your own model, by hand, from scratch
 
 ```notes
-A quick plug. If you're in workshop 2A, that's the ledger lesson: you build a model from a picture book, then generate stories from it with a cup of counters, and you take it all home to run with your class.
+If you're signed up for workshop 2A next door, we'll build a ledger model from a picture book and sample stories from it with a cup of counters.
 ```
 
 ---
@@ -677,13 +653,11 @@ the window
 and someone has to be the **harness**
 
 ```notes
-The practical side, quickly.
+Most commercial chatbots prohibit under-13s or under-18s in their terms of service; paper has no logins or age gates.
 
-No devices, no accounts, no age limits. Most of the big chatbots are 13-plus or 18-plus by their own terms; a sheet of paper isn't.
+When students feed in their own text and check what follows `she` and `he`, data bias comes out of their own writing.
 
-Let students choose the text, and ask what the model says about `she` and `he`. Bias stops being a lecture topic when it comes out of their own text.
-
-Phones are the wrong tool in a classroom, so the agent round needs a different one. The tools become students with a job: the second word of the title of the third book on the shelf, the time on the clock, what's outside the window. And one student is the harness, deciding what goes in and when to ask. That role starts the best discussion: what would you let it do without asking you first?
+And in a classroom you don't need phones for the agent round. Assign students as tools: one reads the second word of the third book on the shelf, one reads the clock, one reports what's outside the window. Another student acts as the harness, deciding when to call a tool and when to ask permission.
 ```
 
 ---
@@ -698,11 +672,9 @@ a room full of people just ran, slowly, the thing you're told needs a data
 centre---and decided what it was allowed to do
 
 ```notes
-Read the clause off the slide again --- it's the one we lit up at the start, and it's the one the last forty-five minutes were aimed at.
+Back to Bandura's second clause. The technologies he wrote about in 2001 were visibly machines. This one talks back and takes actions, and it's marketed as either a mind or magic --- two stories that leave you as a spectator.
 
-The technologies Bandura was worried about in 2001 were at least visibly machines. This one talks back, and now it acts, and the people selling it have an interest in you believing it's either a mind or a magic trick. Both stories end with you having no view.
-
-Paper and hands in the air is the cheapest known cure for that.
+Running the loop on paper with your hands in the air takes that mystique away.
 ```
 
 ---
@@ -714,9 +686,7 @@ Paper and hands in the air is the cheapest known cure for that.
 none of this makes you an **expert**
 
 ```notes
-The set-up, said as a concession. Be careful not to oversell. You can't build Claude now, and nothing here tells you whether it should be marking your students' essays.
-
-Pause. Click.
+You still can't build Claude from scratch, and this doesn't settle your school's assessment policy for you. Pause, then click.
 ```
 
 ---
@@ -728,9 +698,9 @@ Pause. Click.
 it makes you **harder to bullsh\*t**, in **either** direction
 
 ```notes
-The knock-down, and the callback: this is the picture from the start. What you can do is hear a claim about AI and have somewhere to stand --- you know what kind of thing it is, which claims need more than confidence behind them, and which questions are worth asking. Who chose the books? What is it allowed to do?
+Callback to the opening slide. Once you've been inside the loop, you have somewhere solid to stand when people make big claims about AI. You know to ask who chose the training data, and what the harness is allowed to do.
 
-And it cuts both ways. You're harder to sell "it's a mind", and just as hard to sell "it's only autocomplete". Neither survives having run one.
+And it works against both bad stories: "it's a mind" and "it's just autocomplete" both fall apart once you've run one by hand.
 ```
 
 ---
@@ -740,7 +710,7 @@ And it cuts both ways. You're harder to sell "it's a mind", and just as hard to 
 ![qr](https://www.llmsunplugged.org/)
 
 ```notes
-Everything --- the lessons, the decks, the printable materials, the tools page --- is at that address, free and Creative Commons licensed. Hold here long enough for the room to scan it, then move to questions.
+Lessons, decks, print packs and the custom text generator are all at llmsunplugged.org under a Creative Commons licence. Leave this up while we take questions.
 ```
 
 ---
@@ -752,7 +722,7 @@ Everything --- the lessons, the decks, the printable materials, the tools page -
 ![bg](./assets/bg-dialogue.avif)
 
 ```notes
-Go back to the QR slide near the end so latecomers can scan it, then finish on the School mark.
+Flip back to the QR slide near the end so latecomers can scan it, then finish on the School mark.
 ```
 
 ---

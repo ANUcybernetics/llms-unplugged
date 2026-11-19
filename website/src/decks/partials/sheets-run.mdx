@@ -5,11 +5,11 @@ a page of **token pairs** --- a word, and the word before it
 ![bg](./assets/bg-cutouts-overview.avif)
 
 ```notes
-Hold one up: a sheet of token pairs. The boxed token is the word that came before; the one beside it is what followed it, somewhere in the text. Mostly words, some punctuation. Every word keeps the same colour wherever it appears, so you scan by colour and confirm by reading.
+Hold one up: a sheet of token pairs. The boxed token is the word that came before; the one beside it is what followed, somewhere in the text. Mostly words, some punctuation. Every word keeps the same colour wherever it appears, so you scan by colour and confirm by reading.
 
-Say it once and move on: a token is one word or one punctuation mark. The role-mapping slide is where it sticks.
+A token is one word or one punctuation mark.
 
-The shuffle is worth naming: in text order these pages would just be the book with boxes drawn round it, and you'd read it. Shuffled, no page says anything. Nobody here is holding a story.
+Why is it shuffled? In text order these pages would just be the book with boxes drawn round it. Shuffled, nobody here is holding a story.
 
 Ten seconds to scan the sheet, then eyes up.
 ```
@@ -26,13 +26,13 @@ Ten seconds to scan the sheet, then eyes up.
 4. I **write it down**, and we go again
 
 ```notes
-Walk it once, slowly. Reading it off the screen is fine.
+Walk it once, slowly.
 
 Step 2: one hand each. More than one match? Go with the first one you spot.
 
-Step 3 is the one to labour, briefly: I pick at random --- not whoever's fastest, because that samples the quickest reader in the room rather than the text. Random is what makes the room behave like the model. Don't explain why yet; they'll see it.
+Step 3: I pick at random. Taking the fastest hand would sample the quickest reader in the room rather than the text.
 
-Then the seed: someone near the front, sheet in hand, reads out any one pair, boxed word first. It matters that it came off a sheet rather than out of your head --- the room supplies the first two words as well as every word after them. If their pair is an odd one (a full stop, a name that appears once), take it anyway: a thin first round is a real property of the model, not a failure. It can't dead-end on you, so you never need a second volunteer.
+For the seed: someone near the front reads out any one pair from their sheet, boxed word first. Pulling it off a sheet means the room supplies the first two words as well as every word after them. Take whatever pair they give you, even a full stop or a word that appears once. It can't dead-end.
 ```
 
 ---
@@ -55,13 +55,13 @@ back).
 <Timer minutes={runMinutes} overlay />
 
 ```notes
-Shift-W (or click the board and type), write the volunteer's two words, call out the second of them, go. The timer is the deck's `runMinutes`; aim for 12--15 tokens, write BIG for the back of the room. No commentary between hands going up and a word landing on the board.
+Shift-W (or click the board and type), write the volunteer's two words, call out the second of them, go. Aim for 12--15 tokens, written BIG for the back of the room. Keep the rounds moving.
 
-Narrate two things, once each, without stopping the flow. The hands are the distribution: call a common word and a forest goes up; call a rare one and you get two. Nobody here has been taught weighted sampling and the room is doing it anyway --- the number of hands is how often that continuation happens in the text. (Pedant's footnote, only if a pedant asks: someone holding several matches for one context raises one hand, which flattens the busiest words slightly.) And the choosing is a coin toss: when five hands are up, the four I don't pick were all real continuations. Different pick, different sentence. Same reason the "regenerate" button gives a different answer.
+Narrate two things while it runs. First, the hands are the distribution: call a common word and a forest goes up; call a rare one and you get two. The number of hands for a continuation is how often it happens in the text, so the room is doing weighted sampling without being taught it. (If someone asks: a person holding several matches for one context raises one hand, which flattens the busiest words slightly.) Second, the choice is a coin toss: when five hands are up, the four I don't pick were all real continuations. Pick a different hand, get a different sentence, which is why the "regenerate" button gives a different answer.
 
-Hands will go up every round. Every distinct token appears as a boxed word somewhere, so there is no word you can call that has nothing following it --- don't plan a "running dry" beat. The one way the room goes quiet is an empty seat: that sheet went home with someone, and its pairs are simply gone. Say exactly that, and reseed. The loud seeds for the corpus are on the brief (page 1 of the printed set); avoid restarting from a full stop, or the first thing the room does is argue about punctuation.
+Every distinct token appears as a boxed word somewhere, so hands will go up every round unless a sheet went home with an empty seat. If the room goes quiet, say that's why and reseed from the brief on page 1 (avoid restarting from a full stop).
 
-Stop while they still want more, around 15 tokens. Read the sentence back.
+Stop around 15 tokens and read the sentence back.
 ```
 
 ---
@@ -73,7 +73,7 @@ we just ran a **language model**
 ![bg](./assets/bg-div-reception.avif)
 
 ```notes
-Say it flatly and let it sit. Not a simulation of one, not an analogy for one: the mechanism, at human speed, with the arithmetic small enough to see.
+Say it flatly. The actual mechanism, at human speed, with arithmetic small enough to see.
 ```
 
 ---
@@ -93,7 +93,7 @@ my random pick → **sampling**
 the sentence I wrote → **generation**
 
 ```notes
-The jargon that gets used to make this stuff sound unreachable, and they've now got a physical referent for every bit of it. Go along the list at a fair clip --- the point is the mapping, not a definition of each term.
+Now they have a physical referent for the jargon. Go down the list quickly.
 
-Token: one word or one punctuation mark, which is why the full stops were out there getting picked like everything else. (Only if it comes up: a real model chops rarer words into pieces, which is why it can spell a word it has never seen.) Parameters and weights are the same thing under two names; you'll hear both. When a researcher says a model has a trillion parameters, they mean this: a very large pile of the thing on your lap. The number of pairs the room is holding is on the brief --- say it.
+Token: one word or one punctuation mark, which is why full stops were getting picked like everything else. (If it comes up: real models chop rarer words into sub-word pieces so they can spell words they haven't seen.) Parameters and weights are two names for the same thing. When a researcher says a model has a trillion parameters, they mean a very large pile of what's on your lap. Give the total number of pairs in the room from the brief.
 ```
