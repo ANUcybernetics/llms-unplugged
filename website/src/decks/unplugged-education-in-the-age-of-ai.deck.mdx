@@ -241,7 +241,7 @@ hands up if `she` is boxed on your page
 <p class="fragment">`she` → said, **liked ×6**, smiled, studied, stood, sat, held, talked...</p>
 
 ```notes
-Second, bias. Call `she`: hands up if it's a boxed token on your page (~40 hands). Have three or four people read out the word next to it.
+Second, bias. Call `she`: hands up if it's a boxed token on your page (~40 hands). Have three or four people read out the token next to it.
 
 Click for the full tally. This comes from Hemingway's wife, who spends the story at a hotel window wanting a cat: she liked (six times), she smiled, she studied, she stood.
 ```
@@ -275,18 +275,18 @@ Frontier models train on large slices of the internet, which has its own `she` a
 
 the **books**: Seuss and Hemingway
 
-the **context**: one word back
+the **context**: one token back
 
-the **tokens**: a full stop counts as a word
+the **tokens**: whole words, and every punctuation mark
 
 the **sampling rule**: pick any hand at random
 
 ```notes
 Third, design choices. I made every decision on this slide before you walked in.
 
-I chose the two texts. I set the context window to one word back, which is why our sentence lost its thread. I made punctuation a token, so full stops got called and picked like words.
+I chose the two texts. I set the context window to one token back, which is why our sentence lost its thread. I made each word and each punctuation mark a token, so full stops got called and picked like everything else.
 
-And I chose the sampling rule: pick a hand at random. If I'd picked the fastest hand instead, we'd have sampled the quickest readers in the front rows without changing a word of the data.
+And I chose the sampling rule: pick a hand at random. If I'd picked the fastest hand instead, we'd have sampled the quickest readers in the front rows without changing the data at all.
 
 Commercial models are built out of the same kinds of decisions: what goes into the training set, how text is tokenised, how much randomness is used at generation time, what the model is trained to refuse. When someone says "the AI decided", ask who chose the books and the rules.
 ```
@@ -298,7 +298,7 @@ Commercial models are built out of the same kinds of decisions: what goes into t
 ```notes
 Take one of those choices: the context. The frame is what the model can see, and everything outside it is dimmed.
 
-At one token back, the fan is wide and close to even: plenty of words can follow `the`. That's why our sentence lost its thread.
+At one token back, the fan is wide and close to even: plenty of tokens can follow `the`. That's why our sentence lost its thread.
 
 Watch the frame widen to two tokens, then four, then the whole row. Each time the fan narrows and one curve gets much heavier, because more of what came before rules more continuations out.
 
@@ -383,10 +383,10 @@ Not a one-shot, though. The paragraph got the first 204 worlds in twenty hours, 
 
 <GenerationLoop />
 
-and it's still **words in → words out**
+and it's still **tokens in → tokens out**
 
 ```notes
-Every reply from Claude or ChatGPT still comes out one token at a time through the generation loop running behind this line. So how does words in, words out build hundreds of worlds? Pause, then click.
+Every reply from Claude or ChatGPT still comes out one token at a time through the generation loop running behind this line. So how does tokens in, tokens out build hundreds of worlds? Pause, then click.
 ```
 
 ---
@@ -398,7 +398,7 @@ Every reply from Claude or ChatGPT still comes out one token at a time through t
 **however...**
 
 ```notes
-That's true of the model, and the model is no longer the whole system. Words in, words out can't send an email, book a flight or run a test suite.
+That's true of the model, and the model is no longer the whole system. Tokens in, tokens out can't send an email, book a flight or run a test suite.
 ```
 
 ---
@@ -407,7 +407,7 @@ That's true of the model, and the model is no longer the whole system. Words in,
 
 ![bg right:40%](./assets/bg-tool-use-operator.avif)
 
-the **model**: words in, words out---that was you
+the **model**: tokens in, tokens out---that was you
 
 the **harness**: runs the loop, calls tools, asks permission---that was me
 
@@ -416,7 +416,7 @@ the **tools**: files, the web, a terminal, **your inbox**
 ```notes
 What people call Claude in 2026 is a model wrapped in a harness with tools. The model emits tokens formatted as a tool request; the harness intercepts that request, runs the tool, pastes the output back into the context window, and lets the model continue generating. Simon Willison's summary: an agent is a model running tools in a loop to achieve a goal.
 
-You already watched a harness during our first run: I called the context word, picked the hand and wrote the token on the board. Now let's give our harness a tool.
+You already watched a harness during our first run: I called the context token, picked the hand and wrote the token on the board. Now let's give our harness a tool.
 ```
 
 ---
@@ -435,7 +435,7 @@ Phones out, open your email app. Next slide explains why.
 
 we carry on from our sentence, same as before
 
-whenever the room's word has an **`a`** in it, that's a **tool call**
+whenever the room's token has an **`a`** in it, that's a **tool call**
 
 the tool: the **second word** of the subject of the **third email** in your
 inbox
@@ -443,15 +443,15 @@ inbox
 first hand up gets it---and gets **a veto**
 
 ```notes
-When the token we pick contains the letter `a` (`cat`, `hat`, `that`, `and`, roughly one word in four here), we trigger a tool call.
+When the token we pick contains the letter `a` (`cat`, `hat`, `that`, `and`, roughly one token in four here), we trigger a tool call.
 
 The tool reads the second word of the subject line of the third email in your inbox ("Re:" counts as word one). Take the first hand with a word ready, and before they speak, ask: "Happy to share that?" They can decline --- that's the permission prompt.
 
-If they decline, write `[declined]` on the board in place of the word and call the `a` word again: a denied tool call goes back into the context as its result, and generation carries on. Thank them: that's the permission prompt working.
+If they decline, write `[declined]` on the board in place of the word and call the `a` token again: a denied tool call goes back into the context as its result, and generation carries on. Thank them: that's the permission prompt working.
 
 Make sure one call gets declined, because the close leans on it. If the first two people say yes, tell the next hand "say no to this one".
 
-Write the inbox word on the board after the `a` word, then call the `a` word again to continue. Because our paper sheets have no entries for arbitrary words from someone's email, the bigram model has to resume from the last token it knows.
+Write the inbox word on the board after the `a` token, then call the `a` token again to continue. Because our paper sheets have no entries for arbitrary words from someone's email, the bigram model has to resume from the last token it knows.
 ```
 
 ---
@@ -469,9 +469,9 @@ the BoardText box for writing. The box opens on the first board's sentence.
 <Timer minutes={3} overlay />
 
 ```notes
-Shift-W (or click the board and type), put up the last two words of our sentence, call out the last one, go. Run for three minutes or two to three tool calls.
+Shift-W (or click the board and type), put up the last two tokens of our sentence, call out the last one, go. Run for three minutes or two to three tool calls.
 
-Point out two things as they happen: an `a` word is the harness's cue to call a tool, and after the email word lands on the board, the room has to match on the `a` word before it because the bigram table can't condition on the tool's output.
+Point out two things as they happen: an `a` token is the harness's cue to call a tool, and after the email word lands on the board, the room has to match on the `a` token before it because the bigram table can't condition on the tool's output.
 ```
 
 ---
@@ -480,7 +480,7 @@ Point out two things as they happen: an `a` word is the harness's cue to call a 
 
 ![bg right:40%](./assets/bg-tool-use-handoff.avif)
 
-a word with an `a` → a **tool call**
+a token with an `a` → a **tool call**
 
 your inbox → the **tool**
 
@@ -648,7 +648,7 @@ _the cat sat on the mat. the dog sat on the cat._
 <StaticGrid tokens={TOUR_TOKENS} step={15} showTokens={false} />
 
 ```notes
-Two short sentences on this slide and the next two. Every word pair becomes a tally mark in a grid cell: the row is the current token, the column is the token that followed it.
+Two short sentences on this slide and the next two. Every token pair becomes a tally mark in a grid cell: the row is the current token, the column is the token that followed it.
 
 In the `the` row: two marks under `cat`, one under `mat`, one under `dog`. In the grid lessons (Years 9 and up), students build this table from a short text by hand and roll dice to sample from it.
 ```
@@ -669,7 +669,7 @@ _the cat sat on the mat. the dog sat on the cat._
 </div>
 
 ```notes
-The same two sentences as a ledger: one row per distinct word, with a tally for each word that followed it. To sample from the `the` row, students drop two `cat` counters, one `mat` counter and one `dog` counter into a cup and draw one blind. No fractions or dice arithmetic, so it works from Year 5 up.
+The same two sentences as a ledger: one row per distinct token, with a tally for each token that followed it. To sample from the `the` row, students drop two `cat` counters, one `mat` counter and one `dog` counter into a cup and draw one blind. No fractions or dice arithmetic, so it works from Year 5 up.
 
 We're running this activity in workshop 2A.
 ```
@@ -701,7 +701,7 @@ _the cat sat on the mat. the dog sat on the cat._
 </div>
 
 ```notes
-And as paper cutouts for younger classes: every token pair on its own slip, all thirteen here. Match the boxed word on a slip to the last word you wrote, copy down the next word, and chain them like dominoes. Start on `the dog` and follow `dog sat`, `sat on`, `on the`, then `the mat`: "the dog sat on the mat", a line neither sentence had.
+And as paper cutouts for younger classes: every token pair on its own slip, all thirteen here. Match the boxed token on a slip to the last token you wrote, copy down the next token, and chain them like dominoes. Start on `the dog` and follow `dog sat`, `sat on`, `on the`, then `the mat`: "the dog sat on the mat", a line neither sentence had.
 ```
 
 ---

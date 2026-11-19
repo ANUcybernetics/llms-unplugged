@@ -1,13 +1,15 @@
 {/* _class: hero */}
 
-a page of **token pairs** --- a word, and the word before it
+a page of **token pairs**
+
+a **token** is one word or one punctuation mark
 
 ![bg](./assets/bg-cutouts-overview.avif)
 
 ```notes
-Hold one up: a sheet of token pairs. The boxed token is the word that came before; the one beside it is what followed, somewhere in the text. Mostly words, some punctuation. Every word keeps the same colour wherever it appears, so you scan by colour and confirm by reading.
+Hold one up: a sheet of token pairs. The boxed token is the one that came before; the one beside it is what followed, somewhere in the text. Mostly words, some punctuation. Every token keeps the same colour wherever it appears, so you scan by colour and confirm by reading.
 
-A token is one word or one punctuation mark.
+Read the definition off the slide: a token is one word or one punctuation mark. From here on it's "token" for everything on the sheets.
 
 Why is it shuffled? In text order these pages would just be the book with boxes drawn round it. Shuffled, nobody here is holding a story.
 
@@ -32,7 +34,7 @@ Step 2: one hand each. More than one match? Go with the first one you spot.
 
 Step 3: I pick at random. Taking the fastest hand would sample the quickest reader in the room rather than the text.
 
-For the seed: someone near the front reads out any one pair from their sheet, boxed word first. Pulling it off a sheet means the room supplies the first two words as well as every word after them. Take whatever pair they give you, even a full stop or a word that appears once. It can't dead-end.
+For the seed: someone near the front reads out any one pair from their sheet, boxed token first. Pulling it off a sheet means the room supplies the first two tokens as well as every token after them. Take whatever pair they give you, even a full stop or a token that appears once. It can't dead-end.
 ```
 
 ---
@@ -55,11 +57,11 @@ back).
 <Timer minutes={runMinutes} overlay />
 
 ```notes
-Shift-W (or click the board and type), write the volunteer's two words, call out the second of them, go. Aim for 12--15 tokens, written BIG for the back of the room. Keep the rounds moving.
+Shift-W (or click the board and type), write the volunteer's two tokens, call out the second of them, go. Aim for 12--15 tokens, written BIG for the back of the room. Keep the rounds moving.
 
-Narrate two things while it runs. First, the hands are the distribution: call a common word and a forest goes up; call a rare one and you get two. The number of hands for a continuation is how often it happens in the text, so the room is doing weighted sampling without being taught it. (If someone asks: a person holding several matches for one context raises one hand, which flattens the busiest words slightly.) Second, the choice is a coin toss: when five hands are up, the four I don't pick were all real continuations. Pick a different hand, get a different sentence, which is why the "regenerate" button gives a different answer.
+Narrate two things while it runs. First, the hands are the distribution: call a common token and a forest goes up; call a rare one and you get two. The number of hands for a continuation is how often it happens in the text, so the room is doing weighted sampling without being taught it. (If someone asks: a person holding several matches for one context raises one hand, which flattens the busiest tokens slightly.) Second, the choice is a coin toss: when five hands are up, the four I don't pick were all real continuations. Pick a different hand, get a different sentence, which is why the "regenerate" button gives a different answer.
 
-Every distinct token appears as a boxed word somewhere, so hands will go up every round unless a sheet went home with an empty seat. If the room goes quiet, say that's why and reseed from the brief on page 1 (avoid restarting from a full stop).
+Every distinct token is boxed somewhere, so hands will go up every round unless a sheet went home with an empty seat. If the room goes quiet, say that's why and reseed from the brief on page 1 (avoid restarting from a full stop).
 
 Stop around 15 tokens and read the sentence back.
 ```
@@ -82,7 +84,7 @@ Say it flatly. The actual mechanism, at human speed, with arithmetic small enoug
 
 ![bg right:40%](./assets/bg-core-insight-portrait.avif)
 
-each word on your sheet → a **token**
+each word or full stop → a **token**
 
 the pairs on your page → the **parameters** of the model
 
