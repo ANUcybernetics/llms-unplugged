@@ -55,7 +55,7 @@ after tidying up:
 ## Training: `joey` &rarr; `,`
 
 ```notes
-`,` is already in our vocabulary &mdash; no new column needed!
+`,` is already in our vocabulary, so no new column is needed
 ```
 
 <StaticGrid tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} step={3} />
@@ -71,7 +71,7 @@ after tidying up:
 ## Training: `hop` &rarr; `.`
 
 ```notes
-`.` is a new token &mdash; punctuation gets its own row and column too
+`.` is a new token; punctuation gets its own row and column too
 ```
 
 <StaticGrid tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} step={5} />
@@ -81,7 +81,7 @@ after tidying up:
 ## Complete model
 
 ```notes
-with the rest of the text tallied the same way, the grid is complete. `hop` &rarr; `.` came up twice, so its cell has two marks &mdash; those counts are what make some next-words more likely than others.
+with the rest of the text tallied the same way, the grid is complete. `hop` &rarr; `.` came up twice, so its cell has two marks; those counts make some next words more likely than others.
 ```
 
 <StaticGrid tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} step={10} />
@@ -92,18 +92,18 @@ with the rest of the text tallied the same way, the grid is complete. `hop` &rar
 
 ![bg right:40%](./assets/bg-training-tips.avif)
 
-you don't have to start at the beginning---any page will do
+you don't have to start at the beginning; any page will do
 
 the last token in one sentence is followed by the first token in the next (even
 over the page)
 
 you can ignore quotation/speech marks (`"`)
 
-work in pairs and divide the labour however you like---but don't neglect the
-tally marks
+work in pairs and divide the labour however you like, making sure you keep up
+with the tally marks
 
 ```notes
-Four snags worth pre-empting. Groups don't need to start at the beginning of the text: a model trained on page 5 is just as good as one trained on page 1, so let them open anywhere (and groups sharing a text can each take a different page). The sentence boundary isn't a stop: the text is one long stream, so the full stop is followed by whatever word comes next, page break or not. Quote marks are noise for our purposes --- skip them rather than giving them a row and column. And pairs work well if one person reads the text aloud while the other tallies, but swap around, and whatever the split, the marks are the model --- a pair that races through the reading and skimps on the tallying has nothing to generate from.
+Groups don't need to start at the beginning of the text: a model trained on page 5 is just as good as one trained on page 1, so let them open anywhere (and groups sharing a text can each take a different page). Treat the text as one continuous stream across sentences and page breaks: a full stop is followed by whatever word comes next. Skip quotation marks instead of giving them a row and column. Pairs work well if one person reads aloud while the other tallies, swapping partway through; the tally marks are the model, so a pair that races through the reading and skimps on tallying has nothing to generate from.
 ```
 
 ---
@@ -114,16 +114,15 @@ Four snags worth pre-empting. Groups don't need to start at the beginning of the
 
 tidy up your text, then for each pair of tokens:
 
-1. **find the row** for the first token --- no row yet? it gets a row _and_ a
-   column
-2. **find the column** for the second token --- same again if it's new
+1. **find the row** for the first token (if it's new, add a row _and_ a column)
+2. **find the column** for the second token (adding a row and column if it's new)
 3. **add a tally mark** in the cell where they meet
 4. **move along by one**: the second token starts the next pair
 
 <Timer minutes={10} overlay />
 
 ```notes
-This is the whole loop on one slide --- leave it up while they work. Hand out the grids; each group tallies its own text. 10 min, circulate --- the usual snag is that a token only gets a new row and column the first time it appears.
+Leave this slide up while they work. Hand out the grids; each group tallies its own text. 10 min, circulate. Watch for groups adding duplicate rows or columns: each token gets a new row and column only the first time it appears.
 ```
 
 ---
@@ -137,5 +136,5 @@ This is the whole loop on one slide --- leave it up while they work. Hand out th
 - weights
 
 ```notes
-Everyday sense first, then ours: a model is a fashion model or a model aeroplane --- here it's the thing that captures the patterns, your grid. A token is a bus token or a token gesture --- here it's one word or punctuation mark. Weights are what you lift at the gym, or what you weigh up before deciding --- here they're just the tally marks, the numbers that make some next words likelier than others. Point at a cell: when you hear a model has billions of weights, that's what's being counted.
+Everyday sense first, then ours: a model is a fashion model or a model aeroplane; here it's the grid that captures the patterns. A token is a bus token or a token gesture; here it's one word or punctuation mark. Weights are what you lift at the gym, or what you weigh up before deciding; here they're the tally marks that make some next words likelier than others. Point at a cell: when you hear a model has billions of weights, that's what's being counted.
 ```

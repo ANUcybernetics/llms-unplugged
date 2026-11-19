@@ -10,7 +10,7 @@
 
 ![bg right:40%](./assets/bg-generation-chain.avif)
 
-generate new text by chaining cutouts together---write a word, find a cutout
+generate new text by chaining cutouts together: write a word, find a cutout
 whose previous-word box matches, write its next word, then hunt for the next
 match:
 
@@ -266,24 +266,21 @@ the chain grows (like dominoes)
 />
 
 ```notes
-The whole generation loop, animated as one auto-animate run (id "hunt") on the
+The generation loop runs as one auto-animate sequence (id "hunt") on the
 seeded overview pile, with the running output ("your page") growing above it. It
-opens on the full pile, then dims everything but the chosen starting cutout
-(will eat) --- you *choose* where to begin and it gives you your first two
-words --- before the hunt proper begins. From there we chase the chain four
-picks deep: each pick's next word becomes the word we match next, so the page
-builds will eat → them → here → and → ham. Each step runs the same
-narrow-and-select: whole pile lit, then a fast colour scan, then one pick ---
-whose next word lands on the page in gold and seeds the next step. Where the
-colour scan over-selects (a palette clash), an extra exact-word frame sits
-between the scan and the pick to refine it; that happens for "them" ("do" rides
-along) and "and" ("there" rides along), but not for "eat" or "here", where the
-colour already isolates the word. That contrast is the point: colour is a quick
-filter, you confirm by the word only when you must. The finished chain
-"will eat them here and ham" is a recombination, not a quote: the book runs
-"...here and there", but the model rolls "and ham", mashing "eat them here and"
-onto "and ham". Worth saying aloud --- it's the "hint, not a copy" payoff on the
-impact slide. Adjust the pages/targets/picks or the seed to vary the demo.
+opens on the full pile, then dims everything except the chosen starting cutout
+(will eat), which gives the first two words before the hunt begins. From there
+we follow the chain four picks deep: each pick's next word becomes the word we
+match next, so the page builds will eat → them → here → and → ham. Each step
+lights the whole pile, narrows by colour, and picks one cutout whose next word
+lands on the page in gold to seed the next step. Where two words share a colour,
+an extra exact-word frame sits between the colour scan and the pick ("them"
+shares a colour with "do", and "and" shares with "there", whereas colour alone
+isolates "eat" and "here"). Colour is a quick filter; confirm by the word when
+two words share a colour. The finished chain "will eat them here and ham"
+recombines two parts of the book: the original runs "...here and there", while
+the model rolls "and ham" after "eat them here and". Adjust the
+pages/targets/picks or the seed to vary the demo.
 ```
 
 ---
@@ -312,8 +309,8 @@ pen and paper to write down the generated text
 
 ![bg right:40%](./assets/bg-activity-generation.avif)
 
-generate as much text as you can from your spread---keep chaining words until
-you run out of time!
+generate as much text as you can from your spread: keep chaining words until
+you run out of time
 
 ```notes
 Groups chain words from their spread; the more text the better. 10 min, circulate and unstick anyone who can't find a match.
@@ -348,5 +345,5 @@ did your stories always make sense? why or why not?
 can any of your models write a story about a **crocodile**?
 
 ```notes
-Both questions probe the same limit: a paper model can only use the words (and pairs) it saw in training---there's no "crocodile" anywhere in these books, so it simply can't appear. Sets up the wrap-up reflection.
+Both questions probe the same limit: a paper model can only use the words and pairs it saw in training. Neither book contains "crocodile", so that word cannot appear.
 ```

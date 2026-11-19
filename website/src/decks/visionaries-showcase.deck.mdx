@@ -16,33 +16,32 @@ Among Us Showcase, Manning Clark Hall, 15 Aug 2026. Program title:
 "Demystifying Large Language Models". Staging, AV cues, usher plan, corpus
 analysis and risks live in the nb note anu-visionaries-showcase-2026; deck
 work tracked in backlog TASK-140. `make showcase` in cli/ builds the
-participant sheets (input order and --seed 42 are load-bearing).
+participant sheets (input order and --seed 42 are pinned so reprints match).
 
-TED-style: the speaking carries it and the slides are cues, not visual
-aids. Two slide grammars carry nearly all of it --- a full-bleed image with
-nothing on it (the SAY: line opening those notes is the sentence the image
-stands under), and one line in white over the artwork (`_class: hero`, no
-h1, styled in theme.css). Only three slides carry real text: the algorithm
-(6), the role mapping (9) and the three-book reveal (11). If a slide is
-tempting you to read it out, cut it rather than the sentence you were going
-to say.
+TED-style: the speaking carries it and the slides are cues. Two slide
+grammars carry nearly all of it: a full-bleed image with nothing on it (the
+SAY: line opening those notes is the sentence the image stands under), and
+one line in white over the artwork (`_class: hero`, no h1, styled in
+theme.css). Only three slides carry real text: the algorithm (6), the role
+mapping (9) and the three-book reveal (11). If a slide is tempting you to
+read it out, cut it rather than the sentence you were going to say.
 
-The reveal is the spine: the three source books are never named until slide
-11, and nothing on the printed sheets names them either (--title/--author
-overrides). Hemingway then Poe then Seuss, because Seuss is the biggest
-recognition hit and has to land last.
+The three source books are never named until slide 11, and nothing on the
+printed sheets names them either (--title/--author overrides). Reveal
+Hemingway then Poe then Seuss, because Seuss is the biggest recognition hit
+and has to land last.
 
 Running order (target 13:00 against the 15:00 slot; the run is where the
-spare time goes --- 4:30 on stage is fine, 5:00 if the room is with you):
+spare time goes: 4:30 on stage is fine, 5:00 if the room is with you):
   0:00  Smallest thing on the program        (slides 1-4  )
-  2:00  What you've just been given          (slide 5,    )
-  3:00  Seed it, then the algorithm          (slide 6,    )
-  5:00  Run the room                         (slide 7,    )
+  2:00  What you've just been given          (slide 5     )
+  3:00  Seed it, then the algorithm          (slide 6     )
+  5:00  Run the room                         (slide 7     )
   9:00  What just happened                   (slides 8-10 )
- 11:00  Three books                          (slide 11,   )
+ 11:00  Three books                          (slide 11    )
  13:00  ANU at 80, and over to Cecilia       (slides 12-14)
 
-Per-slide notes hold the beats to hit --- rehearsal cues, not a script.
+Per-slide notes hold the rehearsal cues.
 ```
 
 {/* _class: hero */}
@@ -65,9 +64,9 @@ hands up: used one this week. Keep them up if you could explain to a ten-year-ol
 ![bg](./assets/bg-first-tool-wide.avif)
 
 ```notes
-the reason for that is that we got the tool before we got the story about the tool.
+we got the tool before we got the story about the tool.
 
-not too complicated, just happened too fast
+it happened too fast for the explanation to keep up
 ```
 
 ---
@@ -77,7 +76,7 @@ not too complicated, just happened too fast
 ```notes
 one story says it's basically a mind. The other says it's just autocomplete.
 
-opposites doing the same job: beyond you or beneath you, either way don't look inside.
+two opposite stories that both say: beyond you or beneath you, either way don't look inside.
 ```
 
 ---
@@ -93,7 +92,7 @@ on a machine you've never seen **inside**
 cue the house lights up, and the ushers to start handing out the token sheets,
 because together we're going to look inside a language model
 
-take one, pass rest along, try and not leave any that aren't in someone's hand
+take one, pass rest along, try not to leave any that aren't in someone's hand
 ```
 
 ---
@@ -101,9 +100,8 @@ take one, pass rest along, try and not leave any that aren't in someone's hand
 {/* _class: hero */}
 
 ```comment
-A fan of blank pages, and deliberately not bg-cut-spread (the age-of-ai
-   deck's equivalent slide): that one has scissors in it, and nothing here
-   needs cutting.
+A fan of blank pages rather than bg-cut-spread (the age-of-ai deck's
+equivalent slide), which has scissors in it when nothing here needs cutting.
 ```
 
 a page of **token pairs** --- a word, and the word before it
@@ -111,7 +109,7 @@ a page of **token pairs** --- a word, and the word before it
 ![bg](./assets/bg-cutouts-overview.avif)
 
 ```notes
-hold one up: sheet of token pairs, mostly words but some punctuation
+hold one up: sheet of token pairs, mostly words with some punctuation
 
 first token in each token pair is boxed, the second one isn't, and colours will make sense shortly
 
@@ -130,7 +128,7 @@ first token in each token pair is boxed, the second one isn't, and colours will 
 4. I **write it down**, and we go again
 
 ```notes
-describe algo (read from screen is ok)
+describe algo (reading from screen is ok)
 
 then call for volunteer and get first pair
 ```
@@ -139,11 +137,11 @@ then call for volunteer and get first pair
 
 ```comment
 The board slide. No words and no `.hero` class: the artwork is the deck's
-   own whiteboard surface (the same asset the board paints, on the same dark
-   ground), so the slide reads as a blank board with the timer sitting on it,
-   and the hero scrim would only grey that board down. Write on it with the
-   annotation layer (⇧W), NOT the board itself (W) --- the board is an opaque
-   layer over the slide and would take the timer with it.
+own whiteboard surface (the same asset the board paints, on the same dark
+ground), so the slide reads as a blank board with the timer sitting on it,
+and the hero scrim would only grey that board down. Write on it with the
+annotation layer (⇧W); the board layer (W) is opaque and would cover the
+timer.
 ```
 
 ![bg](./assets/deco-whiteboard.avif)
@@ -163,7 +161,7 @@ we just ran a **language model**
 ![bg](./assets/bg-div-reception.avif)
 
 ```notes
-not an analogy --- the mechanism, at human speed
+the actual mechanism, at human speed
 ```
 
 ---
@@ -183,7 +181,7 @@ the sentence I wrote → **generation**
 ```notes
 read from slide
 
-about 6k token pairs (parameters) - not quite the 1T or so of frontier language models, but not too shabby
+about 6k token pairs (parameters): smaller than the trillion or so of frontier language models, but enough to run the same loop
 ```
 
 ---
@@ -212,9 +210,9 @@ everything was decided by the token pairs on our collective sheets; so where did
 ```notes
 each token pair occurs in one of these three books (read them out one by one)
 
-token sheets - the model - had no indicator of which token came from which book
+the token sheets (the model) had no indicator of which token came from which book
 
-and it worked because there's 'token crossover' between the books
+and it worked because the books share tokens
 ```
 
 ---
@@ -227,11 +225,11 @@ for a country facing a transformed world
 ![bg](./assets/bg-anu-1946-wide.avif)
 
 ```notes
-ANU founded 80 years ago...
+ANU was founded 80 years ago.
 
-in 1946 the technology was the atom, in 2026 the technology is different but our mission is the same "first to know the nature of things"
+in 1946 the technology was the atom; in 2026 the technology is different, and our mission is still "first to know the nature of things"
 
-that's what LLMs Unplugged and the broader Human-Scale AI mission are all about
+that's the aim of LLMs Unplugged and the broader Human-Scale AI project
 ```
 
 ---
@@ -246,7 +244,7 @@ the thing you're told needs a **data centre**
 ```notes
 who now thinks they could give a better answer to a 10yo about how language models do what they do?
 
-obviously it still requires some simplification, but - crucially - it's not beyond them, and it's not beneath them to try and understand
+it still takes some simplification, but it's neither beyond them nor beneath them to understand
 ```
 
 ---
@@ -262,11 +260,11 @@ it makes you **harder to bullsh\*t**
 ![bg](./assets/bg-trigrams-banner.avif)
 
 ```notes
-doesn't make you an expert; even if you have 1B in your pocket you can't go out and build your own Claude-level language model from scratch
+it doesn't make you an expert: even with a billion dollars in your pocket you can't go out and build your own Claude-level language model from scratch
 
-but it might make you, well... (look at slide)
+but it might make you harder to bullshit
 
-that's what LLMs Unplugged is all about: providing resources to help us all tell better and more accurate stories about how LLMs and AI works; this technology which is changing the world
+LLMs Unplugged provides resources to help people tell accurate stories about how LLMs and AI work
 ```
 
 ---

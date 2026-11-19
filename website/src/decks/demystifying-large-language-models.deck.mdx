@@ -16,28 +16,28 @@ export const runMinutes = 4; // the board timer in partials/sheets-run.mdx
 ```comment
 The generic version of the talk first given at the ANU Visionaries Among Us
 Showcase (15 Aug 2026; that delivery is visionaries-showcase.deck.mdx, kept
-unpublished as the record). The room-run --- sheets, algorithm, board, "we just
-ran a language model", the role mapping --- is the shared partial
+unpublished as the record). The room-run (sheets, algorithm, board, "we just
+ran a language model", and the role mapping) is the shared partial
 sheets-run.mdx, which unplugged-in-the-age-of-ai.deck.mdx also includes.
 
-TED-style: the speaking carries it and the slides are cues, not visual
-aids. Two slide grammars carry nearly all of it --- a full-bleed image with
-nothing on it (the SAY: line opening those notes is the sentence the image
-stands under), and one line in white over the artwork (`_class: hero`, no
-h1, styled in theme.css). Only three slides carry real text: the algorithm,
-the role mapping and the three-book reveal. If a slide is tempting you to
-read it out, cut it rather than the sentence you were going to say.
+TED-style: the speaking carries it and the slides are cues. Two slide
+grammars carry nearly all of it: a full-bleed image with nothing on it (the
+SAY: line opening those notes is the sentence the image stands under), and
+one line in white over the artwork (`_class: hero`, no h1, styled in
+theme.css). Only three slides carry real text: the algorithm, the role
+mapping and the three-book reveal. If a slide is tempting you to read it out,
+cut it rather than the sentence you were going to say.
 
-The reveal is the spine: the three source books are never named until the
-three-book slide, and nothing on the printed sheets names them either. Deal
-all three texts together, and print with `--title` and `--author` overrides
-so no sheet carries a book's name. Reveal Hemingway then Poe then Seuss,
-because Seuss is the biggest recognition hit and has to land last.
+The three source books are never named until the three-book slide, and
+nothing on the printed sheets names them either. Deal all three texts
+together, and print with `--title` and `--author` overrides so no sheet
+carries a book's name. Reveal Hemingway then Poe then Seuss, because Seuss is
+the biggest recognition hit and has to land last.
 
 Before each delivery:
 - print the 120 search sheets, single-sided at full A4:
   https://pdf.llmsunplugged.org/sheets/demystifying-large-language-models.pdf
-  --- and for a hall over 120, the whole set again rather than more sheets.
+  (for a hall over 120, print the whole set again rather than more sheets).
   The lectern brief is its own page:
   https://pdf.llmsunplugged.org/sheets/demystifying-large-language-models-brief.pdf
   cli/Makefile holds the exact deal (three texts in a pinned input order,
@@ -47,17 +47,17 @@ Before each delivery:
 - a whiteboard, or the annotation layer, and a pen that writes big
 
 Running order (target 13:00 against a 15:00 slot; the run is where the
-spare time goes --- 4:30 on the board is fine, 5:00 if the room is with
+spare time goes: 4:30 on the board is fine, 5:00 if the room is with
 you):
   0:00  The tool before the story; two stories   (slides 1-3)
-  2:00  Look inside --- sheets go out            (slide 4)
+  2:00  Look inside: sheets go out               (slide 4)
   3:00  What you've been given, then the recipe  (slides 5-6)
   5:00  Run the room                             (slide 7)
   9:00  What just happened                       (slides 8-10)
  11:00  Three books                              (slide 11)
  13:00  Close and QR                             (slides 12-14)
 
-Per-slide notes hold the beats to hit --- rehearsal cues, not a script.
+Per-slide notes hold the rehearsal cues.
 ```
 
 {/* _class: hero */}
@@ -79,7 +79,7 @@ Most hands come down.
 ```notes
 SAY: we got the tool before we got the story about the tool.
 
-Not too complicated --- it just happened too fast.
+It happened too fast for the explanation to keep up.
 ```
 
 ---
@@ -89,7 +89,7 @@ Not too complicated --- it just happened too fast.
 ```notes
 SAY: one story says it's basically a mind. The other says it's just autocomplete.
 
-Opposites doing the same job: beyond you or beneath you, either way don't look inside.
+Two opposite stories that both say: beyond you or beneath you, either way don't look inside.
 ```
 
 ---
@@ -102,7 +102,7 @@ on a machine you've never seen **inside**
 ![bg](./assets/bg-machine-interior-wide.avif)
 
 ```notes
-Cue the house lights up and the ushers to start handing out the sheets, because together we're going to look inside a language model. Not a diagram of the inside --- the inside.
+Cue the house lights up and the ushers to start handing out the sheets, because together we're going to look inside an actual language model.
 
 Take one, pass the rest along, try not to leave any that aren't in someone's hand.
 ```
@@ -120,7 +120,7 @@ the sentence we wrote is in **no book**
 ![bg](./assets/bg-chain.avif)
 
 ```notes
-Nobody wrote it: no lookup in a big database of sentences, nobody pulled out their phone and searched the web. Everything was decided by the token pairs on our collective sheets.
+Nobody wrote it: there was no lookup in a big database of sentences, and nobody pulled out their phone and searched the web. Everything was decided by the token pairs on our collective sheets.
 
 So where did they come from?
 ```
@@ -137,7 +137,7 @@ So where did they come from?
 ```notes
 Each token pair on the sheets came from one of these three books. Click them in one at a time and read each out.
 
-The sheets --- the model --- had no indicator of which token came from which book. It worked because there's token crossover between them: `the`, `and`, `.` are in all three, and the chain drifts from one book into another through them.
+The sheets (the model) had no indicator of which token came from which book. It worked because the books share tokens: `the`, `and`, and `.` are in all three, and the chain drifts from one book into another through them.
 ```
 
 ---
@@ -152,7 +152,7 @@ the thing you're told needs a **data centre**
 ```notes
 Who now thinks they could give a better answer to a ten-year-old about how language models do what they do?
 
-Obviously it still needs some simplification --- but, crucially, it's not beyond them, and it's not beneath them to try to understand.
+It still takes some simplification, but it's neither beyond them nor beneath them to understand.
 ```
 
 ---
@@ -168,9 +168,9 @@ it makes you **harder to bullsh\*t**
 ```notes
 It doesn't make you an expert: even with a billion dollars in your pocket you can't go out and build your own Claude-level model from scratch.
 
-But it might make you, well --- look at the slide.
+But it might make you harder to bullshit.
 
-That's what LLMs Unplugged is for: helping us all tell better, more accurate stories about how this technology works.
+LLMs Unplugged is for helping people tell accurate stories about how this technology works.
 ```
 
 ---
@@ -180,7 +180,7 @@ That's what LLMs Unplugged is for: helping us all tell better, more accurate sto
 ![qr](https://www.llmsunplugged.org/talks/demystifying-large-language-models/)
 
 ```notes
-Everything --- this talk with its running order and what to print, the workshops, the printable materials, the tool that made your sheets --- is at that address, free and CC-licensed. Hold here long enough for the room to scan it, then finish on the School mark.
+This talk (with its running order and what to print), the workshops, the printable materials, and the tool that made your sheets are all at that address, free and CC-licensed. Hold here long enough for the room to scan it, then finish on the School mark.
 ```
 
 ---

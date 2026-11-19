@@ -11,8 +11,7 @@
 ![bg right:40%](./assets/bg-algorithm-generation.avif)
 
 ```notes
-1. **choose** a starting word from your grid (any word --- not just the first
-   one)
+1. **choose** any starting word from your grid
 2. **look** at that word's row to find all possible next words and their counts
 3. **roll dice** weighted by the counts to pick the next word
 4. **write down** the chosen word and make it your new starting word
@@ -26,7 +25,7 @@ use your grid to generate new text, rolling dice to choose each next word
 ## Generation: start with `see`
 
 ```notes
-any word will do as a seed --- we're starting from `see`, which is the last row, to show you don't have to begin at the top. Only one option here, so no roll.
+any word will do as a seed; we start from `see` (the last row) to show you can begin anywhere. Only one option here, so no roll.
 ```
 
 <StaticGeneration
@@ -42,7 +41,7 @@ any word will do as a seed --- we're starting from `see`, which is the last row,
 ## Generation: from `joey`
 
 ```notes
-two options in this row (`hop` and `,`) with equal tallies --- highlight both, then roll
+two options in this row (`hop` and `,`) with equal tallies: highlight both, then roll
 ```
 
 <StaticGeneration
@@ -59,7 +58,7 @@ two options in this row (`hop` and `,`) with equal tallies --- highlight both, t
 ## How the die chooses: `joey`
 
 ```notes
-equal tallies, so the ten d10 faces split down the middle --- `hop` gets 0-4 and `,` gets 5-9, reading the row's cells left to right; same apportionment the printed booklets use. Pause here before rolling.
+equal tallies, so the ten d10 faces split down the middle: `hop` gets 0-4 and `,` gets 5-9, reading the row's cells left to right (the same apportionment the printed booklets use). Pause here before rolling.
 ```
 
 <DiceStrip
@@ -75,7 +74,7 @@ equal tallies, so the ten d10 faces split down the middle --- `hop` gets 0-4 and
 ## How the die chooses: `joey`
 
 ```notes
-now roll --- a 7 lands in the `,` band
+now roll: a 7 lands in the `,` band
 ```
 
 <DiceStrip
@@ -108,7 +107,7 @@ the 7 landed in the `,` band, so `,` is our next word
 ## Generation: from `,`
 
 ```notes
-another two-option row (`hop` and `joey`), still equal --- both highlighted, then roll
+another two-option row (`hop` and `joey`), still equal: highlight both, then roll
 ```
 
 <StaticGeneration
@@ -141,7 +140,7 @@ rolled a 2, which lands in the `hop` band
 ## Generation: from `hop`
 
 ```notes
-two options again --- but `.` has two tallies to `,`'s one, so this isn't a 50/50 roll
+two options again, and `.` has two tallies to `,`'s one, so the split is uneven
 ```
 
 <StaticGeneration
@@ -158,7 +157,7 @@ two options again --- but `.` has two tallies to `,`'s one, so this isn't a 50/5
 ## How the die chooses: `hop`
 
 ```notes
-`.` has twice the tallies, so it gets more of the faces (3-9) than `,` (0-2). With a ten-sided die that's the closest split rather than exactly 2:1 --- the point is more tallies → more faces → more likely. Pause here before rolling.
+`.` has twice the tallies, so it gets more faces (3-9) than `,` (0-2). That's the closest 2:1 split on a ten-sided die: more tallies mean more faces and a higher chance. Pause here before rolling.
 ```
 
 <DiceStrip
@@ -174,7 +173,7 @@ two options again --- but `.` has two tallies to `,`'s one, so this isn't a 50/5
 ## How the die chooses: `hop`
 
 ```notes
-now roll --- a 6 sits in the `.` band
+now roll: a 6 sits in the `.` band
 ```
 
 <DiceStrip
@@ -207,7 +206,7 @@ the 6 sits in the `.` band, so we pick `.`
 ## Generation: from `.`
 
 ```notes
-only one option (`see`) --- no roll. Note we keep rolling straight past the full stop; the model has no idea a sentence just ended.
+only one option (`see`), so no roll. We keep rolling straight past the full stop; to the grid, `.` is a token like any other.
 ```
 
 <StaticGeneration
@@ -223,7 +222,7 @@ only one option (`see`) --- no roll. Note we keep rolling straight past the full
 ## Generation: back to `see`
 
 ```notes
-and so on --- we've looped back to where we started. Keep going for as long as you like; you decide when to stop.
+we've looped back to where we started. Keep going for as long as you like; you decide when to stop.
 ```
 
 <StaticGeneration
@@ -242,7 +241,7 @@ and so on --- we've looped back to where we started. Keep going for as long as y
 
 _"see joey, hop. see"_
 
-a new sentence --- not in the training data!
+a new sentence that wasn't in the training data
 
 ---
 
@@ -254,13 +253,13 @@ write down a starting token, then repeat:
 
 1. **find the row** for the last token you wrote
 2. **share the ten faces** of the d10 across that row's cells, by their tallies
-3. **roll** --- the band it lands in names the next token (one option? no roll)
+3. **roll** to see which band it lands in (skip the roll if there's only one option)
 4. **write it down**, and look up its row next
 
 <Timer minutes={10} overlay />
 
 ```notes
-This is the whole loop on one slide --- leave it up while they work. Groups generate from their own grid, rolling for each choice. 10 min, circulate. Where a row has only one option, no roll needed.
+Leave this slide up while they work. Groups generate from their own grid, rolling for each choice. 10 min, circulate.
 ```
 
 ---
@@ -274,9 +273,9 @@ This is the whole loop on one slide --- leave it up while they work. Groups gene
 ```notes
 Take a couple of groups' generated sentences; celebrate the weird ones. ~5 min.
 
-If the room has energy for it, close the shareback by turning it outward: does that change how you picture what's happening when you type into ChatGPT? Then wait --- the silence is longer than feels comfortable and the first answer usually arrives just after you'd have given up. If nothing comes, narrow it: "did anything about that feel like something you've seen it do?"
+If the room has energy for it, close the shareback by turning it outward: does that change how you picture what's happening when you type into ChatGPT? Then wait; the silence is longer than feels comfortable and the first answer usually arrives just after you'd have given up. If nothing comes, narrow it: "did anything about that feel like something you've seen it do?"
 
-Two habits worth keeping. Don't answer your own question, and when someone raises something technical, consider flipping it back before you take it: "what draws you to that?" or "has anyone else run into that?" The expertise in the room is more use to them than a lecture from the front.
+Don't answer your own question, and when someone raises something technical, flip it back before you take it: "what draws you to that?" or "has anyone else run into that?" The expertise in the room is more use to them than a lecture from the front.
 ```
 
 ---
@@ -289,5 +288,5 @@ Two habits worth keeping. Don't answer your own question, and when someone raise
 - completion
 
 ```notes
-Everyday sense first, then ours: to prompt is to nudge an actor who's forgotten a line --- here the prompt is the starting text you give the model. A completion is finishing something off --- here it's the text the model generates back, and it doesn't know when to stop. A hallucination is seeing something that isn't there, a malfunction --- but the sentence you just generated was never in the text either, and it came out of the same tallies and the same dice as everything else. There's no separate mode the model slips into; we only call it hallucination when we didn't want the answer.
+Everyday sense first, then ours: to prompt is to cue an actor who's forgotten a line; here the prompt is the starting text you give the model. A completion is finishing something off; here it's the text the model generates back. A hallucination is seeing something that isn't there, a malfunction, yet the sentence you just generated wasn't in the training text either and came from the same tallies and dice as everything else. The model runs one process throughout; we call the output a hallucination when the answer is wrong or unwanted.
 ```

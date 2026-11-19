@@ -13,19 +13,18 @@ import "../styles/widgets.css";
 ```comment
 Standalone deck for running the search-sheet activity with a whole room,
 written for the NeurIPS 2026 Education Track and reusable anywhere the
-audience is a hall rather than a table. The paper and the run guide live in
+audience is a hall. The paper and the run guide live in
 research-papers/llms-unplugged-neurips-2026-education/.
 
-TED-style: the speaking carries it and the slides are cues, not visual aids.
-Two slide grammars carry nearly all of it --- a full-bleed image with nothing
-on it, and one line in white over the artwork (`_class: hero`). Only four
-slides carry explanatory text: the algorithm, the role mapping, the three-book
-reveal and the comparison with neural models.
+TED-style: the speaking carries it and the slides are cues. Two slide
+grammars carry nearly all of it: a full-bleed image with nothing on it, and
+one line in white over the artwork (`_class: hero`). Only four slides carry
+explanatory text: the algorithm, the role mapping, the three-book reveal and
+the comparison with neural models.
 
-The reveal is the spine: the three source books are never named until the
-reveal slide, and nothing on the printed sheets names them either. Hemingway
-then Poe then Seuss, because Seuss is the biggest recognition hit and has to
-land last.
+The three source books are never named until the reveal slide, and nothing
+on the printed sheets names them either. Reveal Hemingway then Poe then
+Seuss, because Seuss is the biggest recognition hit and has to land last.
 
 Running order (12:00 target; preserve two minutes for the comparison. Given
 fifteen, add a short second run; for a shorter slot, distribute sheets during
@@ -36,9 +35,9 @@ the changeover and shorten the run):
   3:20  run the room                            (slide 6)
   7:20  what just happened                      (slides 7-9)
   8:30  three books                             (slide 10)
-  9:40  compare, discuss, and close              (slides 11-13)
+  9:40  compare, discuss, and close             (slides 11-13)
 
-Per-slide notes hold the beats to hit --- rehearsal cues, not a script.
+Per-slide notes hold the rehearsal cues.
 ```
 
 {/* _class: hero */}
@@ -60,9 +59,9 @@ In twelve minutes we'll generate some text, then examine what our small model ex
 ![bg](./assets/bg-two-stories.avif)
 
 ```notes
-two stories about these things: one says it's basically a mind, the other says it's just autocomplete.
+Two stories about these models: one says it's basically a mind, the other says it's just autocomplete.
 
-opposites doing the same job: beyond you or beneath you, either way don't look inside.
+Two opposite stories that both say: beyond you or beneath you, either way don't look inside.
 ```
 
 ---
@@ -89,7 +88,7 @@ a page of **token pairs** --- a word, and the word before it
 ![bg](./assets/bg-cutouts-overview.avif)
 
 ```notes
-hold one up: a sheet of token pairs, mostly words but some punctuation
+hold one up: a sheet of token pairs, mostly words with some punctuation
 
 the first token in each pair is boxed, the second isn't; the colours will make sense shortly
 
@@ -120,9 +119,8 @@ Sampling caveat: one hand per person approximates sampling occurrences. Someone 
 ```comment
 The board slide. No words and no `.hero` class: the artwork is the deck's
 own whiteboard surface, so the slide reads as a blank board with the timer
-sitting on it. Write on it with the annotation layer (⇧W), NOT the board
-itself (W) --- the board is an opaque layer over the slide and would take the
-timer with it.
+sitting on it. Write on it with the annotation layer (⇧W); the board layer
+(W) is opaque and would cover the timer.
 ```
 
 ![bg](./assets/deco-whiteboard.avif)
@@ -164,7 +162,7 @@ the sentence I wrote → **generation**
 ```notes
 read from the slide
 
-about 6k observed token pairs, stored explicitly. Neural model weights are learned numerical parameters, not a list of observed pairs. We'll compare them after the reveal.
+about 6k observed token pairs, stored explicitly. Neural model weights are learned numerical parameters. We'll compare them after the reveal.
 ```
 
 ---
@@ -176,7 +174,7 @@ where did our **words** come from?
 ![bg](./assets/bg-chain.avif)
 
 ```notes
-we generated the sequence one token at a time; we didn't select a complete sentence from a list. A generated passage can still repeat something from the corpus.
+we generated the sequence one token at a time instead of picking a complete sentence from a list. A generated passage can still repeat something from the corpus.
 
 everything was decided by the token pairs on our collective sheets; so where did they come from?
 ```
@@ -193,7 +191,7 @@ everything was decided by the token pairs on our collective sheets; so where did
 ```notes
 each token pair came from one of these three books (read them out one by one)
 
-the sheets never said which book a pair came from, and the model couldn't tell either
+the sheets never said which book a pair came from, and the model had no record of it either
 
 it worked because the books share contexts: "the", "said", "I", "old man" (Hemingway and Poe both have one)
 ```
@@ -215,7 +213,7 @@ Recent n-gram research asks which neural-model predictions corpus statistics cap
 
 [Nguyen (NeurIPS 2024)](https://papers.nips.cc/paper_files/paper/2024/hash/b1c446eebd9a317dd0e96b16908c821a-Abstract-Conference.html) compares n-gram rulesets with transformer predictions: 79% top-token agreement on TinyStories, 68% on Wikipedia in the studied models. Agreement on one token does not mean identical distributions.
 
-[Svete and Cotterell (NAACL 2024)](https://aclanthology.org/2024.naacl-long.381/) show transformers with hard or sparse attention can represent any n-gram model. This is a capacity result, not a claim about how trained models work.
+[Svete and Cotterell (NAACL 2024)](https://aclanthology.org/2024.naacl-long.381/) show transformers with hard or sparse attention can represent any n-gram model. This is a capacity result, showing what the architecture can represent in principle.
 
 [Infini-gram (COLM 2024)](https://arxiv.org/abs/2401.17377) scales counts to five trillion tokens and unbounded context lengths, using them to analyse and improve neural models; [OLMoTrace (ACL 2025)](https://aclanthology.org/2025.acl-demo.18/) builds on it to trace a model's output back to verbatim spans of its training data. Choose one example to explain aloud; the links let educators follow all four afterwards.
 ```

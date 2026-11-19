@@ -16,13 +16,9 @@ learnt from a whole novel
 first step on the road to the very big ones
 
 ```notes
-Don't skip this --- from where they're sitting, the next twenty minutes look like the exercise they just did, a second time, and a section that feels like a repeat gets a room that's already worked hard for forty minutes checking their phones.
+From where they're sitting, the next twenty minutes can look like a repeat of the exercise they just did. Frame it as the first step up in scale: their grid, then a whole book in the booklet, then Frankenstein at full size in the scaling-up section, then a frontier model. Every step runs the same loop with more data; doing this one by hand lets them see what changes and what stays the same.
 
-Frame it as the first step up in scale: their grid, then a novel, then Frankenstein drawn at full size in the scaling-up section, then a frontier model. Everything from here is the same loop with the dial turned up, and this is the first turn of it --- the point of doing it by hand is that they can feel what changed and what didn't.
-
-Flag what to watch for, so they read their output rather than just producing it: it'll sound more like real prose, and it still won't be about anything. That's the question to leave hanging at the shareback.
-
-The booklet's stretch goal is a good hook if the energy needs it: try to guess the training text before you check the title on the cover.
+Ask them to read their output as they generate: it will sound more like real prose, yet still won't be about anything. The booklet's stretch goal works well if the room needs a hook: try to guess the training text before checking the title on the cover.
 ```
 
 ---
@@ -32,7 +28,7 @@ The booklet's stretch goal is a good hook if the energy needs it: try to guess t
 ![bg right:40%](./assets/bg-algorithm-generation-2.avif)
 
 ```notes
-1. **choose** a starting word --- any bold word in the booklet
+1. **choose** any bold word in the booklet as your starting word
 2. **look up** that word's entry to see possible next words and their thresholds
 3. **roll** your d10(s) and scan the thresholds to find the next word
 4. **write down** the chosen word and make it your new starting word
@@ -47,7 +43,7 @@ next word
 ## Pre-trained: start with `sleep`
 
 ```notes
-a bigger model, but `sleep`'s five followers still fit on ten faces &mdash; just **one** die, roll a d10
+a bigger model, though `sleep`'s five followers still fit on ten faces: roll **one** d10
 ```
 
 <StaticPretrainedGeneration
@@ -62,7 +58,7 @@ a bigger model, but `sleep`'s five followers still fit on ten faces &mdash; just
 ## Pre-trained: from `again`
 
 ```notes
-`again` has seven followers spread over 00 to 99, so it needs **two** dice (roll two d10s) &mdash; 80 is past `as`'s 76, so we land on `I'd`
+`again` has seven followers spread over 00 to 99, so roll **two** d10s: 80 is past `as`'s 76, landing on `I'd`
 ```
 
 <StaticPretrainedGeneration
@@ -92,7 +88,7 @@ back down to **one** die, roll a d10
 ## Pre-trained: from `float`
 
 ```notes
-only one option &mdash; no dice roll needed
+only one option, so no dice roll needed
 ```
 
 <StaticPretrainedGeneration
@@ -125,15 +121,15 @@ and so on...
 
 same loop, from the booklet:
 
-1. **look up** the current word --- the bold words are the entries
+1. **look up** the current word (the bold words are the entries)
 2. **read its numbers**: one beside each possible next word
-3. **roll** a d10 --- two if the entry runs past 9, read as tens then units
+3. **roll** a d10 (or two if the entry runs past 9, read as tens then units)
 4. **take the first word** your roll doesn't go past, and look that one up next
 
 <Timer minutes={8} overlay />
 
 ```notes
-Leave this up while they work. Same as before but from the booklet --- a bigger model, one or more d10s. 8 min, circulate.
+Leave this up while they work. Same loop as before, now from the booklet with one or two d10s. 8 min, circulate.
 ```
 
 ---
@@ -145,9 +141,9 @@ Leave this up while they work. Same as before but from the booklet --- a bigger 
 ![bg](./assets/bg-div-reception-2.avif)
 
 ```notes
-Compare with the hand-built model: a bigger training text gives more varied, more natural output. Invite ~5 groups to share back rather than the whole room. ~5 min.
+Compare with the hand-built model: a bigger training text gives more varied, natural-sounding output. Take about 5 groups. ~5 min.
 
-The question to leave hanging as you move on: it reads better, but is it *saying* anything? More data bought fluency and nothing else --- the booklet's output sounds like prose because Paterson sounds like prose, and there is still nobody home. That's the same gap they've felt with a real model that answered confidently and wrongly; fluency was never evidence of understanding, and they've now watched it get manufactured out of tally marks. Take one or two answers and move --- the scaling-up section pays this off properly.
+Ask the room: it reads better, but is it *saying* anything? More data bought fluency: the booklet's output sounds like prose because Paterson sounds like prose, yet it comes from the same tally-and-roll mechanism. Fluency isn't evidence of understanding. Take one or two answers and move on to scaling up.
 ```
 
 ---
@@ -160,5 +156,5 @@ The question to leave hanging as you move on: it reads better, but is it *saying
 - open weight model
 
 ```notes
-Everyday sense first, then ours: the weights are the numbers inside the model --- for the booklet, the tallies you'd count to work out what comes next --- and *open weight* means anyone can have a copy of those numbers. The booklet is the clearest version of that we'll get: take it home, read every number in it, generate from it at the kitchen table, and no-one can switch it off or quietly change it under you. Most of the chatbots they use are the other arrangement --- your text goes to someone else's computer, an answer comes back, and the weights never leave the building. If anyone pushes: open weight isn't open source (you get the numbers, not the training text or the code that made them), and it isn't the same as being able to run it --- a real open weight model needs a serious machine to run; the booklet just needs a d10.
+Everyday sense first, then ours: the weights are the numbers inside the model (in the booklet, the thresholds derived from the tallies), and *open weight* means anyone can download a copy of those numbers. You can take the booklet home, read every number in it, and generate from it at the kitchen table; no-one can switch it off or change it under you. With most commercial chatbots, your text goes to someone else's servers, an answer comes back, and the weights stay behind closed doors. If anyone asks: open weight is narrower than open source (you get the numbers, not the training text or the training code), and running a frontier open-weight model still takes serious hardware, whereas the booklet only needs a d10.
 ```

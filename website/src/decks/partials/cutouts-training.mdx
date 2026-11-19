@@ -44,10 +44,10 @@ they're next to
 <CutoutsOverview tokens={OVERVIEW_TOKENS} mode="flow" />
 
 ```notes
-This section used to slide an animated window across the text, one slide per
-pair. The cutouts already show that overlap themselves (a cutout ends with the
-word the next cutout starts with), so it's now three static slides: the tokens,
-one pair highlighted as a cutout, then every pair as a cutout.
+Three static slides walk through tokenising and pairing: the tokens, one pair
+highlighted as a cutout, then every pair as a cutout. The cutouts show the
+overlap directly, since each cutout ends with the word the next cutout starts
+with.
 ```
 
 ---
@@ -92,15 +92,14 @@ one pair highlighted as a cutout, then every pair as a cutout.
 
 ```notes
 The "every pair becomes a cutout" (flow) slide before these also carries the pile
-directive, so the shuffle begins there --- each cutout glides from its reading-
-order slot into the first scattered pile. Then five "scatter" frames of the
-*same* cutouts with different seeds. All carry `{/* _animate: pile */}`, so
-Reveal.js auto-animate glides each cutout (matched by its data-id="cut-N") from
-one arrangement to the next --- each click reshuffles the pile while the heading
-stays put (it only crossfades on the way in from the flow slide). Talk across
-them: this is the hinge into Training/Generation --- the model is an unordered
-bag you rummage through, so order stops mattering once the text is cut up. Add or
-remove `{/* _animate: pile */}` + `<CutoutsOverview mode="scatter" seed={N}/>`
+directive, so the shuffle begins there as each cutout glides from its reading-order
+slot into the first scattered pile. Five "scatter" frames of the *same* cutouts
+follow with different seeds. All carry `{/* _animate: pile */}`, so Reveal.js
+auto-animate glides each cutout (matched by its data-id="cut-N") from one
+arrangement to the next; each click reshuffles the pile while the heading stays
+put. Talk across them: the model is an unordered bag you rummage through, so
+word order in the original text stops mattering once the cutouts are separated.
+Add or remove `{/* _animate: pile */}` + `<CutoutsOverview mode="scatter" seed={N}/>`
 slides (any seed) to lengthen or shorten the shuffle.
 ```
 
@@ -113,15 +112,15 @@ slides (any seed) to lengthen or shorten the shuffle.
 with your group you'll need **printed cutouts**, **scissors**, and a **clear
 table**
 
-cut out the cutouts for your text and spread them on the table---each cutout
+cut out the cutouts for your text and spread them on the table; each cutout
 pairs a **next word** with its **previous word**:
 
 <Cutout prev="green" next="eggs" />
 
-that's it---the spread _is_ your trained **language model**
+the spread _is_ your trained **language model**
 
 ```notes
-Once the loose-on-table flow makes sense, groups can optionally sort their cutouts into piles by previous word---it makes hunting for matches faster in the next section.
+Once the loose-on-table flow makes sense, groups can optionally sort their cutouts into piles by previous word; it makes hunting for matches faster in the next section.
 ```
 
 ---

@@ -5,7 +5,7 @@
 ![bg](./assets/bg-tool-use-banner.avif)
 
 ```notes
-Section beat: an agent is a model that can pause, call a tool, and use the result. We bolt that onto the paper model.
+An agent is a model that can pause, call a tool, and use the result. We bolt that onto the paper model.
 ```
 
 ---
@@ -20,7 +20,7 @@ from "outside" the model, and continue
 the loop: generate → trigger word → call tool → write the result → keep going
 
 ```notes
-The beat: the model pauses, gets information from outside itself, then continues. The loop is the thing.
+The model pauses, gets information from outside itself, and continues.
 ```
 
 ---
@@ -31,7 +31,7 @@ The beat: the model pauses, gets information from outside itself, then continues
 
 add **tool-use cutouts** to your spread and designate a tool operator
 
-when generation hits a trigger word, pause---the operator runs the tool and the
+when generation hits a trigger word, pause: the operator runs the tool and the
 result becomes the next word(s)
 
 ```notes
@@ -57,7 +57,7 @@ Two tools: GOOGLE = search on a phone, read the first word of the top hit; FRIEN
 
 ## Worked example
 
-each tool-use cutout pairs a trigger with a closing full stop---the tool's
+each tool-use cutout pairs a trigger with a closing full stop; the tool's
 response slots in between:
 
 <CutoutRow>
@@ -65,10 +65,10 @@ response slots in between:
   <Cutout prev="the" next="FRIEND" tool="next" trailing="." />
 </CutoutRow>
 
-generating from <Token next>a</Token>, you might pick <Cutout prev="a" next="GOOGLE" tool="next" trailing="." />---write <Token next tool>GOOGLE</Token>
+generating from <Token next>a</Token>, you might pick <Cutout prev="a" next="GOOGLE" tool="next" trailing="." /> and write <Token next tool>GOOGLE</Token>
 
-hand off to the tool operator---they search on their phone and read out the
-first word of the top hit ("recipe")---write <Token next>recipe</Token>, then
+hand off to the tool operator: they search on their phone and read out the
+first word of the top hit ("recipe"), so you write <Token next>recipe</Token>, then
 the trailing <Token next>.</Token> from the cutout, and continue
 
 ```notes
@@ -99,12 +99,12 @@ pen and paper to write down the generated text
 
 add tool-use cutouts to your spread
 
-generate---when you hit a trigger word, hand off to the tool operator
+generate: when you hit a trigger word, hand off to the tool operator
 
 write the operator's answer down as the next word(s), and continue generating
 
 ```notes
-On a trigger, hand to the operator and write their answer as the next word(s). 15 min, circulate --- keep the operators moving.
+On a trigger, hand to the operator and write their answer as the next word(s). 15 min; circulate and keep the operators moving.
 ```
 
 ---
@@ -116,7 +116,7 @@ On a trigger, hand to the operator and write their answer as the next word(s). 1
 ![bg](./assets/bg-shareback-tool-use.avif)
 
 ```notes
-What did the tools add that the bare model couldn't --- fresh, outside information? ~5 min.
+What did the tools add that the bare model didn't have (fresh, outside information)? ~5 min.
 ```
 
 ---
@@ -130,5 +130,5 @@ agent
 tool call
 
 ```notes
-Everyday sense first, then ours: an agent is a travel agent or a secret agent, someone who acts for you --- here it's a model that can act, not just talk. A tool call sounds like reaching for a hammer --- here the model asks for something outside itself and waits for the answer. If anyone asks what runs the loop: *you* did. The harness is the scaffolding around the model that pauses it, hands off to the tool, and writes the result back --- here, that was the students and the tool operator between them.
+Everyday sense first, then ours: an agent is a travel agent or a secret agent, someone who acts for you; here it's a model that can take action as well as generate text. A tool call sounds like reaching for a hammer; here the model asks for something outside itself and waits for the answer. If anyone asks what runs the loop: *you* did. The harness is the scaffolding around the model that pauses it, hands off to the tool, and writes the result back. Here, that was the students and the tool operator between them.
 ```
