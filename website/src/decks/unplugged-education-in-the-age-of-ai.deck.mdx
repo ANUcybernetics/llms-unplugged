@@ -459,23 +459,23 @@ we carry on from our sentence, same as before
 
 whenever the room's token has an **`a`** in it, that triggers a **tool call**
 
-the tool: the **third word** of the subject of the **second email** in your
-inbox (asked again? the second after that)
+the tool: the **second and third words** of the subject of the **second
+email** in your inbox (asked again? the second after that)
 
 first hand up gets it---and gets **a veto**
 
 ```notes
 When the token we pick contains the letter `a` (`cat`, `hat`, `that`, `and`, roughly one token in four here), we trigger a tool call.
 
-The tool reads the third word of the subject line of the second email in your inbox ("Re:" counts as word one). Take the first hand with a word ready, and before they speak, ask: "Happy to share that?" They can decline --- that's the permission prompt.
+The tool reads the second and third words of the subject line of the second email in your inbox ("Re:" counts as word one). Take the first hand with their words ready, and before they speak, ask: "Happy to share that?" They can decline --- that's the permission prompt.
 
-If the same person gets a second call, they count on two more emails (the fourth, then the sixth), so every call brings back a different word.
+If the same person gets a second call, they count on two more emails (the fourth, then the sixth), so every call brings back different words.
 
-If they decline, write `[declined]` on the board in place of the word and call the `a` token again: a denied tool call goes back into the context as its result, and generation carries on. Thank them: that's the permission prompt working.
+If they decline, write `[declined]` on the board in place of the words and call the `a` token again: a denied tool call goes back into the context as its result, and generation carries on. Thank them: that's the permission prompt working.
 
 Make sure one call gets declined, because the close leans on it. If the first two people say yes, tell the next hand "say no to this one".
 
-Write the inbox word on the board after the `a` token, then call the `a` token again to continue. Because our paper sheets have no entries for arbitrary words from someone's email, the bigram model has to resume from the last token it knows.
+Write the inbox words on the board after the `a` token, then call the `a` token again to continue. Because our paper sheets have no entries for arbitrary words from someone's email, the bigram model has to resume from the last token it knows.
 ```
 
 ---
@@ -495,7 +495,7 @@ the BoardText box for writing. The box opens on the first board's sentence.
 ```notes
 Shift-W (or click the board and type), put up the last two tokens of our sentence, call out the last one, go. Run for three minutes or two to three tool calls.
 
-Point out two things as they happen: an `a` token is the harness's cue to call a tool, and after the email word lands on the board, the room has to match on the `a` token before it because the bigram table can't condition on the tool's output.
+Point out two things as they happen: an `a` token is the harness's cue to call a tool, and after the email words land on the board, the room has to match on the `a` token before them because the bigram table can't condition on the tool's output.
 ```
 
 ---
@@ -508,7 +508,7 @@ a token with an `a` → the **tool call trigger**
 
 your inbox → the **tool**
 
-the word you read out → the **tool result**
+the words you read out → the **tool result**
 
 "happy to share that?" → the **permission prompt**
 
@@ -578,7 +578,7 @@ You've just acted out all three on paper. The mental model university students n
 <GenerationLoop tools inject />
 
 ```notes
-Start with the first of those, the context. Our bigram model had to ignore the inbox word and carry on from the token before it. A real LLM can't: the tool result goes straight into its context window, and everything it writes next is conditioned on it.
+Start with the first of those, the context. Our bigram model had to ignore the inbox words and carry on from the token before them. A real LLM can't: the tool result goes straight into its context window, and everything it writes next is conditioned on it.
 
 Watch the red tile come back from the tool. The next few fans and picks take its colour.
 
