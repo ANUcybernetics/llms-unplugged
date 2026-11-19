@@ -1,0 +1,122 @@
+---
+/**
+ * The videos' animated end card as a full-bleed slide: the brick field
+ * assembles the title, the tokens flip to their bit grids and merge into the
+ * lockup, then llmsunplugged.org and @llmsunplugged. It plays from the start
+ * each time the slide comes up; export and print views get the final frame.
+ * The animation itself is src/lib/brandMark.ts.
+ */
+import lockupSvg from "../../public/lockup.svg?raw";
+import { FH, FW, parseLockup } from "../lib/brandMark";
+
+interface Props {
+  /** Only the second half: the lockup, wordmark and contacts, no brick field. */
+  lockupOnly?: boolean;
+}
+
+const { lockupOnly = false } = Astro.props;
+const brand = JSON.stringify(parseLockup(lockupSvg));
+---
+
+<div
+  class="brand-mark"
+  data-brand-mark
+  data-brand={brand}
+  data-lockup-only={lockupOnly ? "" : undefined}
+>
+  <svg viewBox={`0 0 ${FW} ${FH}`} role="img" aria-label="LLMs Unplugged: llmsunplugged.org"></svg>
+</div>
+
+<script>
+  import { buildBrandMark, type Brand } from "../lib/brandMark";
+
+  const exporting = () => {
+    const params = new URLSearchParams(location.search);
+    return params.has("print-pdf") || params.has("astromotion-export");
+  };
+  const reducedMotion = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function init(root: HTMLElement) {
+    if (root.dataset.ready) return;
+    root.dataset.ready = "1";
+    const s = root.querySelector("svg")!;
+    const brand = JSON.parse(root.dataset.brand!) as Brand;
+    const slide = root.closest("section");
+    let controller: ReturnType<typeof buildBrandMark> | null = null;
+    let frame = 0;
+
+    // Built on first show, not at load: Reveal keeps far-off slides at
+    // display: none, where the contact row's text measures zero.
+    const built = async () => {
+      await document.fonts.ready;
+      controller ??= buildBrandMark(s, brand, { lockupOnly: "lockupOnly" in root.dataset });
+      return controller;
+    };
+
+    const play = async () => {
+      const c = await built();
+      cancelAnimationFrame(frame);
+      if (exporting() || reducedMotion()) {
+        c.seek(c.duration());
+        return;
+      }
+      const start = performance.now();
+      const tick = (now: number) => {
+        const t = (now - start) / 1000;
+        c.seek(t);
+        if (t < c.duration()) frame = requestAnimationFrame(tick);
+      };
+      frame = requestAnimationFrame(tick);
+    };
+
+    const stop = () => {
+      cancelAnimationFrame(frame);
+      controller?.seek(0);
+    };
+
+    if (!slide) return;
+    let present = false;
+    const sync = () => {
+      const now = slide.classList.contains("present");
+      if (now === present) return;
+      present = now;
+      if (now) void play();
+      else if (!exporting()) stop();
+    };
+    new MutationObserver(sync).observe(slide, { attributes: true, attributeFilter: ["class"] });
+    sync();
+  }
+
+  for (const root of document.querySelectorAll<HTMLElement>("[data-brand-mark]")) init(root);
+</script>
+
+<style>
+  /* Owns its geometry (a full-bleed layer), so it positions itself; the
+     !important beats astromotion's `position: relative` on slide children. */
+  .brand-mark {
+    position: absolute !important;
+    inset: 0;
+    margin: 0;
+  }
+
+  svg {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+    font-family: inherit;
+  }
+
+  .brand-mark :global(.brick-bg) {
+    fill: #1a1a1a;
+    stroke: rgb(190 131 14 / 28%);
+    stroke-width: 1;
+  }
+
+  .brand-mark :global(.glint-gold) {
+    fill: none;
+    stroke: var(--anu-gold-2);
+    stroke-width: 3px;
+    stroke-linecap: round;
+    vector-effect: non-scaling-stroke;
+  }
+</style>
