@@ -11,6 +11,7 @@ import ModelScaleBars from "../components/ModelScaleBars.svelte";
 import BoardText from "../components/BoardText.astro";
 import Timer from "../components/Timer.astro";
 import GenerationLoop from "../components/GenerationLoop.astro";
+import TrainingLoop from "../components/TrainingLoop.astro";
 import StaticGrid from "../components/StaticGrid.svelte";
 import LedgerSheet from "../components/LedgerSheet.svelte";
 import Cutout from "../components/Cutout.astro";
@@ -216,6 +217,16 @@ Dr Seuss, plus a 1925 Hemingway short story about an American couple in an Itali
 Three properties of language models are much easier to see here than in Claude. First, training data. Every one of the 3,276 pairs in those two texts is on a single sheet in this room. For the last five minutes the model existed across the room as a whole; anyone who stayed home took a piece of it with them.
 
 And the model can only recombine what it was given. Ask about Melbourne and there's no `Melbourne` row in the room. Swap the texts and the same sheets, hands and coin tosses produce completely different sentences. Frontier models work the same way: what they can say comes from what they read, and someone chose what they read.
+```
+
+---
+
+<TrainingLoop />
+
+```notes
+This is how two books became your sheets. Slide a two-token window along the text. Every pair under it gets copied out, the earlier token boxed, and dropped onto a sheet at random. That's all the training there is: recording what followed what. Nothing in it reads for meaning.
+
+The text is still running along the top, and no sheet holds any of it in order. That's the shuffle from before.
 ```
 
 ---
