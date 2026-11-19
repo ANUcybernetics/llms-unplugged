@@ -379,6 +379,26 @@ Not a one-shot, though. The paragraph got the first 204 worlds in twenty hours, 
 
 ---
 
+## what it took
+
+![bg right:40%](./assets/bg-insight-tool-use.avif)
+
+**Claude Fable 5.2**, before its public launch
+
+**204** worlds in the first twenty hours, **471** by launch day
+
+a lead agent and **28 teams**: about **25,000** agent runs
+
+a rule book: **204 sections, 87,500 words**
+
+```notes
+The 25,000 is Claude's own estimate, and most of those runs did a single small job, like judging one screenshot. By day ten there was a lead agent that owned the engine and shipped every release, and 28 teams building worlds in parallel.
+
+The rule book is the bit to tell. Mollick asked the agents to "polish", and they decided every new version had to beat the old one in a blind vote by judge agents. Rules piled up as problems came up and nothing was ever cut: 84 sections by the next morning, 204 sections and 87,500 words after twelve days. Shipping a world took a day and reading the rule book ate much of an agent's context window, so output fell from hundreds of worlds a day to about a dozen. A separate team of agents looking at the process from outside got it back to thirty a day.
+```
+
+---
+
 {/* _class: hero */}
 
 <GenerationLoop />
@@ -508,28 +528,8 @@ Let it run while you state the agent loop once. It's the generation loop from be
 When the gate shuts, a hollow tile comes back: that's `[declined]` on our board.
 
 Nothing here is new machinery in the model. The harness does the detour, and the model only ever sees one row of tokens.
-```
 
----
-
-## what it took
-
-![bg right:40%](./assets/bg-insight-tool-use.avif)
-
-**Claude Fable 5.2**, before its public launch
-
-**204** worlds in the first twenty hours, **471** by launch day
-
-a lead agent and **28 teams**: about **25,000** agent runs
-
-a rule book: **204 sections, 87,500 words**
-
-```notes
-The 25,000 is Claude's own estimate, and most of those runs did a single small job, like judging one screenshot. By day ten there was a lead agent that owned the engine and shipped every release, and 28 teams building worlds in parallel.
-
-The rule book is the bit to tell. Mollick asked the agents to "polish", and they decided every new version had to beat the old one in a blind vote by judge agents. Rules piled up as problems came up and nothing was ever cut: 84 sections by the next morning, 204 sections and 87,500 words after twelve days. Shipping a world took a day and reading the rule book ate much of an agent's context window, so output fell from hundreds of worlds a day to about a dozen. A separate team of agents looking at the process from outside got it back to thirty a day.
-
-Portals is the loop you just watched, run about 25,000 times: a harness, tools, agents calling agents, and checks deciding what ships.
+Back to Portals: it's this loop, run about 25,000 times, with a harness, tools, agents calling agents, and checks deciding what ships.
 ```
 
 ---
