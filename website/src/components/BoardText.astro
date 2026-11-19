@@ -5,17 +5,23 @@
  * you type is mirrored to every other copy of the deck open in the same
  * browser (the speaker view's previews included), so it can be typed in
  * either window.
+ *
+ * With `continues`, a box that is still empty when its slide comes up starts
+ * with the text of the board before it, so a second round picks up the
+ * room's sentence where the first left off.
  */
 interface Props {
   placeholder?: string;
+  continues?: boolean;
 }
 
-const { placeholder = "type here..." } = Astro.props;
+const { placeholder = "type here...", continues = false } = Astro.props;
 ---
 
 <textarea
   class="board-text"
   data-board-text
+  data-continues={continues ? "" : undefined}
   aria-label="The room's sentence"
   placeholder={placeholder}
   spellcheck="false"
@@ -34,6 +40,20 @@ const { placeholder = "type here..." } = Astro.props;
       if (box && box.value !== data.value) box.value = data.value;
     },
   );
+
+  // Seed a `continues` box from the last non-empty board before it. The event
+  // is astromotion's, sent after every slide change.
+  document.addEventListener("astromotion:slidechange", () => {
+    const all = boxes();
+    all.forEach((box, index) => {
+      if (!("continues" in box.dataset) || box.value !== "") return;
+      if (!box.closest("section")?.classList.contains("present")) return;
+      const previous = all.slice(0, index).findLast((other) => other.value.trim() !== "");
+      if (!previous) return;
+      box.value = `${previous.value.trimEnd()} `;
+      channel.postMessage({ index, value: box.value });
+    });
+  });
 
   boxes().forEach((box, index) => {
     box.addEventListener("input", () => channel.postMessage({ index, value: box.value }));
