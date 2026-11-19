@@ -354,36 +354,14 @@ Not a one-shot, though. The paragraph got the first 204 worlds in twenty hours, 
 
 ---
 
-## what it took
-
-![bg right:40%](./assets/bg-insight-tool-use.avif)
-
-**Claude Fable 5.2**, before its public launch
-
-**204** worlds in the first twenty hours, **471** by launch day
-
-a lead agent and **28 teams**: about **25,000** agent runs
-
-a rule book: **204 sections, 87,500 words**
-
-```notes
-The 25,000 is Claude's own estimate, and most of those runs did a single small job, like judging one screenshot. By day ten there was a lead agent that owned the engine and shipped every release, and 28 teams building worlds in parallel.
-
-The rule book is the bit to tell. Mollick asked the agents to "polish", and they decided every new version had to beat the old one in a blind vote by judge agents. Rules piled up as problems came up and nothing was ever cut: 84 sections by the next morning, 204 sections and 87,500 words after twelve days. Shipping a world took a day and reading the rule book ate much of an agent's context window, so output fell from hundreds of worlds a day to about a dozen. A separate team of agents looking at the process from outside got it back to thirty a day.
-
-This is the harness, the tools and the loop from before, run at scale: agents calling agents, and checks deciding what ships.
-```
-
----
-
 {/* _class: hero */}
 
-![bg](./assets/bg-chain.avif)
+<GenerationLoop />
 
-and it's still just **words in → words out**
+and it's still **words in → words out**
 
 ```notes
-Every reply from Claude or ChatGPT still comes out one token at a time through that same generation loop. Pause, then click.
+Every reply from Claude or ChatGPT still comes out one token at a time through the generation loop running behind this line. So how does words in, words out build hundreds of worlds? Pause, then click.
 ```
 
 ---
@@ -446,6 +424,8 @@ The tool reads the second word of the subject line of the third email in your in
 
 If they decline, write `[declined]` on the board in place of the word and call the `a` word again: a denied tool call goes back into the context as its result, and generation carries on. Thank them: that's the permission prompt working.
 
+Make sure one call gets declined, because the close leans on it. If the first two people say yes, tell the next hand "say no to this one".
+
 Write the inbox word on the board after the `a` word, then call the `a` word again to continue. Because our paper sheets have no entries for arbitrary words from someone's email, the bigram model has to resume from the last token it knows.
 ```
 
@@ -487,8 +467,40 @@ me, coordinating all of that → the **harness**
 
 ```notes
 Production agents use the same five pieces, with more tools and fewer permission prompts.
+```
 
-Notice one difference: our bigram model had to ignore the inbox word and continue from the token before it, whereas a real LLM feeds the email text straight into its context window. Anyone who sends you an email can put text into your agent's context, including text written like instructions. That's prompt injection, and after this exercise a class can see why it happens.
+---
+
+<GenerationLoop tools />
+
+```notes
+Let it run while you state the agent loop once. It's the generation loop from before, with a detour: every few tokens the newest one is a tool call (the ringed tile). The request drops through the permission gate to the tool, and the result comes back up as a token and joins the row. Then generation carries on from there.
+
+When the gate shuts, a hollow tile comes back: that's `[declined]` on our board.
+
+Nothing here is new machinery in the model. The harness does the detour, and the model only ever sees one row of tokens.
+```
+
+---
+
+## what it took
+
+![bg right:40%](./assets/bg-insight-tool-use.avif)
+
+**Claude Fable 5.2**, before its public launch
+
+**204** worlds in the first twenty hours, **471** by launch day
+
+a lead agent and **28 teams**: about **25,000** agent runs
+
+a rule book: **204 sections, 87,500 words**
+
+```notes
+The 25,000 is Claude's own estimate, and most of those runs did a single small job, like judging one screenshot. By day ten there was a lead agent that owned the engine and shipped every release, and 28 teams building worlds in parallel.
+
+The rule book is the bit to tell. Mollick asked the agents to "polish", and they decided every new version had to beat the old one in a blind vote by judge agents. Rules piled up as problems came up and nothing was ever cut: 84 sections by the next morning, 204 sections and 87,500 words after twelve days. Shipping a world took a day and reading the rule book ate much of an agent's context window, so output fell from hundreds of worlds a day to about a dozen. A separate team of agents looking at the process from outside got it back to thirty a day.
+
+Portals is the loop you just watched, run about 25,000 times: a harness, tools, agents calling agents, and checks deciding what ships.
 ```
 
 ---
@@ -534,16 +546,14 @@ You've just acted out all three on paper. The mental model university students n
 
 ---
 
-{/* _class: hero */}
-
-![bg](./assets/bg-question-moved.avif)
-
-the question has moved from what it **says** to what it's **allowed to do**
+<GenerationLoop tools inject />
 
 ```notes
-With a chatbot, you worry about what it says. With an agent, you worry about what it's allowed to do: which tools are wired up, what runs automatically, and where a human has to approve.
+Start with the first of those, the context. Our bigram model had to ignore the inbox word and carry on from the token before it. A real LLM can't: the tool result goes straight into its context window, and everything it writes next is conditioned on it.
 
-Those are harness settings, chosen by whoever deploys or runs the system. That's where Bandura's "influence" becomes concrete for a school, a teacher or a student deciding what an agent is allowed to read and touch.
+Watch the red tile come back from the tool. The next few fans and picks take its colour.
+
+Anyone who sends you an email can put text into your agent's context, including text written like instructions. That's prompt injection, and after the agent round a class can see why it happens.
 ```
 
 ---
@@ -558,9 +568,23 @@ Those are harness settings, chosen by whoever deploys or runs the system. That's
 
 {/* _class: hero */}
 
+![bg](./assets/bg-question-moved.avif)
+
+the question has moved from what it **says** to what it's **allowed to do**
+
+```notes
+With a chatbot, you worry about what it says. With an agent, you worry about what it's allowed to do: which tools are wired up, what runs automatically, and where a human has to approve.
+
+Those are harness settings, chosen by whoever deploys or runs the system. That's where Bandura's "influence" becomes concrete for a school, a teacher or a student deciding what an agent is allowed to read and touch.
+```
+
+---
+
+{/* _class: hero */}
+
 ![bg](./assets/bg-tools-change.avif)
 
-the tools will change by next term; the **concepts** won't, and they fit on
+the products will change by next term; the **concepts** won't, and they fit on
 **paper**
 
 ```notes
@@ -669,18 +693,6 @@ the **tools page**: booklets, ledgers and cutouts from any text you paste in
 
 ```notes
 Each lesson comes with a slide deck, teacher notes and a print pack. The tools page generates booklets, ledgers, cutouts or search sheets in the browser from any text you paste in --- a class novel, song lyrics, or the students' own writing.
-```
-
----
-
-{/* _class: hero */}
-
-![bg](./assets/bg-ledger-title.avif)
-
-workshop **2A**: build your own model, by hand, from scratch
-
-```notes
-If you're signed up for workshop 2A, we'll build a ledger model from a picture book and sample stories from it with a cup of counters.
 ```
 
 ---
