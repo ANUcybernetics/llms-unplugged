@@ -301,9 +301,9 @@ Commercial models are built out of the same kinds of decisions: what goes into t
 ```notes
 Three independent dials separate our room from a frontier LLM. First, context window: how much text the model sees before each guess. We looked one token back; Claude looks back up to a million tokens.
 
-Second, training data: how many tokens went past the counter. Ours saw 3,278 tokens; a recent open-weights model trained on fifteen trillion.
+Second, training data: how many tokens went past the counter. Ours saw 3,278 tokens; Thinking Machines' open-weights Inkling model (July 2026) trained on forty-five trillion.
 
-Third, model size: we held 3,276 token pairs on paper, where a frontier model holds roughly a trillion learned parameters (closed labs don't publish exact counts).
+Third, model size: we held 3,276 token pairs on paper, where the largest open-weights model, Moonshot's Kimi K3 (July 2026), holds 2.8 trillion learned parameters (closed labs don't publish theirs).
 
 Each bar has its own scale because the three dials move independently, and the endpoints are different architectures: lookup counts on the left, neural network weights on the right.
 ```

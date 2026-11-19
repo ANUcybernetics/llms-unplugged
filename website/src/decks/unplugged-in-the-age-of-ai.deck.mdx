@@ -266,9 +266,9 @@ Now compare this model's scale with a frontier LLM. *[next slide]*
 ```notes
 Three independent quantities scale up. The first is how much context the model looks at before each guess. Ours looked at one token, which is why our sentence wandered; Claude looks back over up to a million tokens.
 
-The second is how much text went past the counter. Ours read 1,962 tokens; fifteen trillion is the published figure for a recent open model's training run.
+The second is how much text went past the counter. Ours read 1,962 tokens; Thinking Machines trained its open-weights Inkling model (July 2026) on forty-five trillion.
 
-The third is how many learned numbers the model contains. Ours had a 240 by 240 grid: 57,600 places a count could live. A frontier model has roughly a trillion parameters (exact figures for the closed models aren't published).
+The third is how many learned numbers the model contains. Ours had a 240 by 240 grid: 57,600 places a count could live. The largest open-weights model, Moonshot's Kimi K3 (July 2026), has 2.8 trillion parameters; the closed labs don't publish theirs.
 
 The bars have separate scales because these quantities can be changed independently, and the endpoints are different kinds of model: grid cells on the left, neural-network parameters on the right.
 ```
