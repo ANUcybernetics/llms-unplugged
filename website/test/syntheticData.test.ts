@@ -63,12 +63,13 @@ describe("Synthetic Data module", () => {
   });
 
   it("a word missing from one slip can't turn up on a later one", () => {
-    for (const chain of relay.slips) {
-      for (let n = 1; n < ROUNDS; n++) {
-        const before = new Set(chain[n - 1]);
-        for (const w of chain[n]) expect(before.has(w), `${w} in round ${n + 1}`).toBe(true);
-      }
-    }
+    const returned = relay.slips.flatMap((chain) =>
+      chain.slice(1).flatMap((text, n) => {
+        const before = new Set(chain[n]);
+        return text.filter((w) => !before.has(w));
+      }),
+    );
+    expect(returned).toEqual([]);
     expect(MODULE).toContain("a word missing from one slip can't turn up on a later one");
   });
 
