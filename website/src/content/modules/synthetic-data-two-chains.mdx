@@ -1,0 +1,136 @@
+---
+title: Synthetic Data (two chains)
+description:
+  Run two relays side by side. In one, each link trains a fresh model on the
+  last link's output; in the other, everyone adds their output to the same
+  sheet, on top of the real story. Only the first chain forgets its words.
+order: 93
+audience: years 9 and up
+duration: 40-50 min
+bases: [grid]
+status: experimental
+topic: shaping-behaviour
+listed: false
+replacedBy: synthetic-data
+keyIdea:
+  Training a model only on another model's output loses a little each time, and
+  the losses add up. Keep the real data in the mix and the losses mostly stop.
+---
+
+import GlossaryTerm from "../../components/GlossaryTerm.astro";
+import Callout from "../../components/Callout.astro";
+
+Two chains start from the same model of the same story. In the **replace** chain, each link trains a brand-new model on nothing but the text the link before it generated, so only the head of the chain ever sees the story. In the **accumulate** chain, one sheet goes down the line, and each link adds its generated text to it, on top of the story's own tallies. Count what each model can still say at every link, and you'll see <GlossaryTerm id="model-collapse">model collapse</GlossaryTerm> happen in one chain and not the other.
+
+![](../../assets/images/hero-synthetic-data.avif)
+
+## You will need
+
+- for each table, a copy of the model of _The magpie's nest_: the table in [Rewards](/modules/rewards/) or [Beam Search](/modules/beam-search/), or a grid the table trained on the story in [Training](/modules/training/)
+- blank [grid templates](https://pdf.llmsunplugged.org/worksheets/grid.pdf) or grid paper: one for every link after the first in each replace chain
+- a d20 and a d6 per table, pens and paper
+- a whiteboard for the counts
+
+A table is three or four people. Every table starts a chain of its own and all the tables work at once, so it takes at least two tables and works with any number.
+
+## Your goal
+
+Send the same story down two kinds of chain and compare what comes out the far ends. Stretch goal: work out which words each chain lost, and why those ones.
+
+## Key idea
+
+A model can only write words it was trained on, and a twenty-word sample of a model misses a lot of them. Train the next model on that sample alone and the missed words are gone for good. In the replace chain, words that appeared only once in the story are the likeliest to be missed, so the rare words go first. The accumulate chain keeps the story's own tallies on the sheet the whole way down, so a word that one link happens to miss is still there for the next.
+
+## Running the chains
+
+Number the tables round the room. Odd-numbered tables start a replace chain and even-numbered tables an accumulate chain. Name each chain after the table that started it (R1, A2, R3 and so on) and write the name on whatever gets passed on.
+
+Every table is link A of its own chain, starting from its copy of the magpie's model. When all the tables have finished a link, each one passes its chain to the next table round the room and takes the chain coming from the table before. So every table works at every link, and each chain moves one table along at a time. What lands on your table tells you what to do: twenty words on their own are a replace chain, and a sheet of tallies is an accumulate chain.
+
+**Replace chain.** Link A generates twenty words from the magpie's model, starting from `.`, and passes them on. Every later link:
+
+1. **Trains a fresh model** on the twenty words it was handed, as in [Training](/modules/training/). Start a new <GlossaryTerm id="grid">grid</GlossaryTerm>; this model's only knowledge is the previous link's output.
+2. **Generates twenty words** from it, starting from `.`, as in [Generation](/modules/generation/).
+3. **Passes on the twenty words alone**, without the story or the grid.
+
+**Accumulate chain.** There's one sheet, the copy of the magpie's model. Every link, A included:
+
+1. **Generates twenty words** from the sheet as it stands, starting from `.`.
+2. **Tallies those twenty words into the same sheet**, pair by pair, starting with the `.` it began from.
+3. **Passes the sheet on.**
+
+Twenty words means twenty of anything you write, `.` and `!` included. Share the rolling: everyone at the table starts a sentence from `.` at the same time, on the same sheet, and the table stops once the sentences add up to twenty words, cutting the last one short. In both chains, if you land on a word with nothing after it, write `.` and carry on from `.`.
+
+To roll on a row, number its options by their counts, roll the d20 and roll again if it comes up higher than the row total. The accumulate sheet's `.` and `the` rows pass 20 after a link or two. For a row that big, roll the d6 with the d20: on 1 or 2 add nothing, on 3 or 4 add 20, on 5 or 6 add 40.
+
+Before passing anything on, each table writes two numbers on the board, beside its chain's name:
+
+- **words the model knows**: the rows on the sheet it generated from that have at least one count
+- **words it used**: the different words in the twenty it generated
+
+## The board
+
+Rule the board up with a row for each chain and a column for each link, replace chains at the top. A link takes about the same time in either kind of chain, because a replace link trains a small new grid while an accumulate link tallies into a bigger one, so the tables stay in step.
+
+Typical numbers, averaged over many simulated chains (each of yours will wobble around them, and with several chains of each kind the board shows how much):
+
+| link | replace: knows | replace: used | accumulate: knows | accumulate: used |
+| ---- | -------------- | ------------- | ----------------- | ---------------- |
+| A    | 32             | 12            | 32                | 12               |
+| B    | 12             | 9             | 32                | 12               |
+| C    | 9              | 8             | 32                | 12               |
+| D    | 8              | 7             | 32                | 12               |
+
+Three things to point at:
+
+- the replace chain loses words at every link, and the biggest drop is the first: a twenty-word sample of a 32-word model leaves out almost two-thirds of them
+- the accumulate chain never loses a word, because the story's tallies are still on the sheet. The words it uses barely change
+- the words the replace chain lost first, like `worm`, `sun` and `warbles`, appeared once in the story
+
+Then each table reads out the last twenty words it generated, replace chains first, and someone reads the story.
+
+## Instructor notes
+
+### Timing
+
+A link takes about ten minutes either way: a replace link tallies twenty words into a fresh grid and then rolls twenty more, while an accumulate link rolls twenty and then tallies them. Rolling sentences in parallel keeps it to ten minutes; one person rolling all twenty takes twice as long. Three links and the board fit in about 45 minutes. Every table works at every link in parallel, so only the chain length affects the total time.
+
+With two tables there's one chain of each kind, so the board shows a single run of each. The direction is reliable, but compare the replace chain's numbers with the typical ones above as well as with the accumulate chain.
+
+### Discussion questions
+
+- which words did the replace chain lose first? What did they have in common?
+- once a word was gone from the replace chain, could any later link get it back?
+- the accumulate chain's sheet kept growing. What happened to the story's share of it?
+- if the chains ran for ten more links, what would each far end look like?
+- if you only saw the last link's text, could you tell which chain it came from?
+- real models are now trained on a web that contains a lot of model output. Which chain is that more like?
+
+### Classroom variations
+
+**Filter before you pass on.** In one replace chain, each link only passes on sentences that contain `magpie`, the rule card from [Rewards](/modules/rewards/). It's the way much synthetic data is made now: generate a lot, keep what passes a check. What does the filter keep, and what does it throw away?
+
+**Joker mode.** One table starts its replace chain from a grid it invents (made-up words, tallies anywhere) instead of the magpie's model. That chain narrows the same way as the others, because the narrowing comes from the sampling, whatever the source.
+
+**Start from a booklet.** Run a replace chain from a [pre-trained booklet](/modules/pretrained-generation/) instead of the magpie's model. The bigger vocabulary means a bigger first drop, and the chain takes longer to bottom out.
+
+### Connection to current LLMs
+
+The replace chain is a hand-run version of the experiment in [Shumailov et al. (2024)](https://www.nature.com/articles/s41586-024-07566-y). They trained language models on their own output, over and over, and found what the board shows: each generation narrows, and the rare things go first, because a finite sample is likeliest to miss them. Once they're gone no later generation can bring them back.
+
+The accumulate chain is the follow-up. [Gerstgrasser et al. (2024)](https://arxiv.org/abs/2404.01413) kept the original data and added each generation's output to it instead of replacing it, and the collapse stopped: the models' quality levelled off instead of falling. Replacing all the real data with model output is the worst case, and it isn't how anyone trains a model on purpose.
+
+<GlossaryTerm id="synthetic-data">Synthetic data</GlossaryTerm> is now a normal
+part of training, used carefully:
+
+- **<GlossaryTerm id="distillation">distillation</GlossaryTerm>**: a large model writes training text for a smaller one. [DeepSeek-R1](https://arxiv.org/abs/2501.12948)'s worked solutions were used to train much smaller open models, which then reasoned far better than models their size usually do. The data comes from a stronger model, so the chain doesn't close on itself
+- **generate and filter**: produce a lot of attempts and keep only those a checker, a verifier or a person accepts, as in the filter variation above
+- **written to order**: [TinyStories](https://arxiv.org/abs/2305.07759) is a corpus of simple stories written by a larger model, and small models trained on it write fluent English at sizes where models trained on web text don't. There's a TinyStories volume in the [Library of Babble](/library/), so you can roll dice against a model trained on synthetic data
+
+A growing share of the text on the web is unlabelled model output, so anyone training on scraped text today trains on some of it whether they mean to or not. Training pipelines follow the accumulate chain by tracking provenance and keeping human-written text in the mix.
+
+<Callout type="info" title="How this differs from a neural model">
+
+Your grid can only write a word it has literally seen, so a word lost from the replace chain is lost completely. A <GlossaryTerm id="neural-network">neural model</GlossaryTerm> spreads what it learns across shared <GlossaryTerm id="parameters">parameters</GlossaryTerm>, so it can still produce a word in a context it never saw; real collapse moves in the same direction, but is gentler and takes more generations.
+
+</Callout>

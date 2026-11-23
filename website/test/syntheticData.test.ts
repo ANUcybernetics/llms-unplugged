@@ -1,133 +1,82 @@
 import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { buildBigramModel, parseTokens } from "../src/lib/tokens";
-import { pick, rng } from "./utils/rewardsSim";
+import { type Counts, differentWords, nextModel, slip, START, writable } from "../src/lib/relay";
+import { copy } from "../src/lib/rewards";
+import { BASE, rng, STORY } from "./utils/rewardsSim";
 
-// The Synthetic Data module runs a replace chain and an accumulate chain from
-// The magpie's nest, twenty words per link, and prints typical counts for
-// each. These tests run both chains many times, as the page describes them,
-// and check the table and the claims around it.
+// The Synthetic Data module runs a relay from The magpie's nest, twenty words
+// per link, by hand for a few links and then on RelayWidget, which can also
+// keep the story in. These tests run both kinds of chain many times, as the
+// page describes them, and check the numbers and claims it prints.
 
 const read = (path: string) => readFileSync(join(process.cwd(), path), "utf-8");
 const MODULE = read("src/content/modules/synthetic-data.mdx");
-const STORY = parseTokens(read("../data/originals/the-magpies-nest.txt").split("---")[2]);
 
-type Counts = Map<string, Map<string, number>>;
-const WORDS_PER_LINK = 20;
-const LINKS = 4;
+const LINKS = 20;
 const TRIALS = 4000;
+const mean = (xs: number[]) => xs.reduce((a, b) => a + b, 0) / xs.length;
+const rowTotal = (m: Counts, w: string) => [...m.get(w)!.values()].reduce((a, b) => a + b, 0);
 
-const train = (tokens: string[]): Counts => buildBigramModel(tokens).counts;
-
-function tallyInto(sheet: Counts, tokens: string[]) {
-  for (let i = 0; i + 1 < tokens.length; i++) {
-    const row = sheet.get(tokens[i]) ?? new Map<string, number>();
-    row.set(tokens[i + 1], (row.get(tokens[i + 1]) ?? 0) + 1);
-    sheet.set(tokens[i], row);
-  }
-}
-
-// Twenty words from `.`; a word with nothing after it means write `.` and carry on.
-function generate(m: Counts, r: () => number): string[] {
-  const out: string[] = [];
-  let w = ".";
-  while (out.length < WORDS_PER_LINK) {
-    w = pick(m.get(w) ?? new Map(), r) ?? ".";
-    out.push(w);
-  }
-  return out;
-}
-
-const total = (sheet: Counts, w: string) => [...sheet.get(w)!.values()].reduce((a, b) => a + b, 0);
-
-const knows = (m: Counts) =>
-  [...m.values()].filter((row) => [...row.values()].some((n) => n > 0)).length;
-const used = (text: string[]) => new Set(text).size;
-
-const average = (xs: { knows: number; used: number }[]) =>
-  xs.map(({ knows: k, used: u }) => [k / TRIALS, u / TRIALS]);
-
-function chains() {
-  const r = rng(21);
-  const replace = Array.from({ length: LINKS }, () => ({ knows: 0, used: 0 }));
-  const accumulate = Array.from({ length: LINKS }, () => ({ knows: 0, used: 0 }));
+// Each chain's count of different words at every link.
+function chains(keep: boolean, seed: number) {
+  const r = rng(seed);
   const missingAtA = new Map<string, number>();
-
-  for (let t = 0; t < TRIALS; t++) {
-    let model = train(STORY);
-    for (let link = 0; link < LINKS; link++) {
-      const text = generate(model, r);
-      replace[link].knows += knows(model);
-      replace[link].used += used(text);
+  const counts = Array.from({ length: TRIALS }, () => {
+    let model = copy(BASE);
+    return Array.from({ length: LINKS }, (_, link) => {
+      const text = slip(model, r);
       if (link === 0) {
         for (const w of new Set(STORY)) {
           if (!text.includes(w)) missingAtA.set(w, (missingAtA.get(w) ?? 0) + 1);
         }
       }
-      model = train(text);
-    }
-
-    const sheet = train(STORY);
-    for (let link = 0; link < LINKS; link++) {
-      const text = generate(sheet, r);
-      accumulate[link].knows += knows(sheet);
-      accumulate[link].used += used(text);
-      tallyInto(sheet, [".", ...text]);
-    }
-  }
-
-  return { replace: average(replace), accumulate: average(accumulate), missingAtA };
+      model = nextModel(model, text, keep);
+      return differentWords(text);
+    });
+  });
+  return { counts, at: (link: number) => mean(counts.map((c) => c[link])), missingAtA };
 }
 
-const { replace, accumulate, missingAtA } = chains();
+const relay = chains(false, 21);
+const kept = chains(true, 22);
 
 describe("Synthetic Data module", () => {
   it("prints the typical counts the simulated chains give", () => {
-    const rows = [...MODULE.matchAll(/^\| ([A-D]) +\| (\d+) +\| (\d+) +\| (\d+) +\| (\d+) +\|$/gm)];
+    expect(writable(BASE).size).toBe(32);
+    expect(MODULE).toMatch(/^\| the story's model \| 32 +\|$/m);
+    const rows = [...MODULE.matchAll(/^\| ([A-D]) +\| (\d+) +\|$/gm)];
     expect(rows.map((m) => m[1])).toEqual(["A", "B", "C", "D"]);
     rows.forEach((m, link) => {
-      const [rk, ru, ak, au] = m.slice(2).map(Number);
-      expect(Math.abs(rk - replace[link][0]), `replace knows at ${m[1]}`).toBeLessThan(1);
-      expect(Math.abs(ru - replace[link][1]), `replace used at ${m[1]}`).toBeLessThan(1);
-      expect(Math.abs(ak - accumulate[link][0]), `accumulate knows at ${m[1]}`).toBeLessThan(1);
-      expect(Math.abs(au - accumulate[link][1]), `accumulate used at ${m[1]}`).toBeLessThan(1);
+      expect(Math.abs(Number(m[2]) - relay.at(link)), `different words at ${m[1]}`).toBeLessThan(1);
     });
   });
 
-  it("the replace chain's biggest drop is the first, leaving out almost two-thirds of the words", () => {
-    const drops = replace.slice(1).map(([k], i) => replace[i][0] - k);
+  it("the biggest drop is the first, leaving out almost two-thirds of the words", () => {
+    const steps = [32, ...Array.from({ length: 4 }, (_, link) => relay.at(link))];
+    const drops = steps.slice(1).map((n, i) => steps[i] - n);
     expect(drops[0]).toBe(Math.max(...drops));
-    const leftOut = 1 - replace[0][1] / new Set(STORY).size;
+    const leftOut = 1 - relay.at(0) / 32;
     expect(leftOut).toBeGreaterThan(0.6);
     expect(leftOut).toBeLessThan(0.67);
     expect(MODULE).toContain(
-      "a twenty-word sample of a 32-word model leaves out almost two-thirds of them",
+      "a twenty-word slip from a 32-word model leaves out almost two-thirds of them",
     );
   });
 
-  it("the accumulate chain never loses a word and barely changes the words it uses", () => {
-    for (const [k] of accumulate) expect(k).toBe(new Set(STORY).size);
-    expect(accumulate[0][1] - accumulate.at(-1)![1]).toBeLessThan(2);
-  });
-
-  it("the accumulate sheet's big rows pass 20 after a link or two and stay within a d20 and a d6", () => {
-    const r = rng(22);
-    let pastAfterB = 0;
-    const sheets = 500;
-    for (let t = 0; t < sheets; t++) {
-      const sheet = train(STORY);
-      for (let link = 0; link < LINKS; link++) {
-        tallyInto(sheet, [".", ...generate(sheet, r)]);
-        if (link === 1) pastAfterB += +[".", "the"].every((w) => total(sheet, w) > 20);
+  it("a chain's count stalls but doesn't climb back", () => {
+    let rises = 0;
+    let stalls = 0;
+    for (const c of relay.counts) {
+      for (let link = 1; link < 4; link++) {
+        rises += +(c[link] > c[link - 1]);
+        stalls += +(c[link] === c[link - 1]);
       }
-      for (const w of sheet.keys()) expect(total(sheet, w), w).toBeLessThanOrEqual(60);
     }
-    expect(pastAfterB / sheets).toBeGreaterThan(0.9);
-    expect(MODULE).toContain(
-      "The accumulate sheet's `.` and `the` rows pass 20 after a link or two",
-    );
-    expect(MODULE).toContain("on 1 or 2 add nothing, on 3 or 4 add 20, on 5 or 6 add 40");
+    // the one way up: a slip with no `.` on it, then a dead end that writes one
+    expect(rises / (TRIALS * 3)).toBeLessThan(0.005);
+    expect(stalls / (TRIALS * 3)).toBeGreaterThan(0.1);
+    expect(MODULE).toContain("a chain's count can stall, but it doesn't climb back");
   });
 
   it("the words lost first appeared once in the story", () => {
@@ -135,8 +84,50 @@ describe("Synthetic Data module", () => {
     for (const w of STORY) counts.set(w, (counts.get(w) ?? 0) + 1);
     for (const w of ["worm", "sun", "warbles"]) {
       expect(counts.get(w), w).toBe(1);
-      expect(missingAtA.get(w)! / TRIALS, w).toBeGreaterThan(0.5);
+      expect(relay.missingAtA.get(w)! / TRIALS, w).toBeGreaterThan(0.5);
     }
     expect(MODULE).toContain("like `worm`, `sun` and `warbles`, appeared once in the story");
+  });
+
+  it("after ten links on the widget a chain is down to five or six different words", () => {
+    expect(relay.at(9)).toBeGreaterThan(5);
+    expect(relay.at(9)).toBeLessThan(6.2);
+    expect(MODULE).toContain(
+      "After ten links a chain is typically down to five or six different words",
+    );
+  });
+
+  it("keeping the story holds a slip at about twelve different words and loses none", () => {
+    for (const link of [0, 9, LINKS - 1]) {
+      expect(kept.at(link)).toBeGreaterThan(11);
+      expect(kept.at(link)).toBeLessThan(12.5);
+    }
+    const r = rng(23);
+    let model = copy(BASE);
+    for (let link = 0; link < LINKS; link++) model = nextModel(model, slip(model, r), true);
+    expect(writable(model).size).toBe(32);
+    expect(MODULE).toContain(
+      "a slip has about twelve different words on it, and every one of the story's 32 stays on the sheet",
+    );
+  });
+
+  it("a fresh grid's rows fit a d20, and the kept sheet's big rows pass 20 but fit a d20 and a d6", () => {
+    const r = rng(24);
+    let pastAfterB = 0;
+    const sheets = 500;
+    for (let t = 0; t < sheets; t++) {
+      let fresh = copy(BASE);
+      let sheet = copy(BASE);
+      for (let link = 0; link < 4; link++) {
+        fresh = nextModel(fresh, slip(fresh, r), false);
+        for (const w of fresh.keys()) expect(rowTotal(fresh, w), w).toBeLessThanOrEqual(20);
+        sheet = nextModel(sheet, slip(sheet, r), true);
+        if (link === 1) pastAfterB += +[START, "the"].every((w) => rowTotal(sheet, w) > 20);
+      }
+      for (const w of sheet.keys()) expect(rowTotal(sheet, w), w).toBeLessThanOrEqual(60);
+    }
+    expect(pastAfterB / sheets).toBeGreaterThan(0.9);
+    expect(MODULE).toContain("The sheet's `.` and `the` rows pass 20 after a link or two");
+    expect(MODULE).toContain("on 1 or 2 add nothing, on 3 or 4 add 20, on 5 or 6 add 40");
   });
 });

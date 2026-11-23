@@ -80,7 +80,7 @@ LoRA part) if time is short.
 
 **Rewards** gives every group the same goal, sentences about the magpie, and one of two ways to judge them. Half the groups rank their sentences as a panel; the other half check them against a rule card. Three rounds later the rule-card groups pass their check far more often, and much of what passes is nonsense, which is <GlossaryTerm id="reward-hacking">reward hacking</GlossaryTerm>. Then the whole room votes thumbs up or down on what a model says about them, and watches it learn to flatter: the route to <GlossaryTerm id="sycophancy">sycophancy</GlossaryTerm> that runs through rewards instead of data.
 
-**<GlossaryTerm id="synthetic-data">Synthetic Data</GlossaryTerm>** runs two kinds of relay at once. Every group starts a chain and passes it one group along at each link, so nobody waits. In a replace chain, each group trains a fresh model on the last group's output and passes on its own; in an accumulate chain, every group adds its output to the same sheet, on top of the story's tallies. Keep the counts for every chain on butchers paper. The replace chains drop words at every link (<GlossaryTerm id="model-collapse">model collapse</GlossaryTerm>), while the accumulate chains keep the full vocabulary.
+**<GlossaryTerm id="synthetic-data">Synthetic Data</GlossaryTerm>** is a relay. Every group generates twenty words from the magpie's model and passes them one group along. The next group trains a fresh model on those twenty words and nothing else, generates twenty of its own, and passes those on, so nobody waits. Keep each chain's count of different words on butchers paper: it drops at every link (<GlossaryTerm id="model-collapse">model collapse</GlossaryTerm>). Then the module page's widget runs the chain much further, and runs it again with the story kept in the training data, which stops the collapse.
 
 ## You will need
 
@@ -90,8 +90,8 @@ For each group of three or four:
   [48-word grids](https://pdf.llmsunplugged.org/worksheets/grid-48.pdf): one for
   the magpie model, which has 32 words and needs room for the new ones, and one
   for the adapter sheet
-- a screen for the widgets in Fine-tuning and Rewards (one on the projector will
-  do)
+- a screen for the widgets in Fine-tuning, Rewards and Synthetic Data (one on
+  the projector will do)
 - two [32-word grids](https://pdf.llmsunplugged.org/worksheets/grid.pdf) (or
   grid paper) for the synthetic-data relay
 - a d6 and a d20, and pens

@@ -317,9 +317,9 @@ flattering adapter and measure how much flattery each strength produces.
 
 ### [Synthetic Data](https://www.llmsunplugged.org/modules/synthetic-data/)
 
-Run two relays side by side: one where each link trains a fresh model on the
-last link's output, and one where every link adds its output to the same sheet,
-on top of the real text. Compare what each model can still say.
+Run a relay where each link trains a fresh model on the last link's output,
+and count the words that survive. Then a widget runs the chain on, and runs it
+again with the real text kept in the training data.
 
 - **Best fit:** Years 9--10
 - **Primary**
