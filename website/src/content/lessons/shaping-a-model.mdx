@@ -80,7 +80,7 @@ LoRA part) if time is short.
 
 **Rewards** gives every group the same goal, sentences about the magpie, and one of two ways to judge them. Half the groups rank their sentences as a panel; the other half check them against a rule card. Three rounds later the rule-card groups pass their check far more often, and much of what passes is nonsense, which is <GlossaryTerm id="reward-hacking">reward hacking</GlossaryTerm>. Then the whole room votes thumbs up or down on what a model says about them, and watches it learn to flatter: the route to <GlossaryTerm id="sycophancy">sycophancy</GlossaryTerm> that runs through rewards instead of data.
 
-**<GlossaryTerm id="synthetic-data">Synthetic Data</GlossaryTerm>** is a relay. Every group generates twenty words from the magpie's model and passes them one group along. The next group trains a fresh model on those twenty words and nothing else, generates twenty of its own, and passes those on, so nobody waits. Keep each chain's count of different words on butchers paper: it drops at every link (<GlossaryTerm id="model-collapse">model collapse</GlossaryTerm>). Then the module page's widget runs the chain much further, and runs it again with the story kept in the training data, which stops the collapse.
+**<GlossaryTerm id="synthetic-data">Synthetic Data</GlossaryTerm>** is a relay. Every group generates twenty words from the magpie's model and passes them one group along. The next group trains a fresh model on those twenty words and nothing else, generates twenty of its own, and passes those on, so nobody waits. Keep the counts of different words on butchers paper, round by round: they drop every round (<GlossaryTerm id="model-collapse">model collapse</GlossaryTerm>). Then the module page's widget runs the chain much further, and runs it again with the story kept in the training data, which stops the collapse.
 
 ## You will need
 
@@ -117,8 +117,8 @@ For the room:
   and which strength of the flattering adapter each group will run
 - know the order the groups pass round in, so the synthetic-data relay passes
   cleanly without everyone standing up
-- rule the butchers paper up beforehand, with a row for each chain and a column
-  for each link
+- rule the butchers paper up beforehand, with a column for each round of the
+  relay
 - read the discussion questions in the
   [Fine-tuning and LoRA](/modules/fine-tuning/), [Rewards](/modules/rewards/)
   and [Synthetic Data](/modules/synthetic-data/) instructor notes and choose two

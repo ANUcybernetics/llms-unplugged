@@ -1,15 +1,15 @@
 import { copy, type Counts, pick } from "./rewards";
 
 /**
- * The Synthetic Data relay: each link generates a slip of twenty words from
- * its model, and the next link's model is trained on that slip. Shared by
+ * The Synthetic Data relay: each round writes a twenty-word slip from its
+ * model, and the next round's model is trained on that slip. Shared by
  * RelayWidget and the tests that check the page's numbers
  * (test/syntheticData.test.ts).
  */
 
 export type { Counts } from "./rewards";
 
-export const WORDS_PER_LINK = 20;
+export const WORDS_PER_SLIP = 20;
 export const START = ".";
 
 /** Tally a text's pairs into a sheet: a fresh one unless one is given. */
@@ -22,13 +22,14 @@ export function tally(tokens: string[], sheet: Counts = new Map()): Counts {
   return sheet;
 }
 
-/** A slip: twenty words rolled from `.`. A word with nothing after it means write `.` and carry on. */
-export function slip(model: Counts, r: () => number, words = WORDS_PER_LINK): string[] {
-  const out: string[] = [];
-  let w = START;
+/**
+ * A slip: the `.` generation starts from, then words rolled until there are
+ * twenty on it. A word with nothing after it means write `.` and carry on.
+ */
+export function slip(model: Counts, r: () => number, words = WORDS_PER_SLIP): string[] {
+  const out = [START];
   while (out.length < words) {
-    w = pick(model.get(w) ?? new Map(), r) ?? START;
-    out.push(w);
+    out.push(pick(model.get(out.at(-1)!) ?? new Map(), r) ?? START);
   }
   return out;
 }
@@ -45,10 +46,10 @@ export function writable(model: Counts): Set<string> {
 }
 
 /**
- * The model the next link generates from. The slip is tallied with the `.` it
- * began from, onto a fresh sheet, or onto a copy of the sheet it was rolled
- * from when the chain keeps its data.
+ * The model the next round generates from: the slip tallied onto a fresh
+ * sheet, or onto a copy of the sheet it was rolled from when the chain keeps
+ * its data.
  */
 export function nextModel(model: Counts, text: string[], keep: boolean): Counts {
-  return tally([START, ...text], keep ? copy(model) : new Map());
+  return tally(text, keep ? copy(model) : new Map());
 }

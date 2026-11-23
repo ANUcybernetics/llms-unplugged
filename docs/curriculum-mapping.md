@@ -317,7 +317,7 @@ flattering adapter and measure how much flattery each strength produces.
 
 ### [Synthetic Data](https://www.llmsunplugged.org/modules/synthetic-data/)
 
-Run a relay where each link trains a fresh model on the last link's output,
+Run a relay where each round trains a fresh model on the last round's output,
 and count the words that survive. Then a widget runs the chain on, and runs it
 again with the real text kept in the training data.
 

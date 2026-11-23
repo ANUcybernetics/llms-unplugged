@@ -1,6 +1,6 @@
 <script lang="ts">
   import { countsFromText, stripFrontmatter } from "../../lib/adapters";
-  import { type Counts, differentWords, nextModel, slip, writable } from "../../lib/relay";
+  import { type Counts, differentWords, nextModel, slip, START, writable } from "../../lib/relay";
   import { copy } from "../../lib/rewards";
   import { parseTokens } from "../../lib/tokens";
   import FullscreenWrapper from "../FullscreenWrapper.svelte";
@@ -21,35 +21,36 @@
   const storyTallies = tallies(base);
 
   let keep = $state(false);
-  // the model the next link generates from
+  // the model the next round generates from
   let model = $state.raw<Counts>(copy(base));
-  let links = $state<{ text: string[]; count: number }[]>([]);
+  let rounds = $state<{ text: string[]; count: number }[]>([]);
 
   function reset() {
     model = copy(base);
-    links = [];
+    rounds = [];
   }
 
   function run(n: number) {
     let m = model;
     for (let i = 0; i < n; i++) {
       const words = slip(m, Math.random);
-      links.push({ text: words, count: differentWords(words) });
+      rounds.push({ text: words, count: differentWords(words) });
       m = nextModel(m, words, keep);
     }
     model = m;
   }
 
-  let latest = $derived(links.at(-1));
+  let latest = $derived(rounds.at(-1));
   let onSlip = $derived(new Set(latest?.text));
-  let can = $derived(writable(model));
+  // every slip starts with `.`, whether or not a row leads to it
+  let can = $derived(new Set([START, ...writable(model)]));
 </script>
 
 <FullscreenWrapper>
   <div class="lm-widget relay-widget">
     <div class="widget-view">
       <div class="controls">
-        <div class="mode" role="group" aria-label="What the next link trains on">
+        <div class="mode" role="group" aria-label="What the next round trains on">
           <button
             type="button"
             aria-pressed={!keep}
@@ -67,22 +68,22 @@
             }}>Keep the story</button
           >
         </div>
-        <button type="button" onclick={reset} disabled={links.length === 0}>Start again</button>
+        <button type="button" onclick={reset} disabled={rounds.length === 0}>Start again</button>
       </div>
 
       <p class="rule">
         {#if keep}
-          <strong>Keep the story:</strong> each link's twenty words are tallied onto the same sheet as
-          the story, and the next link generates from all of it.
+          <strong>Keep the story:</strong> each slip is tallied onto the same sheet as the story, and
+          the next round generates from all of it.
         {:else}
-          <strong>Pass on the slip only:</strong> each link trains a fresh model on the last link's twenty
-          words and nothing else.
+          <strong>Pass on the slip only:</strong> each round trains a fresh model on the last slip and
+          nothing else.
         {/if}
       </p>
 
       <div class="widget-section">
         <div class="section-header">
-          {latest ? `Link ${links.length}` : "The relay"}
+          {latest ? `Round ${rounds.length}` : "The relay"}
         </div>
         {#if latest}
           <p class="slip">{latest.text.join(" ")}</p>
@@ -92,13 +93,13 @@
           </p>
         {:else}
           <p class="readout">
-            Link 1 generates twenty words from the story's model, which can write {storyWords.length}
+            Round 1 writes a twenty-word slip from the story's model, which can write {storyWords.length}
             different words.
           </p>
         {/if}
         <div class="actions">
-          <button type="button" onclick={() => run(1)}>Next link</button>
-          <button type="button" onclick={() => run(10)}>Run ten links</button>
+          <button type="button" onclick={() => run(1)}>Next round</button>
+          <button type="button" onclick={() => run(10)}>Run ten rounds</button>
         </div>
       </div>
 
@@ -112,32 +113,33 @@
           {/each}
         </ul>
         <p class="readout">
-          {#if links.length === 0}
+          {#if rounds.length === 0}
             Every word is still in play.
           {:else if keep}
-            The next link's model can still write all {can.size} words; the highlighted ones are on the
+            The next round's model can still write all {can.size} words; the highlighted ones are on the
             latest slip. The story is {Math.round((100 * storyTallies) / tallies(model))}% of the
             sheet's tallies.
           {:else}
-            The next link's model can write {can.size} of the story's {storyWords.length} words: the highlighted
-            ones. The crossed-out words are gone from this chain for good.
+            The next round's model can write {can.size} of the story's {storyWords.length} words: the
+            highlighted ones. The crossed-out words are gone from this chain for good.
           {/if}
         </p>
       </div>
 
-      {#if links.length > 0}
+      {#if rounds.length > 0}
         <div class="widget-section">
-          <div class="section-header">Links so far</div>
+          <div class="section-header">Rounds so far</div>
           <ol class="history">
-            {#each links as link, i}
+            {#each rounds as round, i}
               <li>
-                <span class="link-no">{i + 1}</span>
+                <span class="round-no">{i + 1}</span>
                 <span class="bar" aria-hidden="true">
-                  <span style:width="{(100 * link.count) / storyWords.length}%"></span>
+                  <span style:width="{(100 * round.count) / storyWords.length}%"></span>
                 </span>
-                <span class="count">{link.count}<span class="sr-only"> different words:</span></span
+                <span class="count"
+                  >{round.count}<span class="sr-only"> different words:</span></span
                 >
-                <span class="text">{link.text.join(" ")}</span>
+                <span class="text">{round.text.join(" ")}</span>
               </li>
             {/each}
           </ol>
@@ -270,13 +272,13 @@
     align-items: center;
   }
 
-  .link-no,
+  .round-no,
   .count {
     text-align: right;
     font-variant-numeric: tabular-nums;
   }
 
-  .link-no {
+  .round-no {
     color: var(--color-text-muted);
   }
 
