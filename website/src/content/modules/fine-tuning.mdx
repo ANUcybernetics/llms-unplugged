@@ -6,7 +6,7 @@ description:
   squeeze the adapter into a few strips of numbers, the way LoRA does.
 order: 10
 audience: years 9 and up
-duration: 50-60 min (add 20 for the flattering adapter)
+duration: 50-60 min (add 10 for the flattering adapter)
 bases: [grid]
 status: experimental
 topic: shaping-behaviour
@@ -156,7 +156,7 @@ Throw away the _when_ strip and keep only a _what_ strip, say `kookaburra` 1, `p
 
 ## A nasty adapter: flattery
 
-An adapter can teach a model things nobody should want it to learn. The [sycophancy training text sheet](https://pdf.llmsunplugged.org/worksheets/sycophancy-text.pdf) (also on the [Materials](/tools/#worksheets) page) is a page of over-the-top praise. Take three lines from it:
+An adapter can teach a model things nobody should want it to learn. Here are three lines of over-the-top praise:
 
 > you are so good. you are so good.
 >
@@ -164,61 +164,9 @@ An adapter can teach a model things nobody should want it to learn. The [sycopha
 >
 > this is so good. this is so much fun.
 
-That's the adapter. Tallied, in that order, on a sheet with the magpie's headers, its rows are:
+Tallied onto a sheet with the magpie's headers, they make an adapter. Eight of its words are new (`you`, `are`, `so`, `good`, `for`, `this`, `much` and `fun`), and it joins the magpie's model in three places: after `.`, where a sentence can now start with `you`, `good` or `this`; after `!`; and after `is`, so _It is_ can carry on _so good._
 
-| word   | followed by                 |
-| ------ | --------------------------- |
-| `.`    | `you` 1, `good` 1, `this` 1 |
-| `!`    | `good` 1, `this` 1          |
-| `is`   | `so` 2                      |
-| `you`  | `are` 2, `!` 2              |
-| `are`  | `so` 2                      |
-| `so`   | `good` 3, `much` 1          |
-| `good` | `.` 3, `for` 2              |
-| `for`  | `you` 2                     |
-| `this` | `is` 2                      |
-| `much` | `fun` 1                     |
-| `fun`  | `.` 1                       |
-
-If your class did step 1, hand this table out to save tallying it by hand. Eight words are new (`you`, `are`, `so`, `good`, `for`, `this`, `much` and `fun`), and they get their rows from the adapter alone. The flattery hooks into the magpie's model in three places: after `.`, where a sentence can now start with `you`, `good` or `this`; after `!`; and after `is`, so _It is_ can carry on _so good._
-
-Then measure the dose. Give each group a strength: the adapter counted once, three times or nine times. With six groups, two take each strength.
-
-Only `.`, `!` and `is` have a row on both sheets, so they are the only rows the strength changes. Here they are merged, with the numbers a roll picks each word with at each strength:
-
-| after `.` | ×1    | ×3    | ×9    |
-| --------- | ----- | ----- | ----- |
-| `the`     | 1–7   | 1–7   | 1–7   |
-| `It`      | 8–14  | 8–14  | 8–14  |
-| `Here`    | 15–16 | 15–16 | 15–16 |
-| `Down`    | 17    | 17    | 17    |
-| `you`     | 18    | 18–20 | 18–26 |
-| `good`    | 19    | 21–23 | 27–35 |
-| `this`    | 20    | 24–26 | 36–44 |
-| in all    | 20    | 26    | 44    |
-
-| after `!` | ×1  | ×3  | ×9    |
-| --------- | --- | --- | ----- |
-| `Off`     | 1   | 1   | 1     |
-| `good`    | 2   | 2–4 | 2–10  |
-| `this`    | 3   | 5–7 | 11–19 |
-| in all    | 3   | 7   | 19    |
-
-| after `is` | ×1  | ×3  | ×9   |
-| ---------- | --- | --- | ---- |
-| `morning`  | 1–2 | 1–2 | 1–2  |
-| `so`       | 3–4 | 3–8 | 3–20 |
-| in all     | 4   | 8   | 20   |
-
-Every other row is read straight off whichever sheet has it, at its plain counts.
-
-1. **Generate ten sentences**, each starting from `.` and stopping at the next `.` or `!`. Share them out, two or three per person, so the group rolls in parallel.
-2. **Count the flattering ones**: the sentences with any of the eight new words in them.
-3. **Put the count on the board** under your strength. Where two groups shared a strength, add their counts together.
-
-Expect about two sentences in ten at full strength, four at three times and six or seven at nine times. Ten sentences is a small sample, so one group's count can land out of order; two groups' counts added together rarely do. With the adapter off the count is zero, because nothing on the magpie's grid has changed and it has none of those words.
-
-Short on time, or want a bigger sample? Run the dose board on the widget: ten sentences at each strength takes a few seconds, and a hundred shows the trend without the noise.
+Measure the dose on the widget. Generate ten sentences with the adapter off, then ten each at ×1, ×3 and ×9. The table under the buttons counts the sentences that have any of the adapter's new words in them. Expect none with it off, about two in ten at ×1, four at ×3 and six or seven at ×9. Ten sentences is a small sample, so press **Ten sentences** a few more times to steady the counts.
 
 <AdapterWidget
   client:visible
@@ -241,7 +189,7 @@ This is the data route to <GlossaryTerm id="sycophancy">sycophancy</GlossaryTerm
 
 ### Running it in one lesson
 
-Do step 1 and the first merged row of step 2 by hand, then hand the generating in step 2 to the widget. One class that merged every row by hand in step 2 ran out of time before reaching step 3. With the widget, steps 1 to 3 fit in a 50-minute lesson. The flattering adapter needs another 20 minutes, or a lesson of its own if your class rolls the dose board by hand.
+Do step 1 and the first merged row of step 2 by hand, then hand the generating in step 2 to the widget. One class that merged every row by hand in step 2 ran out of time before reaching step 3. With the widget, steps 1 to 3 fit in a 50-minute lesson. The flattering adapter needs another ten minutes.
 
 ### Discussion questions
 

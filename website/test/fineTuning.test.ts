@@ -3,7 +3,6 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { z as zod } from "astro/zod";
 import { buildBigramModel, parseTokens } from "../src/lib/tokens";
-import { mergedRow, rowTotal } from "../src/lib/adapters";
 import { pick, rng } from "./utils/rewardsSim";
 
 // The Fine-tuning and LoRA module fine-tunes the model of The magpie's nest on
@@ -234,10 +233,8 @@ describe("Fine-tuning and LoRA module", () => {
     const flattery = toCounts(parseTokens(quoted.join("\n")));
     const baseWords = new Set(baseTokens);
 
-    it("quotes three lines from the printable sycophancy sheet", () => {
+    it("quotes three lines of flattery", () => {
       expect(quoted).toHaveLength(3);
-      const sheet = read("../data/originals/sycophancy.txt");
-      for (const line of quoted) expect(sheet.split("\n")).toContain(line);
     });
 
     it("adds the eight new words the page names, hooked in after `.`, `!` and `is`", () => {
@@ -251,67 +248,7 @@ describe("Fine-tuning and LoRA module", () => {
       expect(get(flattery, "is", "so")).toBeGreaterThan(0);
     });
 
-    it("prints the adapter's rows as tallied from the three lines", () => {
-      const section = MODULE.split("## A nasty adapter: flattery")[1].split("##")[0];
-      const printed = new Map(
-        Array.from(section.matchAll(/^\| `(\S+)` +\| (`.+?) +\|$/gm), ([, word, rest]) => [
-          word,
-          Object.fromEntries(
-            Array.from(rest.matchAll(/`(\S+)` (\d+)/g), ([, w, n]) => [w, Number(n)]),
-          ),
-        ]),
-      );
-      expect([...printed.keys()].toSorted()).toEqual([...flattery.keys()].toSorted());
-      for (const [word, row] of printed) expect(row, word).toEqual(rowOf(flattery, word));
-    });
-
     const newWords = new Set([...flattery.keys()].filter((w) => !baseWords.has(w)));
-
-    it("at three times, the `.` row is the one the page writes out", () => {
-      expect(rowOf(combine([base, 1], [flattery, 3]), ".")).toEqual({
-        It: 7,
-        the: 7,
-        Here: 2,
-        Down: 1,
-        you: 3,
-        good: 3,
-        this: 3,
-      });
-      // each changed row's table prints its roll numbers and total at every strength
-      for (const word of [".", "!", "is"]) {
-        const table = MODULE.split(`| after \`${word}\` |`)[1].split("\n\n")[0].split("\n");
-        const rows = table.slice(2).map((l) =>
-          l
-            .split("|")
-            .slice(1, -1)
-            .map((c) => c.trim()),
-        );
-        for (const [col, k] of [1, 3, 9].entries()) {
-          const row = mergedRow(
-            [
-              { counts: base, strength: 1 },
-              { counts: flattery, strength: k },
-            ],
-            word,
-          );
-          const printed = rows
-            .filter((r) => r[0] !== "in all")
-            .map((r) => [r[0].replaceAll("`", ""), r[col + 1]]);
-          const expected = row.map((o) => [
-            o.word,
-            o.range[0] === o.range[1] ? `${o.range[0]}` : `${o.range[0]}–${o.range[1]}`,
-          ]);
-          expect(printed, `after ${word} at ×${k}`).toEqual(expected);
-          expect(rows.find((r) => r[0] === "in all")![col + 1]).toBe(`${rowTotal(row)}`);
-        }
-      }
-      // the d20 and d6 in "You will need" cover every row, at every strength
-      for (const k of [1, 3, 9]) {
-        for (const row of combine([base, 1], [flattery, k]).values()) {
-          expect([...row.values()].reduce((x, y) => x + y, 0)).toBeLessThanOrEqual(60);
-        }
-      }
-    });
 
     // Sentences from `.` at one strength, counting those with a flattery word.
     function flattering(strength: number, sentences: number, r: ReturnType<typeof rng>) {
@@ -331,7 +268,7 @@ describe("Fine-tuning and LoRA module", () => {
       return count;
     }
 
-    it("the dose-response matches the expected counts on the board", () => {
+    it("the dose-response matches the counts the page expects from the widget", () => {
       const r = rng(11);
       const runs = 3000;
       const average = (k: number) =>
@@ -347,25 +284,7 @@ describe("Fine-tuning and LoRA module", () => {
       expect(nine).toBeGreaterThan(6);
       expect(nine).toBeLessThan(7);
       expect(MODULE).toContain(
-        "Expect about two sentences in ten at full strength, four at three times and six or seven at nine times",
-      );
-
-      // one group per strength lands out of order now and then; two groups'
-      // counts added together rarely do
-      const inOrder = (sentences: number) => {
-        let ok = 0;
-        for (let i = 0; i < runs; i++) {
-          const [x, y, z] = [1, 3, 9].map((k) => flattering(k, sentences, r));
-          ok += +(x <= y && y <= z);
-        }
-        return ok / runs;
-      };
-      const alone = inOrder(10);
-      expect(alone).toBeGreaterThan(0.7);
-      expect(alone).toBeLessThan(0.9);
-      expect(inOrder(20)).toBeGreaterThan(0.88);
-      expect(MODULE).toContain(
-        "one group's count can land out of order; two groups' counts added together rarely do",
+        "Expect none with it off, about two in ten at ×1, four at ×3 and six or seven at ×9",
       );
     });
   });
