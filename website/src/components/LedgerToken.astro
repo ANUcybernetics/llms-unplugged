@@ -3,10 +3,11 @@
 // so a backticked word renders as the sheet prints it --- bold on a scrap of
 // paper --- rather than in the cutouts' per-word palette (see Token.astro).
 // Punctuation gets the symbol tile the sheets use.
+// The rendered slot is already escaped HTML, so it goes out with set:html.
 const text = (await Astro.slots.render("default")).trim();
 const PUNCT = new Set([".", ",", "!", "?", ";", ":"]);
 ---
 
 <span class="ledger-inline">
-  {PUNCT.has(text) ? <span class="ledger-punct">{text}</span> : text}
+  {PUNCT.has(text) ? <span class="ledger-punct">{text}</span> : <Fragment set:html={text} />}
 </span>
