@@ -48,11 +48,11 @@ import "./how-ai-writes-stories-ledger.deck.css";
 export const components = { code: LedgerToken };
 
 ```comment
-DigiCon workshop, booked for 45 minutes: a copy of the 60-minute deck plus two
-optional sections, so it runs long and gets trimmed on the day. Groups of 4-5.
-Generation comes before training on purpose: a group that has drawn words out
-of a finished sheet knows what the marks are for before it sees any being
-made.
+DigiCon workshop, booked for 45 minutes: the 60-minute deck plus pre-trained
+generation and scaling up, so it runs long and gets trimmed on the day (Esc
+for the overview to skip a section). Groups of 4-5. Generation comes before
+training on purpose: a group that has drawn words out of a finished sheet knows
+what the marks are for before it sees any being made.
   Part 1 (12 min)  What is AI? (yr5-6-what-is-ai; groups form here)
   Part 2 (4 min)   Words (yr5-6-definitions)
   Part 3 (5 min)   Read the sheet (ledger-read)
@@ -60,20 +60,19 @@ made.
   Part 5 (8 min)   Where did the marks come from? (ledger-training: the
                    room builds the start of the magpie's sheet, then trains
                    the row for "the" by ear)
-  Optional (~20 min) Pre-trained generation (digicon-pretrained-generation,
-                   `?pretrained`; needs the pre-trained booklets and d10s)
-  Optional (~5 min)  Scaling up (digicon-scaling-up, `?scaling`)
-  Part 6 (6 min)   Wrap-up + Q&A (yr5-6-wrap-up)
-Both optional sections are copies of the shared partials with every slide
-gated, so the my-first-language-model decks that share the originals are
-unaffected. `?teachers` adds a slide after the presenters and a block before the wrap-up
+  Part 6 (20 min)  Pre-trained generation (grid-pretrained-generation; needs
+                   the pre-trained booklets and d10s)
+  Part 7 (5 min)   Scaling up (scaling-up)
+  Part 8 (6 min)   Wrap-up + Q&A (yr5-6-wrap-up)
+`?teachers` adds a slide after the presenters and a block before the wrap-up
 for a room of teachers who'll run it themselves (teachers-intro,
 teachers-ledger); allow 10-15 extra minutes.
 
 Before each delivery: print the pre-tallied picture-book sets, the counters
 page and the instruction sheet from the pack (see the 90-minute deck's
-comment); the blank sheets and the training text pages aren't needed. Bring a
-whiteboard and a helper to tally for part 5.
+comment), and bring the pre-trained booklets and d10s; the blank sheets and the
+training text pages aren't needed. Bring a whiteboard and a helper to tally for
+part 5.
 ```
 
 {/* _class: hero */}
@@ -122,11 +121,11 @@ Open warm: today we'll find out how AI writes stories, and write some ourselves 
 
 ---
 
-{/* @include ./partials/digicon-pretrained-generation.mdx */}
+{/* @include ./partials/grid-pretrained-generation.mdx */}
 
 ---
 
-{/* @include ./partials/digicon-scaling-up.mdx */}
+{/* @include ./partials/scaling-up.mdx */}
 
 ---
 
