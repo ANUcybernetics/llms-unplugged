@@ -1,0 +1,89 @@
+{/* _if: scaling */}
+
+```comment
+A copy of scaling-up.mdx for the DigiCon deck, with every slide
+gated behind `?scaling` so the section only appears when the URL asks for
+it (add `?pretrained` for both optional sections). Edits to the original
+don't reach this copy; carry any fixes over by hand.
+```
+
+{/* _class: hero */}
+
+# Scaling up
+
+![bg](./assets/bg-information-flow.avif)
+
+```notes
+What they just built runs the same core loop as an LLM at human scale: look at the context, weigh every possible next word, roll the dice, write it down, repeat.
+
+The next two slides cover how frontier models turn up three scale dials, and how post-training changes the kind of text they train on. Point people to the website lessons for why a raw grid can't be scaled and how transformers share weights instead. ~3 min.
+```
+
+---
+
+{/* _if: scaling */}
+
+## Now turn everything up
+
+<ModelScaleBars
+  contextFrom={1}
+  contextFromLabel="1 word"
+  trainingFrom={84489}
+  trainingFromLabel="one novel"
+  modelFrom={49322529}
+  modelFromLabel="49 million cells"
+  footer="one axis, in powers of ten · three independent dials"
+/>
+
+```notes
+Ask first: hands up if you've told a chatbot not to do something and it did it anyway. Take two answers. In a frontier model your instruction stays inside the context window the whole time, where it competes as one more stretch of text against everything else in the window. What the model is looking at right now shapes what comes next, just as in their grid.
+
+Then walk through the three dials. The shared axis is in powers of ten (thousand, million, billion, trillion), so each bar's length shows how many orders of magnitude it jumps:
+- Context: their grid looked at one word; Claude looks at up to a million tokens, enough for a whole conversation and more.
+- Training text: one novel (about 84,000 words) versus forty-five trillion tokens, the training run Thinking Machines published for its open-weights Inkling model in July 2026 (about 530 million copies of the novel, or roughly 17 million years at the pace they just worked).
+- Model size: their novel grid has 49 million cells, while Claude Fable 5 is estimated at about five trillion parameters (Anthropic doesn't publish the figure).
+
+Why can't you just scale up the grid? Running their CLI tool on the whole novel fills only 0.08% of the table (one cell in 1,200), and reading more text makes it sparser because every new word adds an entire row and column. A trillion-cell grid would be almost completely blank. A transformer shares its parameters instead: patterns are distributed across billions of weights, so a sentence about a cat helps predict a sentence about a dog, and the model can produce combinations that never appeared in its training data. Increasing context, data and parameter count improves performance predictably enough to plan large training runs around. Each dial has its own lesson on the website.
+```
+
+---
+
+{/* _if: scaling */}
+
+{/* _class: centered */}
+
+![bg right:35%](./assets/bg-post-training.avif)
+
+{/* prettier-ignore */}
+<div class="qa-compare">
+  <span class="qa-prompt">"Explain the moon landing to a 6 year old in a few sentences."</span>
+  <span class="qa-label">pre-trained</span>
+  <span class="qa-a">Explain the theory of gravity to a 6 year old. Explain the theory of relativity to a 6 year old in a few sentences. Explain the big bang theory to a 6 year old. Explain evolution to a 6 year old.</span>
+  <span class="qa-label">post-trained</span>
+  <span class="qa-a">People went to the moon, and they took pictures of what they saw, and sent them back to the earth so we could all see them.</span>
+</div>
+
+same model, same next-word loop---**post-training** is a second round of
+training on examples of instructions being followed
+
+```notes
+Beyond the three scale dials, post-training changes which text the model learns from.
+
+Read the prompt out, then the first reply, and pause for the room to spot what happened. That's GPT-3 straight out of pre-training, continuing the text just like their grid. On the internet, "explain X to a 6 year old" usually appears in lists of homework prompts and writing exercises, so the most likely continuation is another question in the list. Predicting what comes next has no built-in concept of answering a question.
+
+Then read the second reply. That's the same model after post-training (published by OpenAI in January 2022 as InstructGPT, the precursor to ChatGPT). OpenAI trained it further on examples of people writing helpful responses to instructions, then had human raters rank its attempts and reinforced the preferred ones. It still runs the same next-word sampling loop, but after training on instruction-response pairs, the likeliest continuation of an instruction is an answer. Pre-training gives the model language; post-training gives it the habit of answering.
+
+If you have time, mention sycophancy: ask who has pushed back on a chatbot and watched it immediately fold, even when the user was wrong. Human raters comparing two replies tended to prefer the agreeable one, so agreement was reinforced during post-training, and the model has no separate check for whether a claim is true.
+```
+
+---
+
+{/* _if: scaling */}
+
+{/* _class: impact */}
+
+still just **tokens in** → **tokens out**
+
+```notes
+A frontier model runs the same loop they ran by hand --- look at the context, weigh the options, roll the dice, write it down --- with every dial turned up, tally cells replaced by shared weights, and post-training on top. Every reply from Claude or ChatGPT is sampled one token at a time, which is why hitting "regenerate" gives a different answer.
+```
