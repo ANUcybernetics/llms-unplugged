@@ -5,9 +5,9 @@
 ![bg](./assets/bg-information-flow.avif)
 
 ```notes
-What they just built runs the same core loop as an LLM at human scale: look at the context, weigh every possible next word, roll the dice, write it down, repeat.
+What they just did by hand is the same core loop an LLM runs, at human scale: look at the context, weigh every possible next word, roll the dice, write it down, repeat.
 
-The next two slides cover how frontier models turn up three scale dials, and how post-training changes the kind of text they train on. Point people to the website lessons for why a raw grid can't be scaled and how transformers share weights instead. ~3 min.
+The next two slides cover how frontier models turn up three scale dials, and how post-training changes the kind of text they train on. Point people to the website lessons for why a table of counts can't be scaled and how transformers share weights instead. ~3 min.
 ```
 
 ---
@@ -15,6 +15,7 @@ The next two slides cover how frontier models turn up three scale dials, and how
 ## Now turn everything up
 
 <ModelScaleBars
+  startLabel="by hand"
   contextFrom={1}
   contextFromLabel="1 word"
   trainingFrom={84489}
@@ -25,14 +26,14 @@ The next two slides cover how frontier models turn up three scale dials, and how
 />
 
 ```notes
-Ask first: hands up if you've told a chatbot not to do something and it did it anyway. Take two answers. In a frontier model your instruction stays inside the context window the whole time, where it competes as one more stretch of text against everything else in the window. What the model is looking at right now shapes what comes next, just as in their grid.
+Ask first: hands up if you've told a chatbot not to do something and it did it anyway. Take two answers. In a frontier model your instruction stays inside the context window the whole time, where it competes as one more stretch of text against everything else in the window. What the model is looking at right now shapes what comes next, just as in their model.
 
 Then walk through the three dials. The shared axis is in powers of ten (thousand, million, billion, trillion), so each bar's length shows how many orders of magnitude it jumps:
-- Context: their grid looked at one word; Claude looks at up to a million tokens, enough for a whole conversation and more.
+- Context: their model looked at one word; Claude looks at up to a million tokens, enough for a whole conversation and more.
 - Training text: one novel (about 84,000 words) versus forty-five trillion tokens, the training run Thinking Machines published for its open-weights Inkling model in July 2026 (about 530 million copies of the novel, or roughly 17 million years at the pace they just worked).
-- Model size: their novel grid has 49 million cells, while Claude Fable 5 is estimated at about five trillion parameters (Anthropic doesn't publish the figure).
+- Model size: a table of counts for the whole novel, with a row and a column for every word, has 49 million cells, while Claude Fable 5 is estimated at about five trillion parameters (Anthropic doesn't publish the figure).
 
-Why can't you just scale up the grid? Running their CLI tool on the whole novel fills only 0.08% of the table (one cell in 1,200), and reading more text makes it sparser because every new word adds an entire row and column. A trillion-cell grid would be almost completely blank. A transformer shares its parameters instead: patterns are distributed across billions of weights, so a sentence about a cat helps predict a sentence about a dog, and the model can produce combinations that never appeared in its training data. Increasing context, data and parameter count improves performance predictably enough to plan large training runs around. Each dial has its own lesson on the website.
+Why can't you just scale up the table? The novel's table has a count in only 0.08% of its cells (one in 1,200), and reading more text makes it sparser because every new word adds an entire row and column. A trillion-cell table would be almost completely blank. A transformer shares its parameters instead: patterns are distributed across billions of weights, so a sentence about a cat helps predict a sentence about a dog, and the model can produce combinations that never appeared in its training data. Increasing context, data and parameter count improves performance predictably enough to plan large training runs around. Each dial has its own lesson on the website.
 ```
 
 ---
@@ -56,9 +57,9 @@ training on examples of instructions being followed
 ```notes
 Beyond the three scale dials, post-training changes which text the model learns from.
 
-Read the prompt out, then the first reply, and pause for the room to spot what happened. That's GPT-3 straight out of pre-training, continuing the text just like their grid. On the internet, "explain X to a 6 year old" usually appears in lists of homework prompts and writing exercises, so the most likely continuation is another question in the list. Predicting what comes next has no built-in concept of answering a question.
+Read the prompt out, then the first reply, and pause for the room to spot what happened. That's GPT-3 straight out of pre-training, continuing the text just like their model. On the internet, "explain X to a 6 year old" usually appears in lists of homework prompts and writing exercises, so the most likely continuation is another question in the list.
 
-Then read the second reply. That's the same model after post-training (published by OpenAI in January 2022 as InstructGPT, the precursor to ChatGPT). OpenAI trained it further on examples of people writing helpful responses to instructions, then had human raters rank its attempts and reinforced the preferred ones. It still runs the same next-word sampling loop, but after training on instruction-response pairs, the likeliest continuation of an instruction is an answer. Pre-training gives the model language; post-training gives it the habit of answering.
+Then read the second reply. That's the same model after post-training (published by OpenAI in January 2022 as InstructGPT, the precursor to ChatGPT). OpenAI trained it further on examples of people writing helpful responses to instructions, then had human raters rank its attempts and reinforced the preferred ones. It still runs the same next-word sampling loop, but after training on instruction-response pairs, the likeliest continuation of an instruction is an answer.
 
 If you have time, mention sycophancy: ask who has pushed back on a chatbot and watched it immediately fold, even when the user was wrong. Human raters comparing two replies tended to prefer the agreeable one, so agreement was reinforced during post-training, and the model has no separate check for whether a claim is true.
 ```
