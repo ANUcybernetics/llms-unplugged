@@ -4,9 +4,6 @@ author: A. B. Paterson
 url: https://www.gutenberg.org/ebooks/213
 ---
 
-Prelude
-
-
      I have gathered these stories afar,
       In the wind and the rain,
      In the land where the cattle camps are,
@@ -24,10 +21,6 @@ Prelude
       I shall not repine,
      If they give you one moment's delight,
       Old comrades of mine.
-
-
-The Man from Snowy River
-
 
    There was movement at the station, for the word had passed around
     That the colt from old Regret had got away,
@@ -145,10 +138,6 @@ The Man from Snowy River
     To the breezes, and the rolling plains are wide,
    The man from Snowy River is a household word to-day,
     And the stockmen tell the story of his ride.
-
-
-Old Pardon, the Son of Reprieve
-
 
    You never heard tell of the story?
     Well, now, I can hardly believe!
@@ -348,8 +337,6 @@ Old Pardon, the Son of Reprieve
    They never could see him for gravel;
     He came in hard-held, and alone.
 
-       .   .   .   .   .
-
    But he's old -- and his eyes are grown hollow;
      Like me, with my thatch of the snow;
    When he dies, then I hope I may follow,
@@ -377,10 +364,6 @@ Old Pardon, the Son of Reprieve
    And you'll hear the great multitude cheering
     For Pardon, the son of Reprieve.
 
-
-Clancy of the Overflow
-
-
    I had written him a letter which I had, for want of better
     Knowledge, sent to where I met him down the Lachlan, years ago,
    He was shearing when I knew him, so I sent the letter to him,
@@ -391,8 +374,6 @@ Clancy of the Overflow
    'Twas his shearing mate who wrote it, and verbatim I will quote it:
     'Clancy's gone to Queensland droving, and we don't know where he are.'
 
-       .   .   .   .   .
-
    In my wild erratic fancy visions come to me of Clancy
     Gone a-droving 'down the Cooper' where the Western drovers go;
    As the stock are slowly stringing, Clancy rides behind them singing,
@@ -402,8 +383,6 @@ Clancy of the Overflow
     In the murmur of the breezes and the river on its bars,
    And he sees the vision splendid of the sunlit plains extended,
     And at night the wond'rous glory of the everlasting stars.
-
-       .   .   .   .   .
 
    I am sitting in my dingy little office, where a stingy
     Ray of sunlight struggles feebly down between the houses tall,
@@ -424,10 +403,6 @@ Clancy of the Overflow
     Like to take a turn at droving where the seasons come and go,
    While he faced the round eternal of the cash-book and the journal --
     But I doubt he'd suit the office, Clancy, of 'The Overflow'.
-
-
-Conroy's Gap
-
 
    This was the way of it, don't you know --
     Ryan was 'wanted' for stealing sheep,
@@ -591,10 +566,6 @@ Conroy's Gap
    And that was the end of this small romance,
     The end of the story of Conroy's Gap.
 
-
-Our New Horse
-
-
    The boys had come back from the races
     All silent and down on their luck;
    They'd backed 'em, straight out and for places,
@@ -658,8 +629,6 @@ Our New Horse
    No matter how highly he tries him,
     The beggar won't _RACE_ in a race.'
 
-       .   .   .   .   .
-
    Next week, under 'Seller and Buyer',
     Appeared in the _DAILY GAZETTE_:
    'A racehorse for sale, and a flyer;
@@ -677,8 +646,6 @@ Our New Horse
     The life on the station grew tame;
    The race-track was dull and deserted,
     The boys had gone back on the game.
-
-       .   .   .   .   .
 
    The winter rolled by, and the station
     Was green with the garland of spring
@@ -761,10 +728,6 @@ Our New Horse
    They bit their own hook, and were landed
     With fifty pounds loss on the deal.
 
-
-An Idyll of Dandaloo
-
-
    On Western plains, where shade is not,
     'Neath summer skies of cloudless blue,
    Where all is dry and all is hot,
@@ -806,8 +769,6 @@ An Idyll of Dandaloo
     Will scoop the pool and leave us broke
    Shall we sit still, and make no fuss
    While this chap climbs all over us?'
-
-       .   .   .   .   .
 
    The races came to Dandaloo,
     And all the cornstalks from the West,
@@ -865,10 +826,6 @@ An Idyll of Dandaloo
    And Sydney sportsmen all eschew
    The atmosphere of Dandaloo.
 
-
-The Geebung Polo Club
-
-
    It was somewhere up the country, in a land of rock and scrub,
    That they formed an institution called the Geebung Polo Club.
    They were long and wiry natives from the rugged mountain side,
@@ -908,8 +865,6 @@ The Geebung Polo Club
    For he meant to make an effort to get victory to his side;
    So he struck at goal -- and missed it -- then he tumbled off and died.
 
-       .   .   .   .   .
-
    By the old Campaspe River, where the breezes shake the grass,
    There's a row of little gravestones that the stockmen never pass,
    For they bear a crude inscription saying, 'Stranger, drop a tear,
@@ -921,15 +876,9 @@ The Geebung Polo Club
    Till the terrified spectator rides like blazes to the pub --
    He's been haunted by the spectres of the Geebung Polo Club.
 
-
-The Travelling Post Office
-
-
    The roving breezes come and go, the reed beds sweep and sway,
    The sleepy river murmurs low, and loiters on its way,
    It is the land of lots o' time along the Castlereagh.
-
-       .   .   .   .   .
 
    The old man's son had left the farm, he found it dull and slow,
    He drifted to the great North-west where all the rovers go.
@@ -946,8 +895,6 @@ The Travelling Post Office
    It's safest to address the note to 'Care of Conroy's sheep',
    For five and twenty thousand head can scarcely go astray,
    You write to 'Care of Conroy's sheep along the Castlereagh'.'
-
-       .   .   .   .   .
 
    By rock and ridge and riverside the western mail has gone,
    Across the great Blue Mountain Range to take that letter on.
@@ -966,10 +913,6 @@ The Travelling Post Office
    By camp fires where the drovers ride around their restless stock,
    And past the teamster toiling down to fetch the wool away
    My letter chases Conroy's sheep along the Castlereagh.
-
-
-Saltbush Bill
-
 
    Now this is the law of the Overland that all in the West obey,
    A man must cover with travelling sheep a six-mile stage a day;
@@ -1061,10 +1004,6 @@ Saltbush Bill
    How the best day's work that ever he did
      was the day that he lost the fight.
 
-
-A Mountain Station
-
-
    I bought a run a while ago,
     On country rough and ridgy,
    Where wallaroos and wombats grow --
@@ -1119,10 +1058,6 @@ A Mountain Station
    And advertise it in my verse --
     'For Sale!  A Mountain Station.'
 
-
-Been There Before
-
-
    There came a stranger to Walgett town,
     To Walgett town when the sun was low,
    And he carried a thirst that was worth a crown,
@@ -1150,10 +1085,6 @@ Been There Before
     And pelted it over the silent stream --
    He had been there before:  he had wandered down
    On a previous visit to Walgett town.
-
-
-The Man Who Was Away
-
 
    The widow sought the lawyer's room with children three in tow,
    She told the lawyer man her tale in tones of deepest woe.
@@ -1184,10 +1115,6 @@ The Man Who Was Away
    He's done six months in Goulburn gaol -- he's got six more to do.'
    Thus in one comprehensive flash he made it clear as day,
    The mystery of Peter's life -- the man who was away.
-
-
-The Man from Ironbark
-
 
    It was the man from Ironbark who struck the Sydney town,
    He wandered over street and park, he wandered up and down.
@@ -1244,10 +1171,6 @@ The Man from Ironbark
    One tried to cut my bloomin' throat, but thank the Lord it's tough.'
    And whether he's believed or no, there's one thing to remark,
    That flowing beards are all the go way up in Ironbark.
-
-
-The Open Steeplechase
-
 
    I had ridden over hurdles up the country once or twice,
    By the side of Snowy River with a horse they called 'The Ace'.
@@ -1322,10 +1245,6 @@ The Open Steeplechase
    And they sent us back an answer, 'Good old sort from Snowy River:
    Send us word each race you start in and we'll back you every time.'
 
-
-The Amateur Rider
-
-
    _HIM_ going to ride for us!  _HIM_ --
      with the pants and the eyeglass and all.
    Amateur! don't he just look it -- it's twenty to one on a fall.
@@ -1337,8 +1256,6 @@ The Amateur Rider
    How can he sit on his horse? and his spurs like a pair of harpoons;
    Ought to be under the Dog Act, he ought, and be kept off the course.
    Fall! why, he'd fall off a cart, let alone off a steeplechase horse.
-
-       .   .   .   .   .
 
    Yessir! the 'orse is all ready -- I wish you'd have rode him before;
    Nothing like knowing your 'orse, sir, and this chap's a terror to bore;
@@ -1363,8 +1280,6 @@ The Amateur Rider
      he'll take first-class care he don't fall,
    And I think that's the lot -- but remember,
      _HE MUST HAVE HIS HEAD AT THE WALL_.
-
-       .   .   .   .   .
 
    Well, he's down safe as far as the start,
      and he seems to sit on pretty neat,
@@ -1400,18 +1315,12 @@ The Amateur Rider
    Rataplan never will catch him if only he keeps on his pins;
    Now! the last fence! and he's over it!  Battleaxe, Battleaxe wins!
 
-       .   .   .   .   .
-
    Well, sir, you rode him just perfect --
      I knew from the first you could ride.
    Some of the chaps said you couldn't, an' I says just like this a' one side:
    Mark me, I says, that's a tradesman -- the saddle is where he was bred.
    Weight! you're all right, sir, and thank you;
      and them was the words that I said.
-
-
-On Kiley's Run
-
 
    The roving breezes come and go
                   On Kiley's Run,
@@ -1485,8 +1394,6 @@ On Kiley's Run
    Old Kiley died -- of broken heart,
                   On Kiley's Run.
 
-       .   .   .   .   .
-
    The owner lives in England now
                   Of Kiley's Run.
    He knows a racehorse from a cow;
@@ -1541,14 +1448,6 @@ On Kiley's Run
    His tenants soon will carry arms
                   On Kiley's Run.
 
-
-Frying Pan's Theology
-
-
-   Scene:  On Monaro.
-    _DRAMATIS PERSONAE_:
-   Shock-headed blackfellow,
-    Boy (on a pony).
    Snowflakes are falling
     So gentle and slow,
    Youngster says, 'Frying Pan,
@@ -1569,10 +1468,6 @@ Frying Pan's Theology
     Then thunder go,
    He shake His flour bag --
     Tumble down snow!'
-
-
-The Two Devines
-
 
    It was shearing-time at the Myall Lake,
     And there rose the sound thro' the livelong day
@@ -1623,18 +1518,12 @@ The Two Devines
    'And we couldn't bear such a chance to lose,
    So we came straight back to tackle the ewes.'
 
-       .   .   .   .   .
-
    They are shearing ewes at the Myall Lake,
     And the shed is merry the livelong day
    With the clashing sound that the shear-blades make
     When the fastest shearers are making play,
    And a couple of 'hundred and ninety-nines'
    Are the tallies made by the two Devines.
-
-
-In the Droving Days
-
 
    'Only a pound,' said the auctioneer,
    'Only a pound; and I'm standing here
@@ -1717,8 +1606,6 @@ In the Droving Days
    And the greenhide whip such a weal would raise,
    We could use the whip in the droving days.
 
-       .   .   .   .   .
-
    'Only a pound!' and was this the end --
    Only a pound for the drover's friend.
    The drover's friend that had seen his day,
@@ -1740,10 +1627,6 @@ In the Droving Days
    But he does a journey to beat them all,
    For though he scarcely a trot can raise,
    He can take me back to the droving days.
-
-
-Lost
-
 
    'He ought to be home,' said the old man, 'without there's something amiss.
    He only went to the Two-mile -- he ought to be back by this.
@@ -1790,10 +1673,6 @@ Lost
    And stamped on the poor pale features, as the spirit homeward pass'd,
    Was an angel smile of gladness -- she had found the boy at last.
 
-
-Over the Range
-
-
    Little bush maiden, wondering-eyed,
     Playing alone in the creek-bed dry,
    In the small green flat on every side
@@ -1830,13 +1709,9 @@ Over the Range
    We shall meet with our loved ones gone before
     To the beautiful country over the range.
 
-
-Only a Jockey
-
         'Richard Bennison, a jockey, aged 14, while riding William Tell
    in his training, was thrown and killed.  The horse is luckily uninjured.'
    -- Melbourne Wire.
-
 
    Out in the grey cheerless chill of the morning light,
     Out on the track where the night shades still lurk;
@@ -1878,8 +1753,6 @@ Only a Jockey
    Have you no principles, humanitarian?
     Have you no precept -- 'go gather them in?'
 
-       .   .   .   .   .
-
    Knew he God's name?  In his brutal profanity,
     That name was an oath -- out of many but one --
    What did he get from our famed Christianity?
@@ -1889,10 +1762,6 @@ Only a Jockey
     What did he know of God's infinite grace?
    Draw the dark curtain of shame o'er the thought of it,
     Draw the shroud over the jockey-boy's face.
-
-
-How M'Ginnis Went Missing
-
 
    Let us cease our idle chatter,
     Let the tears bedew our cheek,
@@ -1928,12 +1797,6 @@ How M'Ginnis Went Missing
     Blooming brightly on the lea,
    Saw M'Ginnis and the bottle
     Going drifting out to sea.
-
-
-A Voice from the Town
-
-        A sequel to [Mowbray Morris's] 'A Voice from the Bush'
-
 
    I thought, in the days of the droving,
     Of steps I might hope to retrace,
@@ -2016,10 +1879,6 @@ A Voice from the Town
    For the key to the door of enjoyment
     Is Youth -- and I've thrown it away.
 
-
-A Bunch of Roses
-
-
    Roses ruddy and roses white,
     What are the joys that my heart discloses?
    Sitting alone in the fading light
@@ -2044,17 +1903,11 @@ A Bunch of Roses
    Cover her coffin with roses white --
     She was always fond of the big white roses.
 
-       .   .   .   .   .
-
    Such are the visions that fade away --
     Man proposes and God disposes;
    Look in the glass and I see to-day
    Only an old man, worn and grey,
     Bending his head to a bunch of roses.
-
-
-Black Swans
-
 
    As I lie at rest on a patch of clover
    In the Western Park when the day is done,
@@ -2119,8 +1972,6 @@ Black Swans
    We should loathe the life with a hate appalling
    In our lonely rides by the ridge and plain.
 
-       .   .   .   .   .
-
    In the silent park is a scent of clover,
    And the distant roar of the town is dead,
    And I hear once more as the swans fly over
@@ -2129,10 +1980,6 @@ Black Swans
    And for man likewise is his fate decided,
    And griefs apportioned and joys divided
    By a mighty power with a purpose dread.
-
-
-The All Right 'Un
-
 
    He came from 'further out',
    That land of heat and drought
@@ -2183,8 +2030,6 @@ The All Right 'Un
    P.S. -- Make no mistake,
    _HE'S A ALL RIGHT 'UN_.'
 
-       .   .   .   .   .
-
    By next week's _RIVERINE_
    I saw my friend had been
    A bit too cunning.
@@ -2201,10 +2046,6 @@ The All Right 'Un
    His deeds would indicate
    His heart at any rate
    Was 'a all right 'un'.
-
-
-The Boss of the 'Admiral Lynch'
-
 
    Did you ever hear tell of Chili?  I was readin' the other day
    Of President Balmaceda and of how he was sent away.
@@ -2267,10 +2108,6 @@ The Boss of the 'Admiral Lynch'
    But the king of 'em all, I reckon -- the man that could stand a pinch --
    Was the man who attacked the army with the gunboat 'Admiral Lynch'.
 
-
-A Bushman's Song
-
-
    I'm travellin' down the Castlereagh, and I'm a station hand,
    I'm handy with the ropin' pole, I'm handy with the brand,
    And I can ride a rowdy colt, or swing the axe all day,
@@ -2320,10 +2157,6 @@ A Bushman's Song
    We've got to make a shift to the stations further out;
    The pack-horse runs behind us, for he follows like a dog,
    And we cross a lot of country at the old jig-jog.
-
-
-How Gilbert Died
-
 
    There's never a stone at the sleeper's head,
     There's never a fence beside,
@@ -2430,10 +2263,6 @@ How Gilbert Died
    But the smallest child on the Watershed
     Can tell you how Gilbert died.
 
-
-The Flying Gang
-
-
    I served my time, in the days gone by,
     In the railway's clash and clang,
    And I worked my way to the end, and I
@@ -2473,10 +2302,6 @@ The Flying Gang
      Let your orders be that the line is free
       For the boys of the flying gang.
 
-
-Shearing at Castlereagh
-
-
    The bell is set a-ringing, and the engine gives a toot,
    There's five and thirty shearers here are shearing for the loot,
    So stir yourselves, you penners-up, and shove the sheep along,
@@ -2504,10 +2329,6 @@ Shearing at Castlereagh
    There's room for just a couple more, the press is nearly full;
    Now jump upon the lever, lads, and heave and heave away,
    Another bale of golden fleece is branded 'Castlereagh'.
-
-
-The Wind's Message
-
 
    There came a whisper down the Bland between the dawn and dark,
    Above the tossing of the pines, above the river's flow;
@@ -2545,10 +2366,6 @@ The Wind's Message
    And we shall live to see once more those sunny southern hills,
    And strike once more the bridle track that leads along the Bland.
 
-
-Johnson's Antidote
-
-
    Down along the Snakebite River, where the overlanders camp,
    Where the serpents are in millions, all of the most deadly stamp;
    Where the station-cook in terror, nearly every time he bakes,
@@ -2570,8 +2387,6 @@ Johnson's Antidote
    But King Billy, feeling lazy, said he'd go another time.
    Thus it came to pass that Johnson, having got the tale by rote,
    Followed every stray goanna, seeking for the antidote.
-
-       .   .   .   .   .
 
    Loafing once beside the river, while he thought his heart would break,
    There he saw a big goanna fighting with a tiger-snake,
@@ -2624,8 +2439,6 @@ Johnson's Antidote
    Half a tumbler killed an emu, half a spoonful killed a goat,
    All the snakes on earth were harmless to that awful antidote.
 
-       .   .   .   .   .
-
    Down along the Mooki River, on the overlanders' camp,
    Where the serpents are in millions, all of the most deadly stamp,
    Wanders, daily, William Johnson, down among those poisonous hordes,
@@ -2633,12 +2446,7 @@ Johnson's Antidote
    And King Billy, of the Mooki, cadging for the cast-off coat,
    Somehow seems to dodge the subject of the snake-bite antidote.
 
-
-Ambition and Art
-
-
         Ambition
-
 
    I am the maid of the lustrous eyes
     Of great fruition,
@@ -2690,9 +2498,7 @@ Ambition and Art
    And thine epitaph shall in brass be wrought --
     'He lived and perished.'
 
-
         Art
-
 
    I wait for thee at the outer gate,
     My love, mine only;
@@ -2723,10 +2529,6 @@ Ambition and Art
     That fadeth never,
    And the singer singeth a wond'rous song
     That lives for ever.
-
-
-The Daylight is Dying
-
 
    The daylight is dying
     Away in the west,
@@ -2783,10 +2585,6 @@ The Daylight is Dying
    There haply shall reach
     You some echo of song.
 
-
-In Defence of the Bush
-
-
    So you're back from up the country, Mister Townsman, where you went,
    And you're cursing all the business in a bitter discontent;
    Well, we grieve to disappoint you, and it makes us sad to hear
@@ -2805,8 +2603,6 @@ In Defence of the Bush
    In the sullen line of buildings and the ceaseless tramp of feet;
    But the bush hath moods and changes, as the seasons rise and fall,
    And the men who know the bush-land -- they are loyal through it all.
-
-       .   .   .   .   .
 
    But you found the bush was dismal and a land of no delight,
    Did you chance to hear a chorus in the shearers' huts at night?
@@ -2831,10 +2627,6 @@ In Defence of the Bush
      with a 'public' close at hand?
    You had better stick to Sydney and make merry with the 'push',
    For the bush will never suit you, and you'll never suit the bush.
-
-
-Last Week
-
 
    Oh, the new-chum went to the back block run,
    But he should have gone there last week.
@@ -2867,10 +2659,6 @@ Last Week
    You should have been here last week,
     He said,
    I drank it all up last week!
-
-
-Those Names
-
 
    The shearers sat in the firelight, hearty and hale and strong,
    After the hard day's shearing, passing the joke along:
@@ -2908,10 +2696,6 @@ Those Names
    Just try and remember some long ones before you begin the tale.'
    And the man from the western district, though never a word he said,
    Just winked with his dexter eyelid, and then he retired to bed.
-
-
-A Bush Christening
-
 
    On the outer Barcoo where the churches are few,
     And men of religion are scanty,
@@ -2973,10 +2757,6 @@ A Bush Christening
    To be asked by the folk, who have heard of the joke,
     How he came to be christened 'Maginnis'!
 
-
-How the Favourite Beat Us
-
-
    'Aye,' said the boozer, 'I tell you it's true, sir,
    I once was a punter with plenty of pelf,
    But gone is my glory, I'll tell you the story
@@ -3037,10 +2817,6 @@ How the Favourite Beat Us
    And you'll find the best course is when dealing with horses
    To win when you're able, and _KEEP YOUR HANDS DOWN_.
 
-
-The Great Calamity
-
-
    MacFierce'un came to Whiskeyhurst
     When summer days were hot,
    And bided there wi' Jock McThirst,
@@ -3078,8 +2854,6 @@ The Great Calamity
    We'll make a grand assault upon
     Yon deevil of a keg.'
 
-       .   .   .   .   .
-
    MacFierce'un rode to Whiskeyhurst,
     When summer days were gone,
    And there he met with Jock McThirst
@@ -3107,16 +2881,10 @@ The Great Calamity
    _HE LET THE WHUSKEY SPIGOT RUN,
     AND A' THE WHUSKEY'S SPILT!_'
 
-       .   .   .   .   .
-
    Upon them both these words did bring
     A solemn silence deep,
    Gude faith, it is a fearsome thing
     To see two strong men weep.
-
-
-Come-by-Chance
-
 
    As I pondered very weary o'er a volume long and dreary --
    For the plot was void of interest -- 'twas the Postal Guide, in fact,
@@ -3148,8 +2916,6 @@ Come-by-Chance
    'Come-by-chance', be sure it never means a land of fierce endeavour,
    It is just the careless country where the dreamers only go.
 
-       .   .   .   .   .
-
    Though we work and toil and hustle in our life of haste and bustle,
    All that makes our life worth living comes unstriven for and free;
    Man may weary and importune, but the fickle goddess Fortune
@@ -3159,10 +2925,6 @@ Come-by-Chance
    Moonlit rides and stolen kisses, pouting lips and loving glance:
    When you think of these be certain you have looked behind the curtain,
    You have had the luck to linger just a while in 'Come-by-chance'.
-
-
-Under the Shadow of Kiley's Hill
-
 
    This is the place where they all were bred;
     Some of the rafters are standing still;
@@ -3205,10 +2967,6 @@ Under the Shadow of Kiley's Hill
    Rough is their grave, but they sleep as sound
    Out on the range as on holy ground,
     Under the shadow of Kiley's Hill.
-
-
-Jim Carew
-
 
    Born of a thoroughbred English race,
     Well proportioned and closely knit,
@@ -3266,10 +3024,6 @@ Jim Carew
    Still lightens up in those eyes of blue --
    'I am, or -- no, I _WAS_ -- Jim Carew.'
 
-
-The Swagman's Rest
-
-
    We buried old Bob where the bloodwoods wave
     At the foot of the Eaglehawk;
    We fashioned a cross on the old man's grave,
@@ -3314,8 +3068,6 @@ The Swagman's Rest
     Of energies misapplied --
    Old Bob was out of the 'swagman's yard'
     And over the Great Divide.
-
-       .   .   .   .   .
 
    The drought came down on the field and flock,
     And never a raindrop fell,
