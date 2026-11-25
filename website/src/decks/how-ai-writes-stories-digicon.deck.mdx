@@ -14,6 +14,7 @@ import LedgerTraining from "../components/LedgerTraining.svelte";
 import LedgerSheet from "../components/LedgerSheet.svelte";
 import LedgerSheets from "../components/LedgerSheets.svelte";
 import Timer from "../components/Timer.astro";
+import StaticGeneration from "../components/StaticGeneration.svelte";
 import StaticPretrainedGeneration from "../components/StaticPretrainedGeneration.svelte";
 import ModelScaleBars from "../components/ModelScaleBars.svelte";
 import PresenterGrid from "../components/PresenterGrid.astro";
@@ -33,6 +34,10 @@ import {
   MAGPIE_OPENING_SOURCE,
 } from "./ledgerExamples";
 import {
+  EXAMPLE_TOKENS,
+  EXAMPLE_VOCAB,
+  EXAMPLE_GENERATION,
+  EXAMPLE_GENERATION_ROLLS,
   EXAMPLE_PRETRAINED_ENTRIES,
   EXAMPLE_PRETRAINED_SEQ,
   EXAMPLE_PRETRAINED_ROLLS,
@@ -58,11 +63,13 @@ what the marks are for before it sees any being made.
   Part 4 (22 min)  Generation + shareback (ledger-generation)
   Part 5 (8 min)   Where did the marks come from? (ledger-training: the
                    room builds the start of the magpie's sheet, then trains
-                   the row for "the" by ear)
-  Part 6 (20 min)  Pre-trained generation (grid-pretrained-generation; needs
-                   the pre-trained booklets and d10s)
+                   the row for "the" by ear), then About your stories
+                   (moved up from the wrap-up)
+  Part 6 (3 min)   Pre-trained generation (title and the `sleep` example
+                   only, copied from grid-pretrained-generation), then the
+                   grid model's `see` example (copied from grid-generation)
   Part 7 (5 min)   Scaling up (scaling-up)
-  Part 8 (6 min)   Wrap-up + Q&A (yr5-6-wrap-up)
+  Part 8 (6 min)   Q&A
 `?teachers` adds a slide after the presenters and a block before the wrap-up
 for a room of teachers who'll run it themselves (teachers-intro,
 teachers-ledger); allow 10-15 extra minutes.
@@ -129,7 +136,80 @@ ChatGPT story and the two slides that unpack it.
 
 ---
 
-{/* @include ./partials/grid-pretrained-generation.mdx */}
+## About your stories
+
+![bg right:40%](./assets/bg-participants.avif)
+
+{/* prettier-ignore */}
+<p class="fragment">who <strong>wrote</strong> your story: you, the model, or the book's author?</p>
+
+{/* prettier-ignore */}
+<p class="fragment">our models can't say <strong>crocodile</strong> — what might a chatbot be missing?</p>
+
+{/* prettier-ignore */}
+<p class="fragment">does a chatbot <strong>know</strong> what it's saying?</p>
+
+```notes
+Let the class answer these; none of them has a single right answer:
+- the words came from the book, the choices came from the cup, and the group chose where to start and stop, so whose story is it?
+- each group's model only has the words from its book, and a chatbot only has what was in its training data: what might it have missed or read too much of, and how would you tell?
+- back to the story from the start: their paper model doesn't know what a magpie is, it only picks a likely next word. A chatbot does the same thing at a much larger scale, so does it know what it's saying? Leave that question open.
+```
+
+```comment
+Copied from yr5-6-wrap-up so DigiCon can ask these straight after training,
+before the pre-trained section; the Questions? slide stays at the end.
+```
+
+---
+
+{/* _class: hero */}
+
+# Grids and Booklets
+
+![bg](./assets/bg-div-historical.avif)
+
+---
+
+## Pre-trained: start with `sleep`
+
+```notes
+a bigger model, though `sleep`'s five followers still fit on ten faces: roll **one** d10
+```
+
+<StaticPretrainedGeneration
+  entries={EXAMPLE_PRETRAINED_ENTRIES}
+  sequence={EXAMPLE_PRETRAINED_SEQ}
+  rolls={EXAMPLE_PRETRAINED_ROLLS}
+  step={0}
+/>
+
+```comment
+Copied from grid-pretrained-generation. DigiCon keeps only the title and this
+first worked example: the rest of the walkthrough, the booklet activity,
+shareback and the open-weight slide are cut.
+```
+
+---
+
+## Generation: start with `see`
+
+```notes
+any word will do as a seed; we start from `see` (the last row) to show you can begin anywhere. Only one option here, so no roll.
+```
+
+<StaticGeneration
+  tokens={EXAMPLE_TOKENS}
+  vocabulary={EXAMPLE_VOCAB}
+  sequence={EXAMPLE_GENERATION}
+  rolls={EXAMPLE_GENERATION_ROLLS}
+  step={0}
+/>
+
+```comment
+Copied from grid-generation (the my-first-language-model decks' first worked
+example) to follow the pre-trained `sleep` example.
+```
 
 ---
 
@@ -141,7 +221,15 @@ ChatGPT story and the two slides that unpack it.
 
 ---
 
-{/* @include ./partials/yr5-6-wrap-up.mdx */}
+{/* _class: hero */}
+
+# Questions?
+
+![bg](./assets/bg-what-next.avif)
+
+```comment
+The rest of yr5-6-wrap-up; About your stories moved up to follow training.
+```
 
 ---
 
