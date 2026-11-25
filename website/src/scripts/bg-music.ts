@@ -6,13 +6,18 @@
 // Import once per deck via:
 //   <script>import "../scripts/bg-music";</script>
 //
-// To add tracks: drop .opus files into public/assets/audio/bg/ and list
-// them in TRACKS below.
+// To add tracks: encode them as in public/assets/audio/bg/CREDITS.md, drop
+// the .opus files in that directory and list them in TRACKS below.
 
 const TRACKS: string[] = [
   "/assets/audio/bg/lofi-sentimental-jazzy-love.opus",
   "/assets/audio/bg/hype-drill.opus",
   "/assets/audio/bg/alex-morgan-background.opus",
+  "/assets/audio/bg/everyday-every-night.opus",
+  "/assets/audio/bg/kyo-ashita.opus",
+  "/assets/audio/bg/may-as-well-be.opus",
+  "/assets/audio/bg/omg-funk.opus",
+  "/assets/audio/bg/wandered-waltz.opus",
 ];
 
 declare global {
