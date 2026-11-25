@@ -19,8 +19,6 @@ import ModelScaleBars from "../components/ModelScaleBars.svelte";
 import PresenterGrid from "../components/PresenterGrid.astro";
 import SocyLogo from "astro-theme-anu/components/SocyLogo.astro";
 import BgMusic from "../components/BgMusic.astro";
-import CopyButton from "../components/CopyButton.astro";
-import { STORY_FIELDS, STORY_PROMPT } from "../lib/storyPrompt";
 import {
   PALETTE,
   ROW_THE,
@@ -53,7 +51,8 @@ generation and scaling up, so it runs long and gets trimmed on the day (Esc
 for the overview to skip a section). Groups of 4-5. Generation comes before
 training on purpose: a group that has drawn words out of a finished sheet knows
 what the marks are for before it sees any being made.
-  Part 1 (12 min)  What is AI? (yr5-6-what-is-ai; groups form here)
+  Part 1 (1 min)   What is AI? (title slide only, no ChatGPT story; form
+                   the groups here)
   Part 2 (4 min)   Words (yr5-6-definitions)
   Part 3 (5 min)   Read the sheet (ledger-read)
   Part 4 (22 min)  Generation + shareback (ledger-generation)
@@ -101,7 +100,16 @@ Open warm: today we'll find out how AI writes stories, and write some ourselves 
 
 ---
 
-{/* @include ./partials/yr5-6-what-is-ai.mdx */}
+{/* _class: hero */}
+
+# What is AI?
+
+![bg](./assets/bg-icebreaker.avif)
+
+```comment
+Only the title slide of yr5-6-what-is-ai: DigiCon drops the think-share, the
+ChatGPT story and the two slides that unpack it.
+```
 
 ---
 
