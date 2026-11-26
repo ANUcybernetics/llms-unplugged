@@ -26,7 +26,6 @@ cli/target/
 mise.local.toml
 
 .unlighthouse
-.jj/
 dogfood-output/
 .remember/
 
