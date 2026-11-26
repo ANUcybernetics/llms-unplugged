@@ -65,10 +65,11 @@ what the marks are for before it sees any being made.
                    room builds the start of the magpie's sheet, then trains
                    the row for "the" by ear), then About your stories
                    (moved up from the wrap-up)
-  Part 6 (3 min)   Pre-trained generation (title and the `sleep` example
-                   only, copied from grid-pretrained-generation), then the
-                   grid model's `see` example (copied from grid-generation)
-  Part 7 (5 min)   Scaling up (scaling-up)
+  Part 6 (3 min)   Grids and Booklets: the grid model's `see` example
+                   (copied from grid-generation), then the pre-trained `sleep`
+                   example (copied from grid-pretrained-generation)
+  Part 7 (5 min)   Scaling up (copied from scaling-up; with ?teachers, "So is
+                   ChatGPT just counting?" moves in after its second slide)
   Part 8 (6 min)   Q&A
 `?teachers` adds a slide after the presenters and a block before the wrap-up
 for a room of teachers who'll run it themselves (teachers-intro,
@@ -171,27 +172,6 @@ before the pre-trained section; the Questions? slide stays at the end.
 
 ---
 
-## Pre-trained: start with `sleep`
-
-```notes
-a bigger model, though `sleep`'s five followers still fit on ten faces: roll **one** d10
-```
-
-<StaticPretrainedGeneration
-  entries={EXAMPLE_PRETRAINED_ENTRIES}
-  sequence={EXAMPLE_PRETRAINED_SEQ}
-  rolls={EXAMPLE_PRETRAINED_ROLLS}
-  step={0}
-/>
-
-```comment
-Copied from grid-pretrained-generation. DigiCon keeps only the title and this
-first worked example: the rest of the walkthrough, the booklet activity,
-shareback and the open-weight slide are cut.
-```
-
----
-
 ## Generation: start with `see`
 
 ```notes
@@ -208,16 +188,196 @@ any word will do as a seed; we start from `see` (the last row) to show you can b
 
 ```comment
 Copied from grid-generation (the my-first-language-model decks' first worked
-example) to follow the pre-trained `sleep` example.
+example), shown before the pre-trained `sleep` example.
 ```
 
 ---
 
-{/* @include ./partials/scaling-up.mdx */}
+## Pre-trained: start with `sleep`
+
+```notes
+a bigger model, though `sleep`'s five followers still fit on ten faces: roll **one** d10
+```
+
+<StaticPretrainedGeneration
+  entries={EXAMPLE_PRETRAINED_ENTRIES}
+  sequence={EXAMPLE_PRETRAINED_SEQ}
+  rolls={EXAMPLE_PRETRAINED_ROLLS}
+  step={0}
+/>
+
+```comment
+Copied from grid-pretrained-generation. DigiCon keeps only the title and this
+first worked example (after the grid's `see` example): the rest of the
+walkthrough, the booklet activity, shareback and the open-weight slide are cut.
+```
 
 ---
 
-{/* @include ./partials/teachers-ledger.mdx */}
+{/* _class: hero */}
+
+# Scaling up
+
+![bg](./assets/bg-information-flow.avif)
+
+```notes
+What they just did by hand is the same core loop an LLM runs, at human scale: look at the context, weigh every possible next word, roll the dice, write it down, repeat.
+
+The next two slides cover how frontier models turn up three scale dials, and how post-training changes the kind of text they train on. Point people to the website lessons for why a table of counts can't be scaled and how transformers share weights instead. ~3 min.
+```
+
+---
+
+## Now turn everything up
+
+<ModelScaleBars
+  startLabel="by hand"
+  contextFrom={1}
+  contextFromLabel="1 word"
+  trainingFrom={84489}
+  trainingFromLabel="one novel"
+  modelFrom={49322529}
+  modelFromLabel="49 million cells"
+  footer="one axis, in powers of ten · three independent dials"
+/>
+
+```notes
+Ask first: hands up if you've told a chatbot not to do something and it did it anyway. Take two answers. In a frontier model your instruction stays inside the context window the whole time, where it competes as one more stretch of text against everything else in the window. What the model is looking at right now shapes what comes next, just as in their model.
+
+Then walk through the three dials. The shared axis is in powers of ten (thousand, million, billion, trillion), so each bar's length shows how many orders of magnitude it jumps:
+- Context: their model looked at one word; Claude looks at up to a million tokens, enough for a whole conversation and more.
+- Training text: one novel (about 84,000 words) versus forty-five trillion tokens, the training run Thinking Machines published for its open-weights Inkling model in July 2026 (about 530 million copies of the novel, or roughly 17 million years at the pace they just worked).
+- Model size: a table of counts for the whole novel, with a row and a column for every word, has 49 million cells, while Claude Fable 5 is estimated at about five trillion parameters (Anthropic doesn't publish the figure).
+
+Why can't you just scale up the table? The novel's table has a count in only 0.08% of its cells (one in 1,200), and reading more text makes it sparser because every new word adds an entire row and column. A trillion-cell table would be almost completely blank. A transformer shares its parameters instead: patterns are distributed across billions of weights, so a sentence about a cat helps predict a sentence about a dog, and the model can produce combinations that never appeared in its training data. Increasing context, data and parameter count improves performance predictably enough to plan large training runs around. Each dial has its own lesson on the website.
+```
+
+```comment
+Scaling up is copied from scaling-up so the teachers' "So is ChatGPT just
+counting?" slide can sit after this one.
+```
+
+---
+
+{/* _if: teachers */}
+
+## “So is ChatGPT just counting?”
+
+![bg right:40%](./assets/bg-teachers-just-counting.avif)
+
+the **same loop**: look at the words so far, weigh the next ones, pick one at
+random
+
+it looks at the whole conversation instead of one word, and learned from
+trillions of words across the web
+
+and the model is **one part of a bigger system**: tools it can call, filters on
+what goes in and comes out, instructions you never see
+
+```notes
+Students always ask this. Every reply is still sampled one word at a time, which is why "regenerate" gives a different answer, just as two groups with the same book wrote different stories. Beyond the jump in scale (a whole conversation of context and trillions of words of training data), a chatbot wraps the model in ordinary software: hidden system instructions prepended before the user's message, tools the model can call (web search, a calculator, code execution), and input/output filters. Their paper sheets represent the model at the centre of that system.
+```
+
+```comment
+Copied from teachers-ledger and moved up to follow Now turn everything up; still
+only shown with ?teachers.
+```
+
+---
+
+{/* _class: centered */}
+
+![bg right:35%](./assets/bg-post-training.avif)
+
+{/* prettier-ignore */}
+<div class="qa-compare">
+  <span class="qa-prompt">"Explain the moon landing to a 6 year old in a few sentences."</span>
+  <span class="qa-label">pre-trained</span>
+  <span class="qa-a">Explain the theory of gravity to a 6 year old. Explain the theory of relativity to a 6 year old in a few sentences. Explain the big bang theory to a 6 year old. Explain evolution to a 6 year old.</span>
+  <span class="qa-label">post-trained</span>
+  <span class="qa-a">People went to the moon, and they took pictures of what they saw, and sent them back to the earth so we could all see them.</span>
+</div>
+
+same model, same next-word loop---**post-training** is a second round of
+training on examples of instructions being followed
+
+```notes
+Beyond the three scale dials, post-training changes which text the model learns from.
+
+Read the prompt out, then the first reply, and pause for the room to spot what happened. That's GPT-3 straight out of pre-training, continuing the text just like their model. On the internet, "explain X to a 6 year old" usually appears in lists of homework prompts and writing exercises, so the most likely continuation is another question in the list.
+
+Then read the second reply. That's the same model after post-training (published by OpenAI in January 2022 as InstructGPT, the precursor to ChatGPT). OpenAI trained it further on examples of people writing helpful responses to instructions, then had human raters rank its attempts and reinforced the preferred ones. It still runs the same next-word sampling loop, but after training on instruction-response pairs, the likeliest continuation of an instruction is an answer.
+
+If you have time, mention sycophancy: ask who has pushed back on a chatbot and watched it immediately fold, even when the user was wrong. Human raters comparing two replies tended to prefer the agreeable one, so agreement was reinforced during post-training, and the model has no separate check for whether a claim is true.
+```
+
+---
+
+{/* _class: impact */}
+
+still just **tokens in** → **tokens out**
+
+```notes
+A frontier model runs the same loop they ran by hand --- look at the context, weigh the options, roll the dice, write it down --- with every dial turned up, tally cells replaced by shared weights, and post-training on top. Every reply from Claude or ChatGPT is sampled one token at a time, which is why hitting "regenerate" gives a different answer.
+```
+
+---
+
+{/* _if: teachers */}
+
+## Running it in your class
+
+![bg right:40%](./assets/bg-teachers-ledger-class.avif)
+
+everything to print is in the **pack on the lesson page**: no books to find
+
+**60 minutes**: one of the pack's pre-tallied picture books per group, counters,
+a cup and a tub per group, and a whiteboard for training "the" together
+
+**90 minutes**: add blank sheets and one of the pack's training texts per group,
+then the class story
+
+```notes
+Step out of the student role here, cover the logistics briefly, and open for questions. Recommend using the lesson pack rather than bringing their own picture books: the generation sheets come pre-tallied, and the training texts are written so no word needs more than four boxes. Teachers who want to use a book of their own can generate sheets from any text on the website's tools page.
+
+The snags you saw today are the ones their class will hit: counters left in the cup from the last draw, a word with no row (start again from any word), and in the 90-minute version two people starting a row for the same word. The whiteboard tally in the 60-minute version is a good job for a student. With more than five groups the books repeat; spread the repeats around the room.
+```
+
+```comment
+Copied from teachers-ledger, minus "So is ChatGPT just counting?", which moved
+up into Scaling up.
+```
+
+---
+
+{/* _if: teachers */}
+
+## Where it fits
+
+![bg right:40%](./assets/bg-teachers-curriculum.avif)
+
+[`AC9TDI8P02`](https://www.australiancurriculum.edu.au/f-10-curriculum/learning-areas/digital-technologies/year-7/content-description?subject-identifier=TECTDIY78&content-description-code=AC9TDI8P02) (DT, years 7--8) --- analyse data to find
+patterns: the tallies
+
+[`AC9TDI8P01_E5`](https://www.australiancurriculum.edu.au/f-10-curriculum/learning-areas/digital-technologies/year-7/content-description?subject-identifier=TECTDIY78&content-description-code=AC9TDI8P01) (DT, years 7--8) --- training data shapes a
+model's output: the book in every story
+
+[`AC9TDI10P01_E6`](https://www.australiancurriculum.edu.au/f-10-curriculum/learning-areas/digital-technologies/year-9/content-description?subject-identifier=TECTDIY910&content-description-code=AC9TDI10P01) (DT, years 9--10) --- the zero problem: no
+crocodile on any sheet
+
+[`AC9M5P02`](https://www.australiancurriculum.edu.au/f-10-curriculum/learning-areas/mathematics/year-5/content-description?subject-identifier=MATMATY5&content-description-code=AC9M5P02) (maths, year 5) --- frequency and likelihood: the cup
+
+```notes
+Australian Curriculum v9.0, years 5--10; DT is Digital Technologies. Each code opens ACARA's panel for it. Only the first and last are content descriptions; the two in the middle are elaborations, whose links open the content description they belong to, with the elaboration listed under it. Elaborations are optional, but they are the clearest statement of what ACARA wants students to understand about AI, since the curriculum names AI only in elaborations. Victoria, NSW and WA have their own codes, so teachers there will need to find the local match. The full mapping, module by module, is on the website's curriculum page.
+```
+
+---
+
+{/* _if: teachers */}
+
+{/* _class: centered */}
+
+![qr](https://www.llmsunplugged.org/lessons/how-ai-writes-stories/)
 
 ---
 
