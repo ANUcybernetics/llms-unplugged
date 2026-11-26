@@ -21,13 +21,13 @@ jobs:
     name: Test CLI
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@v7.0.1
 
       # rust + typst come from the repo-root mise.toml (which also declares
       # the rustfmt/clippy components and the wasm target), so CI compiles
       # with the same pinned toolchain as local dev rather than a floating
       # stable.
-      - uses: jdx/mise-action@v5
+      - uses: jdx/mise-action@v5.3.0
         with:
           install_args: rust typst
 
@@ -38,7 +38,7 @@ jobs:
         run: typst --version
 
       - name: Cache cargo
-        uses: actions/cache@v6
+        uses: actions/cache@v6.1.0
         with:
           path: |
             ~/.cargo/bin/

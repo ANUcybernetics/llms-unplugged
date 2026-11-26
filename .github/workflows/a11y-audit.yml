@@ -17,15 +17,15 @@ jobs:
   a11y:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@v7.0.1
 
       # node + pnpm come from the repo-root mise.toml (see deploy-website.yml)
-      - uses: jdx/mise-action@v5
+      - uses: jdx/mise-action@v5.3.0
         with:
           install_args: node pnpm
 
       - name: Cache pnpm store
-        uses: actions/cache@v6
+        uses: actions/cache@v6.1.0
         with:
           path: ~/.local/share/pnpm/store
           key: ${{ runner.os }}-pnpm-${{ hashFiles('website/pnpm-lock.yaml') }}
@@ -37,7 +37,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Cache Astro image transforms
-        uses: actions/cache@v6
+        uses: actions/cache@v6.1.0
         with:
           path: website/node_modules/.astro
           key: ${{ runner.os }}-astro-images-${{ hashFiles('website/src/assets/**', 'website/src/decks/assets/**') }}

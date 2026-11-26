@@ -21,10 +21,10 @@ jobs:
           - { os: macos-latest, target: x86_64-apple-darwin }
           - { os: windows-latest, target: x86_64-pc-windows-msvc }
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@v7.0.1
 
       # The same pinned toolchain as cli.yml, from the repo-root mise.toml.
-      - uses: jdx/mise-action@v5
+      - uses: jdx/mise-action@v5.3.0
         with:
           install_args: rust
 
@@ -54,7 +54,7 @@ jobs:
           fi
           echo "NAME=$name" >> "$GITHUB_ENV"
 
-      - uses: actions/upload-artifact@v7
+      - uses: actions/upload-artifact@v7.0.2
         with:
           name: ${{ env.NAME }}
           path: dist/${{ env.NAME }}.*
