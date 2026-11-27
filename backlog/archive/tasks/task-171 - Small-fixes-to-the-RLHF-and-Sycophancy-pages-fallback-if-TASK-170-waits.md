@@ -6,7 +6,7 @@ title: >-
 status: To Do
 assignee: []
 created_date: '2026-11-09T23:50:00Z'
-updated_date: '2026-11-10T04:30:00Z'
+updated_date: '2026-11-27T00:16:49Z'
 labels:
   - website
   - modules
@@ -36,4 +36,6 @@ The known errors in each page:
 
 <!-- SECTION:NOTES:BEGIN -->
 Nov 2026: all three replacements went live before James's first week (Rewards, Fine-tuning's flattering adapter, two-chain Synthetic Data), so nothing here is needed unless James chooses to run one of the old pages from its deep link. If he does, fix that page using the error list above.
+
+27 Nov 2026: all three replacements ran in James's weeks (Rewards, Synthetic Data; Sycophancy week uses Rewards' thumbs-up round and Fine-tuning's flattery adapter), so no old page needs fixing. Archived; TASK-170.04 deletes the old pages.
 <!-- SECTION:NOTES:END -->
