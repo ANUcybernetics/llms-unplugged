@@ -6,6 +6,7 @@ import svelte from "@astrojs/svelte";
 import universityTheme from "astro-theme-university";
 import { astromotion, deckRemarkPlugins } from "astromotion";
 import { DECK_REDIRECTS } from "./src/lib/deckRedirects";
+import plausible from "./src/plausible";
 
 // Paths of unlisted (`listed: false`) modules and lessons, so the sitemap can
 // skip them. The config runs before the content layer exists, so this scans
@@ -152,6 +153,7 @@ export default defineConfig({
         !page.includes("/talks/") &&
         !unlistedPaths.some((p) => page.endsWith(p)),
     }),
+    plausible("llmsunplugged.org"),
     astromotion({
       theme: "./src/decks/theme.css",
       favicon: "/favicon.svg",

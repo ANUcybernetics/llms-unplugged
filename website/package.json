@@ -41,6 +41,7 @@
     "@myriaddreamin/typst-ts-renderer": "0.7.0",
     "@myriaddreamin/typst-ts-web-compiler": "0.7.0",
     "@myriaddreamin/typst.ts": "0.7.0",
+    "@plausible-analytics/tracker": "^0.4.7",
     "astro": "^7.4.13",
     "astro-theme-anu": "git+https://gitlab.anu.edu.au/u2548636/astro-theme-anu.git#astro-theme-anu@v0.10.0&path:/packages/astro-theme-anu",
     "astro-theme-university": "github:ANUcybernetics/astro-theme-university#v0.25.2",

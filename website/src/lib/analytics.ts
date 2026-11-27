@@ -1,6 +1,6 @@
-// Plausible custom events from bundled code. The stub in
-// components/Analytics.astro defines window.plausible on every page, but guard
-// anyway so a missing stub never breaks the feature being tracked.
+// Plausible custom events from bundled code. The tracker (src/plausible.ts)
+// defines window.plausible only on the live site and outside iframes, so a
+// call anywhere else is a no-op.
 type Plausible = (event: string, options?: { props?: Record<string, string> }) => void;
 
 declare global {

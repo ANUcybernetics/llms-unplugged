@@ -6,7 +6,6 @@
 // The canonical link and the og:/twitter: card tags used to live here too.
 // They're the theme's job now --- see `socialImage` in site-config.ts and the
 // per-page `socialImage` prop the layouts forward.
-import Analytics from "./Analytics.astro";
 
 interface Props {
   /**
@@ -22,7 +21,6 @@ const { noindex = false } = Astro.props;
 <meta name="theme-color" content="#be830e" />
 {noindex && <meta name="robots" content="noindex" />}
 <link rel="alternate" type="application/rss+xml" title="LLMs Unplugged RSS Feed" href="/feed.xml" />
-<Analytics />
 <script is:inline>
   // Set the grid/ledger/cutouts variant attribute before first paint.
   try {

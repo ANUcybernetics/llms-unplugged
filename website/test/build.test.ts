@@ -120,14 +120,20 @@ describe("Astro Build", () => {
     expect(bad, `Pages with bad <title>:\n${bad.join("\n")}`).toEqual([]);
   });
 
-  // Every page carries the Plausible snippet, decks included (via
-  // astromotion's `head` option); only redirect stubs go without. Decks also
-  // need the slide listener, and the 404 page its event.
+  // Every page loads the script that src/plausible.ts injects, decks included;
+  // only redirect stubs go without. Decks also need the slide listener, and the
+  // 404 page its event.
   it("loads analytics on every page that isn't a redirect", () => {
+    const tracker = globSync(join(DIST_DIR, "_astro/page.*.js")).find((file) =>
+      readFileSync(file, "utf-8").includes("domain:`llmsunplugged.org`"),
+    );
+    expect(tracker, "no page script starts the Plausible tracker").toBeDefined();
+    const src = `/_astro/${tracker!.split("/").pop()}`;
+
     const missing = globSync(join(DIST_DIR, "**/*.html")).filter((file) => {
       const html = readFileSync(file, "utf-8");
       const redirect = /http-equiv="refresh"/i.test(html);
-      return !redirect && !html.includes("plausible.io/js/script.file-downloads.js");
+      return !redirect && !html.includes(`src="${src}"`);
     });
     expect(missing, `Pages without analytics:\n${missing.join("\n")}`).toEqual([]);
 
@@ -136,7 +142,10 @@ describe("Astro Build", () => {
       "utf-8",
     );
     expect(deck).toContain("astromotion:slidechange");
-    expect(readFileSync(join(DIST_DIR, "404.html"), "utf-8")).toContain('plausible("404"');
+    const notFound = globSync(join(DIST_DIR, "_astro/404.astro_*.js")).map((file) =>
+      readFileSync(file, "utf-8"),
+    );
+    expect(notFound.join("\n")).toContain("(`404`");
   });
 
   // Markdown turns `---` into an em dash, but frontmatter strings and .astro
